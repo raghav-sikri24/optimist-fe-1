@@ -1,26 +1,288 @@
 @import "tailwindcss";
 
+/* Optimist Brand Color System */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Colors */
+  --optimist-black: #0a0a0a;
+  --optimist-pure-black: #000000;
+  --optimist-dark: #1a1a1a;
+  --optimist-cream: #f5f0e6;
+  --optimist-cream-muted: #d4d0c4;
+  --optimist-headline: #FFFCDC;
+  
+  /* Blue Gradient Colors */
+  --optimist-blue-deep: #1e3a8a;
+  --optimist-blue-primary: #2563eb;
+  --optimist-blue-light: #0ea5e9;
+  --optimist-blue-glow: #38bdf8;
+  --optimist-blue-hero: #3478F6;
+  
+  /* Accent Colors */
+  --optimist-gold: #d4a017;
+  --optimist-red: #dc2626;
+  
+  /* UI Colors */
+  --optimist-border: rgba(245, 240, 230, 0.2);
+  --optimist-border-light: rgba(245, 240, 230, 0.4);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-optimist-black: var(--optimist-black);
+  --color-optimist-pure-black: var(--optimist-pure-black);
+  --color-optimist-dark: var(--optimist-dark);
+  --color-optimist-cream: var(--optimist-cream);
+  --color-optimist-cream-muted: var(--optimist-cream-muted);
+  --color-optimist-headline: var(--optimist-headline);
+  --color-optimist-blue-deep: var(--optimist-blue-deep);
+  --color-optimist-blue-primary: var(--optimist-blue-primary);
+  --color-optimist-blue-light: var(--optimist-blue-light);
+  --color-optimist-blue-glow: var(--optimist-blue-glow);
+  --color-optimist-blue-hero: var(--optimist-blue-hero);
+  --color-optimist-gold: var(--optimist-gold);
+  --color-optimist-red: var(--optimist-red);
+  --color-optimist-border: var(--optimist-border);
+  --color-optimist-border-light: var(--optimist-border-light);
+  
+  /* Fonts */
+  --font-sans: var(--font-abc-solar);
+  --font-display: var(--font-abc-solar-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--optimist-black);
+  color: var(--optimist-cream);
+  font-family: var(--font-abc-solar), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display Font Utility */
+.font-display {
+  font-family: var(--font-abc-solar-display), serif;
+}
+
+/* Hero Headline Style */
+.hero-headline {
+  font-family: var(--font-abc-solar-display), serif;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--optimist-headline);
+}
+
+/* Hero Section Background */
+.hero-section {
+  background: var(--optimist-pure-black);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: 
+    0px 35px 120px 0px rgba(52, 120, 246, 0.2),
+    0px 145px 120px 4px rgba(52, 120, 246, 0.12);
+  pointer-events: none;
+}
+
+/* Blue Ellipse Glow */
+.hero-blue-glow {
+  position: absolute;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(52, 120, 246, 0.9) 0%,
+    rgba(52, 120, 246, 0.6) 30%,
+    rgba(52, 120, 246, 0.3) 60%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Blue Gradient Background */
+.blue-gradient-bg {
+  background: 
+    radial-gradient(
+      ellipse 80% 60% at 70% 40%,
+      var(--optimist-blue-light) 0%,
+      var(--optimist-blue-primary) 30%,
+      var(--optimist-blue-deep) 60%,
+      transparent 100%
+    );
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--optimist-blue-light) 0%, var(--optimist-blue-primary) 100%);
+  box-shadow: 
+    0 0 20px rgba(14, 165, 233, 0.4),
+    0 0 40px rgba(14, 165, 233, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 
+    0 0 30px rgba(14, 165, 233, 0.6),
+    0 0 60px rgba(14, 165, 233, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--optimist-border-light);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(245, 240, 230, 0.05);
+  border-color: var(--optimist-cream);
+}
+
+/* Hero Buy Now Button */
+.btn-buy-now {
+  background: linear-gradient(151.7deg, #1265FF 25.27%, #69CDEB 87.59%, #46F5A0 120.92%);
+  box-shadow: 0px 2px 12.5px 2px #003FB2 inset;
+  transition: all 0.3s ease;
+}
+
+.btn-buy-now:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0px 2px 12.5px 2px #003FB2 inset,
+    0px 4px 20px rgba(18, 101, 255, 0.4);
+}
+
+/* Hero Why Optimist Button - Glassmorphism with gradient border */
+.btn-why-optimist {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-why-optimist::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.44) 56.25%, rgba(255, 255, 255, 0.23) 100%);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.btn-why-optimist:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Hero Section Responsive Typography */
+.hero-headline-size {
+  font-size: 48px;
+  line-height: 48px;
+}
+
+@media (min-width: 768px) {
+  .hero-headline-size {
+    font-size: 92px;
+    line-height: 92px;
+  }
+}
+
+/* Hero Badge Title - "Highest ISEER" / "4.8 rated" */
+.hero-badge-title {
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .hero-badge-title {
+    font-size: 20px;
+    line-height: 20px;
+  }
+}
+
+/* Hero Badge Subtitle - "In India" / "by early users" */
+.hero-badge-subtitle {
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .hero-badge-subtitle {
+    font-size: 16px;
+    line-height: 16px;
+  }
+}
+
+/* Hero Button - Mobile */
+.hero-btn-mobile {
+  height: 44px;
+  padding-left: 24px;
+  padding-right: 24px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 600;
+  border-radius: 100px;
+}
+
+/* Hero Button - Desktop */
+.hero-btn-desktop {
+  width: 183px;
+  height: 48px;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 600;
+  border-radius: 40px;
+}
+
+/* Selection */
+::selection {
+  background: var(--optimist-blue-primary);
+  color: var(--optimist-cream);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--optimist-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--optimist-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--optimist-cream-muted);
+}
+
+/* Hide scrollbar for carousels */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

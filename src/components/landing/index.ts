@@ -1,0 +1,9 @@
+export { HeroSection } from "./HeroSection";
+export { BenefitsSection } from "./BenefitsSection";
+export { EngineeredSection } from "./EngineeredSection";
+export { MadeSimpleSection } from "./MadeSimpleSection";
+export { OptimistAppSection } from "./OptimistAppSection";
+export { TestimonialsSection } from "./TestimonialsSection";
+export { ProductPickerSection } from "./ProductPickerSection";
+export { CTASection } from "./CTASection";
+export { IndiaFirstSection } from "./IndiaFirstSection";

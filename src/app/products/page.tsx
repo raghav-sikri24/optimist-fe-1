@@ -1,20 +1,44 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { Package } from "lucide-react";
-import type { Metadata } from "next";
+import {
+  ProductGrid,
+  ProductGridSkeleton,
+} from "@/components/products/ProductGrid";
+import { getProducts, type Product } from "@/lib/shopify";
 
 export default function ProductsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const data = await getProducts(20);
+        setProducts(data);
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+        setError("Failed to load products. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   useGSAP(
     () => {
+      if (!headerRef.current) return;
+
       gsap.fromTo(
-        contentRef.current,
-        { opacity: 0, y: 40 },
+        headerRef.current,
+        { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
       );
     },
@@ -22,26 +46,38 @@ export default function ProductsPage() {
   );
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8"
-    >
-      <div ref={contentRef} className="text-center">
-        <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
-          <Package className="w-10 h-10 text-white" />
-        </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-4">
-          Product Catalog
+    <div ref={containerRef} className="min-h-screen pt-24 pb-16">
+      {/* Header */}
+      <div
+        ref={headerRef}
+        className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-12"
+      >
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-optimist-cream mb-4">
+          Our Products
         </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-md mx-auto mb-8">
-          Our complete collection of premium washing machines is coming soon.
+        <p className="text-lg text-optimist-cream-muted max-w-2xl">
+          Discover our collection of premium air conditioners engineered for
+          modern living. Cools more. Uses less. Experience the highest ISEER
+          rated ACs in India.
         </p>
-        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-medium">
-          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-          Coming Soon
-        </div>
+      </div>
+
+      {/* Products Grid */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        {error ? (
+          <div className="text-center py-16">
+            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-red-900/30 text-red-400 font-medium mb-4">
+              <span className="w-2 h-2 rounded-full bg-red-500" />
+              Error
+            </div>
+            <p className="text-optimist-cream-muted">{error}</p>
+          </div>
+        ) : isLoading ? (
+          <ProductGridSkeleton />
+        ) : (
+          <ProductGrid products={products} />
+        )}
       </div>
     </div>
   );
 }
-

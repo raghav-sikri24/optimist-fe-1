@@ -1,47 +1,78 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { User } from "lucide-react";
-import type { Metadata } from "next";
+import { OptimistLogo } from "@/components/icons";
+import { LoginForm } from "@/components/auth/LoginForm";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.replace("/account");
+    }
+  }, [isAuthenticated, isLoading, router]);
 
   useGSAP(
     () => {
+      const elements = containerRef.current?.querySelectorAll(".animate-in");
+      if (!elements) return;
+
       gsap.fromTo(
-        contentRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+        elements,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }
       );
     },
     { scope: containerRef }
   );
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-optimist-cream/30 border-t-optimist-cream rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
     <div
       ref={containerRef}
-      className="min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8"
+      className="min-h-screen pt-24 pb-16 flex items-center justify-center px-4"
     >
-      <div ref={contentRef} className="text-center">
-        <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-lg">
-          <User className="w-10 h-10 text-white" />
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="animate-in text-center mb-8">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <OptimistLogo className="text-optimist-cream" />
+            <span className="text-2xl font-semibold text-optimist-cream">
+              optimist
+            </span>
+          </div>
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-optimist-cream mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-optimist-cream-muted">
+            Sign in to your account to continue
+          </p>
         </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-4">
-          Account Login
-        </h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-md mx-auto mb-8">
-          Sign in to your account to manage orders and preferences.
-        </p>
-        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-medium">
-          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-          Coming Soon
+
+        {/* Form Container */}
+        <div className="animate-in bg-optimist-dark/50 border border-optimist-border rounded-2xl p-6 md:p-8">
+          <LoginForm />
         </div>
       </div>
     </div>
   );
 }
-
