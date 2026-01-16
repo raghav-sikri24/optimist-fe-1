@@ -68,27 +68,31 @@ export function MadeSimpleSection() {
           {/* Left Card - Blue gradient with headline */}
           <div
             ref={leftCardRef}
-            className="relative rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[400px] md:min-h-[500px] lg:min-h-[600px]"
+            className="relative rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[400px] md:min-h-[450px] lg:min-h-[500px]"
             style={{
               background:
-                "linear-gradient(180deg, #FFFFFF 0%, #A8D4FF 50%, #3B82F6 100%)",
+                "linear-gradient(180deg, #FFFFFF 0%, #E8F4FF 35%, #B8DEFF 70%, #8ECFFF 100%)",
             }}
           >
             {/* Decorative palm tree watermark */}
-            <div className="absolute bottom-0 right-0 w-[200px] h-[200px] md:w-[280px] md:h-[280px] opacity-30 pointer-events-none">
+            <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-[180px] h-[180px] md:w-[240px] md:h-[240px] lg:w-[280px] lg:h-[280px] pointer-events-none">
               <Image
-                src="/Flower.png"
+                src="/OptimistTree.png"
                 alt=""
                 fill
                 className="object-contain"
+                style={{
+                  filter: "brightness(0) saturate(100%) invert(70%) sepia(30%) saturate(500%) hue-rotate(175deg) brightness(95%) contrast(90%)",
+                  opacity: 0.5,
+                }}
                 aria-hidden="true"
               />
             </div>
 
             {/* Content */}
-            <div className="relative z-10 p-6 md:p-8 lg:p-10 flex flex-col justify-center h-full">
+            <div className="relative z-10 p-6 md:p-8 lg:p-10 flex flex-col justify-start pt-10 md:pt-14 lg:pt-16 h-full">
               {/* Headline */}
-              <h2 className="font-display text-[32px] leading-[36px] md:text-[40px] md:leading-[44px] lg:text-[52px] lg:leading-[56px] font-bold text-optimist-blue-primary mb-6 md:mb-8">
+              <h2 className="font-display text-[32px] leading-[38px] md:text-[44px] md:leading-[50px] lg:text-[56px] lg:leading-[62px] font-bold text-[#1E6FD9] mb-6 md:mb-8">
                 Made simple.
                 <br />
                 Nothing more,
@@ -112,7 +116,7 @@ export function MadeSimpleSection() {
             className="relative rounded-[24px] md:rounded-[32px] overflow-hidden"
           >
             {/* Desktop Image */}
-            <div className="hidden md:block relative w-full aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[500px]">
+            <div className="hidden md:block relative w-full aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[450px]">
               <Image
                 src="/BrownBgRemoteDesktop.png"
                 alt="Optimist Remote Control with features labeled: Fan Speed, Turbo, Power ON/OFF, Temperature, Turbo+"

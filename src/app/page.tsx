@@ -1,22 +1,22 @@
 "use client";
 
-import { HeroSection } from "@/components/landing/HeroSection";
 import { BenefitsSection } from "@/components/landing/BenefitsSection";
-import { FeaturesShowcaseSection } from "@/components/landing/FeaturesShowcaseSection";
+import { CTASection } from "@/components/landing/CTASection";
 import { EngineeredSection } from "@/components/landing/EngineeredSection";
+import { FeaturesShowcaseSection } from "@/components/landing/FeaturesShowcaseSection";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { IndiaFirstSection } from "@/components/landing/IndiaFirstSection";
 import { MadeSimpleSection } from "@/components/landing/MadeSimpleSection";
 import { OptimistAppSection } from "@/components/landing/OptimistAppSection";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { ProductPickerSection } from "@/components/landing/ProductPickerSection";
-import { CTASection } from "@/components/landing/CTASection";
-import { IndiaFirstSection } from "@/components/landing/IndiaFirstSection";
+import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
       <BenefitsSection />
-      {/* <FeaturesShowcaseSection /> */}
+      <FeaturesShowcaseSection />
       <EngineeredSection />
       <MadeSimpleSection />
       <OptimistAppSection />

@@ -116,17 +116,15 @@ function AccordionItem({
             className={`w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${
               isActive
                 ? "bg-gradient-to-br from-[#074FD5] to-[#04348C]"
-                : "bg-[#E5E7EB]"
+                : "bg-white/70"
             }`}
           >
             <div className="w-5 h-5 relative">
               <Image
-                src={isActive ? "/LightningWhite.png" : "/LightningBlue.png"}
+                src={isActive ? "/LightningBlue.png" : "/LightningWhite.png"}
                 alt="Lightning icon"
                 fill
-                className={`object-contain ${
-                  !isActive && "opacity-40 grayscale"
-                }`}
+                className="object-contain"
               />
             </div>
           </div>
@@ -151,7 +149,7 @@ function AccordionItem({
         >
           <p
             ref={descriptionRef}
-            className="text-base text-[#6B7280] mt-2 ml-14 font-medium"
+            className="text-base text-[#6B7280] mt-1 pb-1 mb-4 ml-14 font-medium"
           >
             {feature.description}
           </p>
@@ -471,21 +469,19 @@ export function EngineeredSection() {
                     className={`w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center ${
                       activeFeature === feature.id
                         ? "bg-gradient-to-br from-[#074FD5] to-[#04348C]"
-                        : "bg-[#E5E7EB]"
+                        : "bg-white/70"
                     }`}
                   >
                     <div className="w-5 h-5 relative">
                       <Image
                         src={
                           activeFeature === feature.id
-                            ? "/LightningWhite.png"
-                            : "/LightningBlue.png"
+                            ? "/LightningBlue.png"
+                            : "/LightningWhite.png"
                         }
                         alt="Lightning icon"
                         fill
-                        className={`object-contain ${
-                          activeFeature !== feature.id && "opacity-40 grayscale"
-                        }`}
+                        className="object-contain"
                       />
                     </div>
                   </div>
