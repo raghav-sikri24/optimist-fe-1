@@ -173,7 +173,7 @@ export function BenefitsSection() {
             ref={carouselRef}
             className={`flex gap-4 md:gap-6 ${
               isMobile
-                ? "overflow-x-auto pb-4 scrollbar-hide"
+                ? "overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4"
                 : "overflow-visible"
             }`}
             style={isMobile ? { scrollSnapType: "x mandatory" } : {}}
@@ -181,7 +181,7 @@ export function BenefitsSection() {
             {benefits.map((benefit) => (
               <div
                 key={benefit.id}
-                className="benefit-card flex-shrink-0 w-[80vw] md:w-[calc(50%-12px)] lg:w-[calc(80%-12px)] relative rounded-[24px] overflow-hidden"
+                className="benefit-card flex-shrink-0 w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(80%-12px)] relative rounded-[24px] overflow-hidden"
                 style={isMobile ? { scrollSnapAlign: "start" } : {}}
               >
                 {/* Image Background */}
@@ -220,10 +220,10 @@ export function BenefitsSection() {
 
                     {/* Bottom - Text */}
                     <div className="mt-auto">
-                      <h3 className="font-display text-xl md:text-2xl lg:text-[40px] font-bold text-[#AEFFD8] mb-1">
+                      <h3 className="font-display text-lg md:text-2xl lg:text-[40px] font-bold text-[#AEFFD8] mb-1 leading-tight">
                         {benefit.headline}
                       </h3>
-                      <p className="text-lg md:text-xl lg:text-[40px] font-bold text-[#FFFCDC]">
+                      <p className="text-base md:text-xl lg:text-[40px] font-bold text-[#FFFCDC] leading-tight">
                         {benefit.description}
                       </p>
                     </div>

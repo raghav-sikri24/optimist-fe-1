@@ -15,7 +15,7 @@ import {
   MapPin,
   ChevronDown,
 } from "lucide-react";
-import { OptimistLogo } from "@/components/icons";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
@@ -108,30 +108,30 @@ export function Navigation() {
 
             {/* Left Logo - Mobile */}
             <div className="md:hidden flex items-center">
-              <Link href="/" className="flex items-center gap-2 group">
-                <OptimistLogo
-                  height={24}
-                  className="text-[#FFFCDC] transition-transform group-hover:scale-110"
+              <Link href="/" className="flex items-center group">
+                <Image
+                  src="/logo (2).png"
+                  alt="Optimist"
+                  width={120}
+                  height={32}
+                  className="h-6 w-auto transition-transform group-hover:scale-105"
                 />
-                <span className="text-lg font-medium tracking-tight text-[#FFFCDC]">
-                  optimist
-                </span>
               </Link>
             </div>
 
             {/* Center Logo - Desktop */}
             <div
               ref={logoRef}
-              className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center gap-2"
+              className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center"
             >
-              <Link href="/" className="flex items-center gap-2 group">
-                <OptimistLogo
-                  height={28}
-                  className="text-[#FFFCDC] transition-transform group-hover:scale-110"
+              <Link href="/" className="flex items-center group">
+                <Image
+                  src="/logo (2).png"
+                  alt="Optimist"
+                  width={150}
+                  height={40}
+                  className="h-8 w-auto transition-transform group-hover:scale-105"
                 />
-                <span className="text-xl font-medium tracking-tight text-[#FFFCDC]">
-                  optimist
-                </span>
               </Link>
             </div>
 
