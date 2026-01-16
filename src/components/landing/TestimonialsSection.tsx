@@ -93,7 +93,7 @@ export function TestimonialsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#F8F8FA] py-8 md:py-12 lg:py-16 overflow-hidden"
+      className="bg-[#F8F8FA] py-8 md:py-12 lg:py-16 overflow-x-hidden"
     >
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
         {/* Header */}
@@ -110,7 +110,7 @@ export function TestimonialsSection() {
         {/* Testimonials Carousel */}
         <div
           ref={carouselRef}
-          className="flex gap-4 md:gap-6 overflow-x-auto pb-4 -mx-4 px-4 md:-mx-6 md:px-6 scrollbar-hide"
+          className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide"
           style={{ scrollSnapType: "x mandatory" }}
         >
           {testimonials.map((testimonial) => (

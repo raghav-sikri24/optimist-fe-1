@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -8,11 +8,39 @@ interface SmoothScrollProps {
   children: React.ReactNode;
 }
 
+// Check if device is mobile/touch device
+const isMobileDevice = () => {
+  if (typeof window === "undefined") return false;
+  return (
+    window.innerWidth < 768 ||
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0
+  );
+};
+
 export function SmoothScroll({ children }: SmoothScrollProps) {
   const lenisRef = useRef<Lenis | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount
+  useEffect(() => {
+    setIsMobile(isMobileDevice());
+  }, []);
 
   useEffect(() => {
-    // Initialize Lenis for smooth scrolling with optimized settings
+    // Skip Lenis on mobile - use native scrolling for better touch experience
+    if (isMobile) {
+      // Still need to update ScrollTrigger on native scroll
+      const handleScroll = () => {
+        ScrollTrigger.update();
+      };
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+
+    // Initialize Lenis for smooth scrolling with optimized settings - DESKTOP ONLY
     const lenis = new Lenis({
       // Reduced duration for faster response and less processing
       duration: 0.8,
@@ -21,8 +49,6 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      // Reduced multiplier to prevent over-scrolling
-      touchMultiplier: 1.5,
       // Reduce wheel multiplier for better control
       wheelMultiplier: 0.8,
       // Enable autoRaf to reduce manual RAF overhead
@@ -35,9 +61,10 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     lenis.on("scroll", ScrollTrigger.update);
 
     // Add Lenis to GSAP's ticker for smooth animation frame updates
-    gsap.ticker.add((time) => {
+    const rafCallback = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(rafCallback);
 
     // Disable GSAP's default lag smoothing for better sync with Lenis
     gsap.ticker.lagSmoothing(0);
@@ -45,11 +72,9 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     // Cleanup on unmount
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(rafCallback);
     };
-  }, []);
+  }, [isMobile]);
 
   return <div data-lenis-prevent-wheel={false}>{children}</div>;
 }

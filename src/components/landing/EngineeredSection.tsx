@@ -387,7 +387,7 @@ export function EngineeredSection() {
     <section
       ref={sectionRef}
       id="why-optimist"
-      className="py-12 md:py-16 lg:py-24 overflow-hidden"
+      className="py-12 md:py-16 lg:py-24 overflow-x-hidden"
       style={{
         background:
           "linear-gradient(89.33deg, #CAC9C9 1.16%, #EEEAEA 49.5%, #F3F1F1 60.8%, #CAC9C9 115.48%)",
@@ -449,7 +449,7 @@ export function EngineeredSection() {
           {/* Features Carousel (Original Design) */}
           <div
             ref={featuresRef}
-            className="flex gap-4 overflow-x-auto pb-8 -mx-4 px-4 scrollbar-hide"
+            className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {features.map((feature) => (

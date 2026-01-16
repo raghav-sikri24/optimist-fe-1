@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import {
   BlueGradientFull,
@@ -28,8 +28,19 @@ export function HeroBlueGradient({ progress }: { progress: number }) {
   const fullRef = useRef<HTMLDivElement>(null);
   const middleRef = useRef<HTMLDivElement>(null);
   const shrinkRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const settersRef = useRef<AnimationSetters | null>(null);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -115,12 +126,14 @@ export function HeroBlueGradient({ progress }: { progress: number }) {
     setters.shrink(clamp01(shrinkOpacity));
 
     // Shrink animation values:
-    // Initial: 98% width, 88% height, 32px border-radius
-    // End: 92% width, 72% height, 48px border-radius
-    const scaleX = 0.98 - 0.06 * p; 
-    const scaleY = 0.88 - 0.16 * p; 
-    const borderRadius = 32 + 16 * p; 
-    const yOffset = 5 + 15 * p; 
+    // Desktop: Initial 98% width, 88% height -> End 92% width, 72% height
+    // Mobile: Initial 100% width, 100% height (no shrink animation on mobile since pinning is disabled)
+    const scaleX = isMobile ? 1 : 0.98 - 0.06 * p;
+    const initialScaleY = isMobile ? 1 : 0.88;
+    const scaleYDelta = isMobile ? 0 : 0.16;
+    const scaleY = initialScaleY - scaleYDelta * p; 
+    const borderRadius = isMobile ? 0 : 32 + 16 * p; 
+    const yOffset = isMobile ? 0 : 5 + 15 * p; 
 
     // Border opacity fades in as we scroll
     const borderAlpha = 0.3 * p;

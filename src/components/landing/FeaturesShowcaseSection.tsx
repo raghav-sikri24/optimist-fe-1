@@ -121,7 +121,7 @@ export function FeaturesShowcaseSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 md:py-24 lg:py-32 overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-32 overflow-x-hidden"
       style={{
         background: "linear-gradient(180deg, #F8F8FA 0%, #FFFFFF 50%, #F8F8FA 100%)",
       }}

@@ -182,7 +182,7 @@ export function ProductPickerSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-8 md:py-12 lg:py-16 overflow-hidden"
+      className="bg-white py-8 md:py-12 lg:py-16 overflow-x-hidden"
     >
       <div className=" mx-auto px-8 md:px-12 lg:px-16">
         {/* Header with decorative lines */}

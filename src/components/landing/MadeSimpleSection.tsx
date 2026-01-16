@@ -56,7 +56,7 @@ export function MadeSimpleSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-4 md:py-6 overflow-hidden"
+      className="py-4 md:py-6 overflow-x-hidden"
       style={{
         background:
           "linear-gradient(0deg, #FFFFFF, #FFFFFF),linear-gradient(0deg, rgba(236, 236, 236, 0.2), rgba(236, 236, 236, 0.2))",

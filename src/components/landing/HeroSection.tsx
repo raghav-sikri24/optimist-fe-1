@@ -22,6 +22,12 @@ const MODEL_PATH = "/HomePageAnimation02.glb";
 // Helper function to check if mobile view
 const isMobileView = (width: number) => width < 768;
 
+// Check if device is mobile (for disabling pinning)
+const isMobileDevice = () => {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < 768;
+};
+
 // 3D AC Model Component
 function ACModel({ onLoaded }: { onLoaded: () => void }) {
   const { scene } = useGLTF(MODEL_PATH);
@@ -60,7 +66,7 @@ function ResponsiveCamera({ startAnimation }: { startAnimation: boolean }) {
      * Lower numbers = AC looks BIGGER
      * Higher numbers = AC looks SMALLER
      */
-    const finalZ = isMobile ? 3.2 : 1.4;
+    const finalZ = isMobile ? 2.4 : 1.4;
 
     // Animation: Zooming out to the "Big" view with a bounce
     gsap.to(cameraRef.current.position, {
@@ -90,7 +96,7 @@ function ResponsiveCamera({ startAnimation }: { startAnimation: boolean }) {
       makeDefault
       ref={cameraRef}
       position={[0, 0, 0.05]}
-      fov={isMobileView(size.width) ? 55 : 35}
+      fov={isMobileView(size.width) ? 45 : 35}
     />
   );
 }
@@ -180,13 +186,27 @@ export function HeroSection() {
   // Use ref instead of state to avoid re-renders on every scroll
   const scrollProgressRef = useRef(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Setup pinned scroll animation for gradient shrink
+  // Detect mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Setup pinned scroll animation for gradient shrink - DESKTOP ONLY
   useGSAP(
     () => {
       if (!sectionRef.current || !gradientRef.current) return;
 
-      // Create ScrollTrigger for pinning and gradient shrink
+      // Skip pinning on mobile - it breaks scrolling
+      if (isMobile) return;
+
+      // Create ScrollTrigger for pinning and gradient shrink - DESKTOP ONLY
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
@@ -218,7 +238,7 @@ export function HeroSection() {
         },
       });
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [isMobile] }
   );
 
   // Initial entrance animations
@@ -269,7 +289,9 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="hero-section h-screen relative flex flex-col overflow-hidden"
+      className={`hero-section relative flex flex-col overflow-x-hidden ${
+        isMobile ? "min-h-screen" : "h-screen overflow-hidden"
+      }`}
       style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
     >
       {/* Blue Gradient Background - passes scroll progress for shrink animation */}
@@ -294,7 +316,7 @@ export function HeroSection() {
             {/* Headline */}
             <h1
               ref={headlineRef}
-              className="hero-headline hero-headline-size"
+              className="hero-headline hero-headline-size italic"
               style={{ perspective: "1000px" }}
             >
               <span className="block">More Chill.</span>
@@ -391,10 +413,10 @@ export function HeroSection() {
         {/* AC 3D Animation */}
         <div
           ref={imageRef}
-          className="flex-1 flex items-end justify-center mt-auto pb-4 md:pb-8"
+          className="flex-1 flex items-end justify-center mt-auto pb-0 md:pb-8"
           style={{ willChange: "transform, opacity" }}
         >
-          <div className="w-full h-[400px] md:h-[500px] lg:h-[650px] xl:h-[750px] max-w-6xl lg:max-w-7xl xl:max-w-[1400px] mx-auto">
+          <div className="w-full h-[480px] md:h-[500px] lg:h-[650px] xl:h-[750px] max-w-6xl lg:max-w-7xl xl:max-w-[1400px] mx-auto">
             <HeroACCanvas />
           </div>
         </div>

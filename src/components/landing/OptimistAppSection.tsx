@@ -235,7 +235,7 @@ export function OptimistAppSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-6 md:py-10 px-4 md:px-6 overflow-hidden"
+      className="bg-white py-6 md:py-10 px-4 md:px-6 overflow-x-hidden"
     >
       {/* Rounded Container with Border */}
       <div
@@ -414,7 +414,7 @@ export function OptimistAppSection() {
             {/* Horizontal Scrollable Carousel */}
             <div
               ref={featuresRef}
-              className="flex gap-4 overflow-x-auto pb-6 -mx-4 px-4 scrollbar-hide"
+              className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide"
               style={{ scrollSnapType: "x mandatory" }}
             >
               {mobileFeatures.map((f) => (

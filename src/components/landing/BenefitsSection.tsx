@@ -47,10 +47,13 @@ export function BenefitsSection() {
 
   useGSAP(
     () => {
+      // Track our own ScrollTrigger instances for cleanup
+      const triggers: ScrollTrigger[] = [];
+
       // Skip horizontal scroll on mobile - use native scroll instead
       if (isMobile) {
         // Simple fade-in animation for mobile
-        gsap.fromTo(
+        const headerTrigger = gsap.fromTo(
           headerRef.current,
           { opacity: 0, y: 40 },
           {
@@ -64,8 +67,13 @@ export function BenefitsSection() {
               once: true,
             },
           }
-        );
-        return;
+        ).scrollTrigger;
+        if (headerTrigger) triggers.push(headerTrigger);
+        
+        // Cleanup only our triggers
+        return () => {
+          triggers.forEach((trigger) => trigger.kill());
+        };
       }
 
       const carousel = carouselRef.current;
@@ -81,7 +89,7 @@ export function BenefitsSection() {
       const scrollDistance = totalWidth - viewportWidth + 100; // Extra padding
 
       // Header fade in animation
-      gsap.fromTo(
+      const headerTrigger = gsap.fromTo(
         headerRef.current,
         { opacity: 0, y: 40 },
         {
@@ -95,11 +103,12 @@ export function BenefitsSection() {
             once: true,
           },
         }
-      );
+      ).scrollTrigger;
+      if (headerTrigger) triggers.push(headerTrigger);
 
       // Horizontal scroll animation on vertical scroll
       // Pin when bottom of section reaches bottom of viewport (so full card is visible)
-      gsap.to(carousel, {
+      const carouselTrigger = gsap.to(carousel, {
         x: -scrollDistance,
         ease: "none",
         scrollTrigger: {
@@ -121,24 +130,23 @@ export function BenefitsSection() {
             gsap.set(carousel, { x: -self.progress * newScrollDistance });
           },
         },
-      });
+      }).scrollTrigger;
+      if (carouselTrigger) triggers.push(carouselTrigger);
 
-      // Cleanup
+      // Cleanup only our triggers, not all triggers
       return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        triggers.forEach((trigger) => trigger.kill());
       };
     },
     { scope: sectionRef, dependencies: [isMobile] }
   );
 
   return (
-    <section ref={sectionRef} className="relative bg-[#F8F8FA]">
+    <section ref={sectionRef} className="relative bg-[#F8F8FA] overflow-x-hidden">
       {/* Trigger wrapper for pinning - only on desktop */}
       <div
         ref={triggerRef}
-        className={`py-12 md:py-16 lg:py-20 ${
-          isMobile ? "overflow-hidden" : ""
-        }`}
+        className="py-12 md:py-16 lg:py-20"
       >
         <div
           className={`mx-auto px-4 md:px-6 lg:px-8 ${
@@ -165,7 +173,7 @@ export function BenefitsSection() {
             ref={carouselRef}
             className={`flex gap-4 md:gap-6 ${
               isMobile
-                ? "overflow-x-auto pb-4 -mx-4 pl-4 pr-4 scrollbar-hide"
+                ? "overflow-x-auto pb-4 scrollbar-hide"
                 : "overflow-visible"
             }`}
             style={isMobile ? { scrollSnapType: "x mandatory" } : {}}
@@ -173,7 +181,7 @@ export function BenefitsSection() {
             {benefits.map((benefit) => (
               <div
                 key={benefit.id}
-                className="benefit-card flex-shrink-0 w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(80%-12px)] relative rounded-[24px] overflow-hidden"
+                className="benefit-card flex-shrink-0 w-[80vw] md:w-[calc(50%-12px)] lg:w-[calc(80%-12px)] relative rounded-[24px] overflow-hidden"
                 style={isMobile ? { scrollSnapAlign: "start" } : {}}
               >
                 {/* Image Background */}
