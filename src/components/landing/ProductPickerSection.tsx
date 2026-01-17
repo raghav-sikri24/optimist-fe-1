@@ -168,7 +168,7 @@ function ACVideo() {
     <video
       ref={videoRef}
       src="/ac_animation.mp4"
-      className="w-full h-auto object-contain cursor-pointer bg-transparent"
+      className="w-full h-auto object-contain cursor-pointer bg-transparent mix-blend-screen"
       muted
       playsInline
       onMouseEnter={handleMouseEnter}

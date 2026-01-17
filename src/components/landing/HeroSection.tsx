@@ -1,23 +1,22 @@
 "use client";
 
-import { useRef, useEffect, useState, Suspense, useCallback } from "react";
+import { useScrollVelocity } from "@/hooks/useScrollVelocity";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useGSAP } from "@gsap/react";
+import {
+  Center,
+  ContactShadows,
+  Environment,
+  PerspectiveCamera,
+  useGLTF,
+} from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import Image from "next/image";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import {
-  useGLTF,
-  Environment,
-  Center,
-  PerspectiveCamera,
-  ContactShadows,
-} from "@react-three/drei";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { HeroBlueGradient } from "@/components/landing/HeroBlueGradient";
-import { useScrollVelocity } from "@/hooks/useScrollVelocity";
 import HeroBlueGradient1 from "./HeroBlueGradient1";
-
+import { motion } from "framer-motion";
 const MODEL_PATH = "/HomePageAnimation02.glb";
 
 // Helper function to check if mobile view
@@ -178,16 +177,16 @@ function HeroACCanvas() {
 }
 
 // Static image fallback for mobile (88MB GLB is too heavy for mobile)
-function HeroACImage() {
+function HeroACImage({ isMobile }: { isMobile: boolean }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      <Image
-        src="/MainACMobile.png"
+      <motion.img
+        src="/hero_ac.png"
         alt="Optimist AC"
-        width={600}
-        height={400}
-        className="object-contain w-full h-auto max-h-full"
-        priority
+        className={`object-contain w-full h-auto max-h-full ${isMobile ? "mb-8" : ""}`}
+        initial={{ opacity: 0, scale: 1 }}
+        animate={{ opacity: 1, scale: isMobile ? 0.8 : 0.6 }}
+        transition={{ duration: 1.5, ease: "easeOut", delay: 1 }}
       />
     </div>
   );
@@ -429,18 +428,20 @@ export function HeroSection() {
           </div>
         </div>
 
+        <div className="absolute bottom-0 left-0 right-0">
+          <HeroACImage isMobile={isMobile} />
+        </div>
+
         {/* AC 3D Animation (desktop) / Static Image (mobile) */}
-        <div
+        {/* <div
           ref={imageRef}
           className="flex-1 flex items-end justify-center mt-auto pb-0 md:pb-8"
           style={{ willChange: "transform, opacity" }}
         >
           <div className="w-full h-[480px] md:h-[500px] lg:h-[650px] xl:h-[750px] max-w-6xl lg:max-w-7xl xl:max-w-[1400px] mx-auto">
-            {/* Mobile: Show static image (fast loading) */}
-            {/* Desktop: Show 3D animation */}
             {isMobile ? <HeroACImage /> : <HeroACCanvas />}
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
