@@ -1,11 +1,25 @@
 import BlueGradientBox from "@/assets/icons/blueGradientBox";
+import { motion } from "framer-motion";
 
 export default function HeroBlueGradient1({ progress }: { progress: number }) {
+  const currentScale = 1.2 - (progress * 0.45); // Shrinks from 1.1 to 0.8
+
   return (
-    <div className="absolute top-0 left-0 w-[100dvw] h-[100dvh] pt-[72px] pb-[100px] px-[24px]">
-      <div className="w-[100dvw] h-[100dvh] overflow-hidden mx-auto my-auto" style={{ borderBottomLeftRadius: '20px', borderBottomRightRadius: '20px' }}>
-        <BlueGradientBox progress={progress} />
-      </div>
-    </div>
+    // <div className="absolute mx-auto border-test w-[100dvw] h-[100dvh]">
+    <motion.div
+      initial={{ scale: 1.2 }}
+      animate={{ scale: currentScale }}
+      transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+      className="w-[1360px] h-[622px] inset-0 overflow-hidden mx-auto my-auto absolute"
+      style={{
+        borderBottomLeftRadius: '20px',
+        borderBottomRightRadius: '20px',
+        maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%)'
+      }}
+    >
+      <BlueGradientBox progress={progress} />
+    </motion.div>
+    // </div>
   );
 }

@@ -17,6 +17,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import HeroBlueGradient1 from "./HeroBlueGradient1";
 import { motion } from "framer-motion";
+import { HeroBlueGradient } from "./HeroBlueGradient";
 const MODEL_PATH = "/HomePageAnimation02.glb";
 
 // Helper function to check if mobile view

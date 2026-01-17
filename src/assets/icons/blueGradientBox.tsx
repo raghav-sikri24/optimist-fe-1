@@ -1,7 +1,7 @@
-import * as React from "react";
+import { motion } from "framer-motion";
 //@ts-ignore
 const BlueGradientBox = ({ ...props }) => (
-    <svg
+    <motion.svg
         width={'100%'}
         height={'100%'}
         viewBox="0 0 1360 622"
@@ -94,7 +94,7 @@ const BlueGradientBox = ({ ...props }) => (
             <g filter="url(#filter0_f_1084_2434)">
                 <path
                     d="M426.468 141.454L-71 -29L1454 -27.7622L938.25 143.766C772.005 199.056 592.207 198.244 426.468 141.454Z"
-                    fill="#0A0A0A"
+                    fill="#000000"
                 />
             </g>
         </g>
@@ -223,6 +223,6 @@ const BlueGradientBox = ({ ...props }) => (
                 <rect width={1360} height={622} fill="white" />
             </clipPath>
         </defs>
-    </svg>
+    </motion.svg>
 );
 export default BlueGradientBox;
