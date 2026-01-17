@@ -248,22 +248,26 @@ export function OptimistAppSection() {
       >
         {/* Background Semi-Elliptical Gradients from Bottom */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Outer Ellipse with thick border and blur */}
-          {/* <div 
-            className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[60%] w-[1600px] h-[1100px] rounded-[50%] border-[16px] border-[#94BAFF]/40"
-            style={{ 
-              backdropFilter: "blur(70px)",
-              WebkitBackdropFilter: "blur(70px)"
-            }}
-          /> */}
-          {/* Inner Ellipse with thick border and blur */}
-          {/* <div 
-            className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[55%] w-[1200px] h-[850px] rounded-[50%] border-[12px] border-[#94BAFF]/25"
-            style={{ 
-              backdropFilter: "blur(70px)",
-              WebkitBackdropFilter: "blur(70px)"
-            }}
-          /> */}
+          {/* Outer Ellipse Image - Desktop Only */}
+          <div className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[65%]">
+            <Image
+              src="/Ellipse 6512.png"
+              alt=""
+              width={1600}
+              height={1100}
+              className="w-[1600px] h-auto"
+            />
+          </div>
+          {/* Inner Ellipse Image - Desktop Only */}
+          <div className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[50%]">
+            <Image
+              src="/Ellipse 6513.png"
+              alt=""
+              width={1200}
+              height={850}
+              className="w-[1200px] h-auto"
+            />
+          </div>
           {/* Radial glow effect */}
           <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[40%] w-[1400px] rounded-[50%] bg-gradient-radial from-[#D4E8FF]/20 via-[#E8F2FF]/10 to-transparent" />
         </div>
@@ -271,7 +275,7 @@ export function OptimistAppSection() {
         <div className="relative z-10 px-4 md:px-8 lg:px-16 pt-12 md:pt-16 pb-0">
           {/* Header */}
           <div ref={headerRef} className="text-center mb-8 md:mb-12">
-            <h2 className="font-display text-[40px] md:text-[56px] lg:text-[64px] font-bold text-gray-900 mb-2 md:mb-4 tracking-tight leading-tight italic">
+            <h2 className="font-display text-[40px] md:text-[56px] lg:text-[64px] font-bold text-gray-900 mb-2 tracking-tight leading-tight">
               Optimist App
             </h2>
             <p className="text-lg md:text-xl lg:text-2xl text-gray-400 font-medium">
@@ -284,6 +288,7 @@ export function OptimistAppSection() {
             {/* Feature Cards positioned along the elliptical arcs */}
             <div ref={featuresRef} className="absolute inset-0">
               {/* Left Arc Cards - Top to Bottom */}
+    
 
               {/* Top Left - Live Energy Meter */}
               <div

@@ -82,13 +82,28 @@ export function IndiaFirstSection() {
           {/* Left Column - Dark Product Card */}
           <div
             ref={leftCardRef}
-            className="relative bg-optimist-black rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[420px] md:min-h-[520px] lg:min-h-[620px]"
+            className="relative rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[420px] md:min-h-[520px] lg:min-h-[620px]"
+            style={{
+              background: 'linear-gradient(180deg, #000000 0%, #1a1a1a 40%, #666666 70%, #cccccc 90%, #f5f5f5 100%)',
+            }}
           >
+            {/* Background Image Layer */}
+            <div 
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: 'url("/Ellipse 1.png")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                opacity: 0.3,
+              }}
+            />
+            
             {/* Content */}
             <div className="relative z-10 p-6 md:p-10 lg:p-12">
               {/* Headline */}
-              <h2 className="font-display text-[32px] leading-[36px] md:text-[48px] md:leading-[52px] lg:text-[56px] lg:leading-[60px] font-bold mb-4 md:mb-6">
-                <span className="text-optimist-blue-hero">
+              <h2 className="font-display text-[#AEFFD8] text-[32px] leading-[36px] md:text-[48px] md:leading-[52px] lg:text-[56px] lg:leading-[60px] font-bold mb-4 md:mb-6">
+                <span >
                   Built-in gas level
                   <br />
                   indicator.
@@ -116,9 +131,22 @@ export function IndiaFirstSection() {
             </div>
 
             {/* AC Image - Positioned at bottom right */}
-            <div className="absolute bottom-0 right-[-5%] md:right-[-3%] w-[90%] md:w-[80%] lg:w-[75%]">
+            {/* Mobile AC Image */}
+            <div className="absolute bottom-0 right-[-5%] w-[90%] md:hidden">
               <Image
-                src="/ACTilted.png"
+                src="/mobile.png"
+                alt="Optimist AC Unit"
+                width={600}
+                height={300}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
+            
+            {/* Desktop AC Image */}
+            <div className="hidden md:block absolute bottom-0 right-[-3%] w-[80%] lg:w-[75%]">
+              <Image
+                src="/desktop.png"
                 alt="Optimist AC Unit"
                 width={800}
                 height={400}

@@ -87,7 +87,7 @@ export function CTASection() {
           <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-6 md:px-10 md:pb-8">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="font-display text-[32px] md:text-[48px] lg:text-[56px] font-bold italic text-white leading-tight">
+                <h2 className="font-display text-[32px] md:text-[48px] lg:text-[56px] font-bold italic text-[#AEFFD8] leading-tight">
                   45°C+ performance.
                 </h2>
                 <p className="text-white/80 text-base md:text-lg mt-1">

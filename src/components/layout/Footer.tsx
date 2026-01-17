@@ -161,19 +161,12 @@ export function Footer() {
               src="/Family.png"
               alt="Happy family enjoying comfort"
               fill
-              className="object-cover z-0"
+              className="object-cover z-0 brightness-[0.6]"
               sizes="(max-width: 1400px) 100vw, 1400px"
             />
 
             {/* Blue Gradient Overlay - higher z-index than family image */}
-            <div className="absolute inset-0 z-10">
-              <Image
-                src="/BlueCoolBackground.png"
-                alt=""
-                fill
-                className="object-cover opacity-60"
-              />
-            </div>
+          
 
             {/* Logo Overlay */}
             <div className="absolute inset-0 z-20 flex items-end justify-center pb-6 md:pb-10 px-4 md:px-8">
