@@ -167,7 +167,7 @@ function ACVideo() {
   return (
     <video
       ref={videoRef}
-      src="/ac_animation.mp4"
+      src="/ProductCard01.webm"
       className="w-full h-auto object-contain cursor-pointer bg-transparent"
       muted
       playsInline
