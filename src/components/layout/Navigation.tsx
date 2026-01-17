@@ -79,7 +79,7 @@ export function Navigation() {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-[#FFFCDC]/20"
+        className="fixed top-0 left-0 right-0 z-50 bg-white/[0.03] backdrop-blur-2xl backdrop-saturate-150 border-b border-white/[0.08] shadow-[0_1px_1px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.08)]"
       >
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-12">
           <div className="flex items-center justify-between h-14 md:h-16">
@@ -162,7 +162,7 @@ export function Navigation() {
                         className="fixed inset-0 z-40"
                         onClick={() => setIsUserMenuOpen(false)}
                       />
-                      <div className="absolute right-0 top-full mt-2 w-56 bg-black/40 backdrop-blur-xl border border-[#FFFCDC]/20 rounded-xl shadow-xl z-50 overflow-hidden">
+                      <div className="absolute right-0 top-full mt-2 w-56 bg-white/[0.05] backdrop-blur-2xl backdrop-saturate-150 border border-white/[0.1] rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] z-50 overflow-hidden">
                         <div className="px-4 py-3 border-b border-[#FFFCDC]/20">
                           <p className="text-sm font-medium text-[#FFFCDC] truncate">
                             {customer?.firstName} {customer?.lastName}
@@ -257,7 +257,7 @@ export function Navigation() {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-black/20 backdrop-blur-xl border-t border-[#FFFCDC]/20">
+          <div className="md:hidden bg-white/[0.02] backdrop-blur-2xl backdrop-saturate-150 border-t border-white/[0.06]">
             <div className="px-4 py-4 space-y-1">
               {navLinks.map((link, index) => {
                 const isActive = pathname === link.href;
