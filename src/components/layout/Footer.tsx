@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import { useWaitlist } from "@/contexts/WaitlistContext";
 
 // LinkedIn icon component
 function LinkedInIcon() {
@@ -51,10 +52,18 @@ const socialLinks = [
   { href: "#", icon: XIcon, label: "X" },
 ];
 
+// Email validation helper
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const { submitEmail, isLoading, openModal, showSuccess } = useWaitlist();
 
   useGSAP(
     () => {
@@ -78,11 +87,29 @@ export function Footer() {
     { scope: footerRef }
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle email subscription
-    console.log("Subscribe:", email);
-    setEmail("");
+    setError(null);
+
+    // Validate email
+    if (!email.trim()) {
+      setError("Please enter your email");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    // Call the API
+    const success = await submitEmail(email);
+    if (success) {
+      setEmail("");
+      // Open modal and show success view
+      openModal();
+      showSuccess();
+    }
   };
 
   return (
@@ -151,21 +178,40 @@ export function Footer() {
             </p>
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col md:flex-row gap-3"
+              className="flex flex-col gap-2"
             >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="enter your email"
-                className="w-full md:flex-1 px-4 py-3 bg-optimist-dark border border-optimist-border rounded-full text-[#FFFCDC] placeholder:text-[#FFFCDC]-muted focus:outline-none focus:border-optimist-blue-primary transition-colors"
-              />
-              <button
-                type="submit"
-                className="btn-buy-now w-full md:w-auto md:px-6 py-3 rounded-full text-[#FFFCDC] font-semibold text-sm whitespace-nowrap"
-              >
-                Notify Me
-              </button>
+              <div className="flex flex-col md:flex-row gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError(null);
+                  }}
+                  placeholder="enter your email"
+                  disabled={isLoading}
+                  className={`w-full md:flex-1 px-4 py-3 bg-optimist-dark border rounded-full text-[#FFFCDC] placeholder:text-[#FFFCDC]/50 focus:outline-none focus:border-optimist-blue-primary transition-colors ${
+                    error ? "border-red-500" : "border-optimist-border"
+                  } ${isLoading ? "opacity-60 cursor-not-allowed" : ""}`}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="btn-buy-now w-full md:w-auto md:px-6 py-3 rounded-full text-[#FFFCDC] font-semibold text-sm whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Submitting...
+                    </span>
+                  ) : (
+                    "Notify Me"
+                  )}
+                </button>
+              </div>
+              {error && (
+                <p className="text-red-400 text-sm pl-4">{error}</p>
+              )}
             </form>
           </div>
         </div>

@@ -4,7 +4,9 @@ import { type ReactNode } from "react";
 import { ShopifyProvider } from "@shopify/hydrogen-react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { WaitlistProvider } from "@/contexts/WaitlistContext";
 import { ToastProvider } from "@/components/ui/Toast";
+import { WaitlistModal } from "@/components/ui/WaitlistModal";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -21,7 +23,12 @@ export function Providers({ children }: ProvidersProps) {
     >
       <ToastProvider>
         <AuthProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <WaitlistProvider>
+              {children}
+              <WaitlistModal />
+            </WaitlistProvider>
+          </CartProvider>
         </AuthProvider>
       </ToastProvider>
     </ShopifyProvider>

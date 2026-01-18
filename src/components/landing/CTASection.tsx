@@ -1,15 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import { useWaitlist } from "@/contexts/WaitlistContext";
 
 export function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
   const topCardRef = useRef<HTMLDivElement>(null);
   const bottomGridRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useWaitlist();
 
   useGSAP(
     () => {
@@ -104,13 +104,13 @@ export function CTASection() {
                   Tested for consistent cooling.
                 </p>
               </div>
-              <Link
-                href="/products"
+              <button
+                onClick={openModal}
                 className="hidden md:inline-flex items-center justify-center px-8 py-3 rounded-full text-white font-semibold text-base"
                 style={{ background: "#3478F6" }}
               >
-                Buy Now
-              </Link>
+                Notify Me
+              </button>
             </div>
           </div>
         </div>

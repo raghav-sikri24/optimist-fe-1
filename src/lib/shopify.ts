@@ -1103,6 +1103,83 @@ export async function customerDefaultAddressUpdate(
 }
 
 // =============================================================================
+// Waitlist / Newsletter Subscription
+// =============================================================================
+
+/**
+ * Generate a secure random password for waitlist subscribers.
+ * The password meets Shopify's requirements and includes:
+ * - Uppercase letters
+ * - Lowercase letters
+ * - Numbers
+ * - Special characters
+ */
+function generateRandomPassword(): string {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+  
+  // Generate 16 random characters
+  for (let i = 0; i < 16; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  
+  // Add required character types to ensure complexity
+  return password + "Aa1!";
+}
+
+export async function subscribeToWaitlist(email: string): Promise<boolean> {
+  // Generate a random password - user won't need it for waitlist
+  // They can use "Forgot Password" if they ever want to create a real account
+  const randomPassword = generateRandomPassword();
+
+  const query = `
+    mutation CustomerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customer {
+          id
+          email
+        }
+        customerUserErrors {
+          field
+          message
+          code
+        }
+      }
+    }
+  `;
+
+  const data = await shopifyFetch<{
+    customerCreate: {
+      customer: { id: string; email: string } | null;
+      customerUserErrors: { field: string[]; message: string; code: string }[];
+    };
+  }>({
+    query,
+    variables: {
+      input: {
+        email,
+        password: randomPassword,
+        acceptsMarketing: true,
+      },
+    },
+  });
+
+  const errors = data.customerCreate.customerUserErrors;
+  
+  // If email already exists (TAKEN error), treat as success
+  if (errors.length > 0) {
+    const error = errors[0];
+    if (error.code === "TAKEN") {
+      // Email already subscribed - this is fine
+      return true;
+    }
+    throw new Error(error.message);
+  }
+
+  return true;
+}
+
+// =============================================================================
 // Utility Functions
 // =============================================================================
 

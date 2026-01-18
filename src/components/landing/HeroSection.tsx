@@ -18,6 +18,7 @@ import * as THREE from "three";
 import HeroBlueGradient1 from "./HeroBlueGradient1";
 import { motion } from "framer-motion";
 import { HeroBlueGradient } from "./HeroBlueGradient";
+import { useWaitlist } from "@/contexts/WaitlistContext";
 const MODEL_PATH = "/HomePageAnimation02.glb";
 
 // Helper function to check if mobile view
@@ -202,6 +203,7 @@ export function HeroSection() {
   const mobileButtonsRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useWaitlist();
 
   // Use ref instead of state to avoid re-renders on every scroll
   const scrollProgressRef = useRef(0);
@@ -400,12 +402,12 @@ export function HeroSection() {
               >
                 Why Optimist ?
               </Link>
-              <Link
-                href="/products"
+              <button
+                onClick={openModal}
                 className="btn-buy-now hero-btn-mobile flex-1 text-optimist-cream flex items-center justify-center"
               >
-                Buy Now
-              </Link>
+                Notify Me
+              </button>
             </div>
           </div>
 
@@ -420,12 +422,12 @@ export function HeroSection() {
             >
               Why Optimist ?
             </Link>
-            <Link
-              href="/products"
+            <button
+              onClick={openModal}
               className="btn-buy-now hero-btn-desktop text-optimist-cream flex items-center justify-center"
             >
-              Buy Now
-            </Link>
+              Notify Me
+            </button>
           </div>
         </div>
 

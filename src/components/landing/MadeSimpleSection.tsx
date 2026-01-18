@@ -2,14 +2,15 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import { useWaitlist } from "@/contexts/WaitlistContext";
 
 export function MadeSimpleSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const leftCardRef = useRef<HTMLDivElement>(null);
   const rightCardRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useWaitlist();
 
   useGSAP(
     () => {
@@ -110,13 +111,13 @@ export function MadeSimpleSection() {
                 nothing less.
               </h2>
 
-              {/* Buy Now Button */}
-              <Link
-                href="/products"
+              {/* Notify Me Button */}
+              <button
+                onClick={openModal}
                 className="btn-buy-now inline-flex items-center justify-center w-fit px-8 md:px-10 py-3 md:py-3.5 rounded-full text-white font-semibold text-sm md:text-base"
               >
-                Buy Now
-              </Link>
+                Notify Me
+              </button>
             </div>
           </div>
 

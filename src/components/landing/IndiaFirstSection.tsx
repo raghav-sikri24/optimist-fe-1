@@ -5,12 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import { useWaitlist } from "@/contexts/WaitlistContext";
 
 export function IndiaFirstSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const leftCardRef = useRef<HTMLDivElement>(null);
   const flowerRef = useRef<HTMLDivElement>(null);
   const badgesRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useWaitlist();
 
   useGSAP(
     () => {
@@ -115,12 +117,12 @@ export function IndiaFirstSection() {
 
               {/* Buttons */}
               <div className="flex items-center gap-3 md:gap-4">
-                <Link
-                  href="/products"
+                <button
+                  onClick={openModal}
                   className="btn-buy-now w-[160px] hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
                 >
-                  Buy Now
-                </Link>
+                  Notify Me
+                </button>
                 <Link
                   href="#why-optimist"
                   className="btn-why-optimist w-[160px] hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"

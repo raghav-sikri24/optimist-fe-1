@@ -2,13 +2,13 @@
 
 import { useRef, useState, Suspense, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { Share2 } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import { useWaitlist } from "@/contexts/WaitlistContext";
 
 function ACModel() {
   const { scene, animations } = useGLTF("/Product Card Animation 01.glb");
@@ -183,6 +183,7 @@ export function ProductPickerSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useWaitlist();
 
   useGSAP(
     () => {
@@ -365,12 +366,12 @@ export function ProductPickerSection() {
                       {activeProduct.savings}
                     </span>
                   </div>
-                  <Link
-                    href={`/products/${activeProduct.id}`}
+                  <button
+                    onClick={openModal}
                     className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-white font-semibold text-sm md:text-base"
                   >
-                  Notify Me  
-                  </Link>
+                    Notify Me
+                  </button>
                 </div>
               </div>
 
