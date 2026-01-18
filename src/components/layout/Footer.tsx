@@ -232,7 +232,7 @@ export function Footer() {
           
 
             {/* Logo Overlay */}
-            <div className="absolute inset-0 z-20 flex items-end justify-center pb-6 md:pb-10 px-4 md:px-8">
+            <div className="absolute inset-0 z-20 flex items-end justify-center pb-10 md:pb-10 px-4 md:px-8">
               <Image
                 src="/Frame 48095518.png"
                 alt="Optimist"
