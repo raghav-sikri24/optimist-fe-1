@@ -100,12 +100,12 @@ export function FeaturesShowcaseSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#FFFFFF]"
+      className="relative bg-[#FFFFFF] overflow-hidden"
     >
       <div className="flex flex-col lg:flex-row">
         {/* Left Scrollable Content */}
-        <div className="w-full lg:w-1/2 relative z-10">
-         <div className="sticky  top-0 left-0 w-[800px] opacity-10 pointer-events-none">
+        <div className="w-full lg:w-1/2 relative z-10 overflow-hidden">
+         <div className="sticky top-0 left-0 w-full max-w-[800px] opacity-10 pointer-events-none hidden lg:block">
             <Image
               src="/Leaf Swaying.gif"
               alt=""

@@ -1,9 +1,138 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+
+// ============================================
+// PARALLAX CONFIGURATION
+// ============================================
+const PARALLAX_CONFIG = {
+  // Maximum rotation in radians (subtle tilt feel)
+  maxRotationX: 0.12, // ~7 degrees
+  maxRotationY: 0.15, // ~8.5 degrees
+  // Lerp factor for smooth inertia (0.03-0.08 for "Surge" feel)
+  lerpFactor: 0.06,
+  // Responsiveness multiplier for smaller screens
+  mobileMultiplier: 0.7,
+  // Whether effect is active (disable on touch devices)
+  enableOnTouch: false,
+};
+
+// Utility: Linear interpolation
+function lerp(start: number, end: number, factor: number): number {
+  return start + (end - start) * factor;
+}
+
+// ============================================
+// CUSTOM HOOK: useMouseParallax
+// Tracks normalized mouse coords and applies smooth rotation
+// ============================================
+function useMouseParallax(
+  containerRef: React.RefObject<HTMLElement | null>,
+  targetRef: React.RefObject<HTMLElement | null>,
+  config = PARALLAX_CONFIG
+) {
+  // Target rotation (where we want to be)
+  const targetRotation = useRef({ x: 0, y: 0 });
+  // Current rotation (smoothly interpolated)
+  const currentRotation = useRef({ x: 0, y: 0 });
+  // Animation frame ID for cleanup
+  const rafId = useRef<number | null>(null);
+  // Track if mouse is over container
+  const isHovering = useRef(false);
+
+  // Responsive scaling based on viewport
+  const getResponsiveMultiplier = useCallback(() => {
+    if (typeof window === "undefined") return 1;
+    return window.innerWidth < 1024 ? config.mobileMultiplier : 1;
+  }, [config.mobileMultiplier]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const target = targetRef.current;
+    if (!container || !target) return;
+
+    // Check for touch device
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice && !config.enableOnTouch) return;
+
+    // Mouse move handler - calculate normalized coords (-1 to +1)
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isHovering.current) return;
+
+      const rect = container.getBoundingClientRect();
+      // Normalize mouse position to -1 to +1 range
+      const normalizedX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const normalizedY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+
+      const multiplier = getResponsiveMultiplier();
+
+      // Set target rotation (inverted for natural feel)
+      // Mouse moves right → rotate left (negative Y rotation)
+      // Mouse moves down → rotate up (negative X rotation)
+      targetRotation.current = {
+        x: -normalizedY * config.maxRotationX * multiplier,
+        y: normalizedX * config.maxRotationY * multiplier,
+      };
+    };
+
+    const handleMouseEnter = () => {
+      isHovering.current = true;
+    };
+
+    const handleMouseLeave = () => {
+      isHovering.current = false;
+      // Reset target to neutral position
+      targetRotation.current = { x: 0, y: 0 };
+    };
+
+    // Animation loop - this is the "useFrame" equivalent
+    const animate = () => {
+      // Smooth lerp towards target rotation
+      currentRotation.current.x = lerp(
+        currentRotation.current.x,
+        targetRotation.current.x,
+        config.lerpFactor
+      );
+      currentRotation.current.y = lerp(
+        currentRotation.current.y,
+        targetRotation.current.y,
+        config.lerpFactor
+      );
+
+      // Apply transform to target element
+      // Note: perspective is set on parent element for full-component effect
+      target.style.transform = `
+        rotateX(${currentRotation.current.x}rad)
+        rotateY(${currentRotation.current.y}rad)
+        translateZ(0)
+      `;
+
+      rafId.current = requestAnimationFrame(animate);
+    };
+
+    // Start animation loop
+    rafId.current = requestAnimationFrame(animate);
+
+    // Attach event listeners
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseenter", handleMouseEnter);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    // Cleanup
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+      // Reset transform on cleanup
+      target.style.transform = "";
+    };
+  }, [containerRef, targetRef, config, getResponsiveMultiplier]);
+}
 
 // Gauge icon component
 function GaugeIcon() {
@@ -130,51 +259,61 @@ function MobileFeatureCard({
   description: string;
 }) {
   return (
-    <div className="flex-shrink-0 w-[200px] bg-white rounded-[20px] p-3 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100">
-      <div className="w-full aspect-square bg-[#111111] rounded-[16px] flex items-center justify-center mb-3">
-        <div className="relative w-full h-full flex flex-col items-center justify-center p-3">
+    <div 
+      className="feature-card flex-shrink-0 w-[180px] rounded-[16px] p-2.5 border border-gray-200"
+      style={{
+        background: "linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",
+        boxShadow: "0px 4px 20px 0px rgba(0, 0, 0, 0.08)"
+      }}
+    >
+      {/* Dark Icon Container */}
+      <div className="w-full h-[120px] bg-[#111111] rounded-[12px] flex items-center justify-center mb-3">
+        <div className="relative flex flex-col items-center justify-center">
           {/* Gauge Arc */}
-          <div className="relative w-16 h-10 mb-1 flex items-center justify-center">
+          <div className="relative w-20 h-12 mb-1 flex items-center justify-center">
             <svg
-              width="64"
-              height="32"
-              viewBox="0 0 64 32"
+              width="80"
+              height="40"
+              viewBox="0 0 80 40"
               fill="none"
               className="absolute top-0"
             >
+              {/* Background arc */}
               <path
-                d="M 4 28 A 28 28 0 0 1 60 28"
+                d="M 8 36 A 32 32 0 0 1 72 36"
                 stroke="#222222"
                 strokeWidth="6"
                 strokeLinecap="round"
               />
+              {/* Blue progress arc */}
               <path
-                d="M 4 28 A 28 28 0 0 1 42 5"
+                d="M 8 36 A 32 32 0 0 1 52 8"
                 stroke="#3B82F6"
                 strokeWidth="6"
                 strokeLinecap="round"
               />
             </svg>
-            <span className="text-white text-[14px] font-bold mt-3">24°C</span>
+            <span className="text-white text-[16px] font-bold mt-4">24°C</span>
           </div>
-          {/* Three Icons below */}
-          <div className="flex gap-2 mt-2">
+          {/* Three Blue Dots */}
+          <div className="flex gap-2.5 mt-2">
             <div className="w-4 h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-80" />
+              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-90" />
             </div>
             <div className="w-4 h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-80" />
+              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-90" />
             </div>
             <div className="w-4 h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-80" />
+              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-90" />
             </div>
           </div>
         </div>
       </div>
-      <h4 className="text-[15px] font-bold text-gray-900 leading-tight mb-1">
+      {/* Text Content */}
+      <h4 className="text-[15px] font-bold text-gray-900 leading-tight mb-0.5">
         {title}
       </h4>
-      <p className="text-[13px] text-gray-400 leading-snug">{description}</p>
+      <p className="text-[13px] text-gray-500 leading-snug">{description}</p>
     </div>
   );
 }
@@ -182,10 +321,20 @@ function MobileFeatureCard({
 export function OptimistAppSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const parallaxContentRef = useRef<HTMLDivElement>(null); // Inner content that receives parallax
   const headerRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+
+  // ============================================
+  // PARALLAX EFFECT SETUP
+  // Apply smooth 3D tilt to the FULL component content
+  // sectionRef = area that tracks mouse movement
+  // parallaxContentRef = entire inner content that receives the tilt
+  // The lerping happens in the animation loop (equivalent to R3F useFrame)
+  // ============================================
+  useMouseParallax(sectionRef, parallaxContentRef);
 
   useGSAP(
     () => {
@@ -238,15 +387,25 @@ export function OptimistAppSection() {
       ref={sectionRef}
       className="bg-white py-4 md:py-6 px-4 md:px-6 overflow-x-hidden"
     >
-      {/* Rounded Container with Border */}
+      {/* Rounded Container with Border - STATIC frame */}
       <div
         ref={containerRef}
-        className={`relative max-w-[1440px] mx-auto bg-gradient-to-b from-white via-[#f5f9ff] to-[#e8f1ff] rounded-[32px] md:rounded-[48px] overflow-hidden border border-gray-200/50 transition-transform duration-500 ease-out ${
-          isHovered ? "scale-[1.003] shadow-2xl" : "shadow-xl"
+        className={`relative max-w-[1440px] mx-auto bg-gradient-to-b from-white via-[#f5f9ff] to-[#e8f1ff] rounded-[32px] md:rounded-[48px] overflow-hidden border border-gray-200/50 transition-shadow duration-500 ease-out ${
+          isHovered ? "shadow-2xl" : "shadow-xl"
         }`}
+        style={{ perspective: "1500px" }} // 3D perspective for inner content
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Inner content wrapper - receives parallax tilt */}
+        <div
+          ref={parallaxContentRef}
+          style={{
+            transformStyle: "preserve-3d",
+            willChange: "transform",
+            transformOrigin: "center center",
+          }}
+        >
         {/* Background Semi-Elliptical Gradients from Bottom */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {/* Outer Ellipse Image - Desktop Only */}
@@ -286,6 +445,34 @@ export function OptimistAppSection() {
 
           {/* Desktop Layout */}
           <div className="hidden lg:block relative h-[600px]">
+            {/* Blue Gradient Arcs - Desktop Only */}
+            {/* Outer Arc - at bottom curving upward */}
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 pointer-events-none z-10"
+              style={{ bottom: "-450px" }}
+            >
+              <Image
+                src="/Ellipse 6512.png"
+                alt=""
+                width={1400}
+                height={900}
+                className="w-[1400px] h-auto"
+              />
+            </div>
+            {/* Inner Arc - at bottom curving upward */}
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 pointer-events-none z-10"
+              style={{ bottom: "-350px" }}
+            >
+              <Image
+                src="/Ellipse 6513.png"
+                alt=""
+                width={1100}
+                height={700}
+                className="w-[1100px] h-auto"
+              />
+            </div>
+
             {/* Feature Cards positioned along the elliptical arcs */}
             <div ref={featuresRef} className="absolute inset-0">
               {/* Left Arc Cards - Top to Bottom */}
@@ -402,15 +589,15 @@ export function OptimistAppSection() {
           </div>
 
           {/* Mobile Layout */}
-          <div className="lg:hidden">
+          <div className="lg:hidden mt-[-50px]">
             {/* Phone */}
             <div ref={phoneRef} className="flex justify-center">
-              <div className="relative w-[300px]">
+              <div className="relative w-3/4">
                 <Image
                   src="/Hand.png"
                   alt="Optimist App"
-                  width={380}
-                  height={620}
+                  width={500}
+                  height={820}
                   className="w-full h-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
                   priority
                 />
@@ -434,6 +621,7 @@ export function OptimistAppSection() {
             </div>
           </div>
         </div>
+        </div>{/* Close parallax wrapper */}
       </div>
     </section>
   );

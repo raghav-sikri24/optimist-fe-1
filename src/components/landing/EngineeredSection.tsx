@@ -190,7 +190,14 @@ function AnimatedImage({
     features.find((f) => f.id === activeFeatureId) || features[0];
   const imageSrc = isMobile ? currentFeature.mobileImage : currentFeature.image;
 
+  // Desktop only: slide animation effect
   useEffect(() => {
+    // Skip animation on mobile - just show single image
+    if (isMobile) {
+      prevFeatureIdRef.current = activeFeatureId;
+      return;
+    }
+
     // Skip if same feature or already animating
     if (
       prevFeatureIdRef.current === activeFeatureId ||
@@ -264,16 +271,32 @@ function AnimatedImage({
     return () => {
       tl.kill();
     };
-  }, [activeFeatureId]);
+  }, [activeFeatureId, isMobile]);
 
+  // Mobile: Simple single image with fade transition
+  if (isMobile) {
+    return (
+      <div
+        ref={containerRef}
+        className="relative w-full aspect-[4/3] rounded-[32px] border-[12px] border-black/5 shadow-2xl overflow-hidden"
+      >
+        <Image
+          src={imageSrc}
+          alt="Optimist AC with intelligent engineering"
+          fill
+          className="object-cover rounded-[24px] transition-opacity duration-300"
+          sizes="100vw"
+          priority
+        />
+      </div>
+    );
+  }
+
+  // Desktop: Slide animation with two image layers
   return (
     <div
       ref={containerRef}
-      className={`relative w-full border-[12px] border-black/5 shadow-2xl ${
-        isMobile
-          ? "aspect-[4/3] rounded-[32px]"
-          : "h-full min-h-[500px] rounded-[48px]"
-      } overflow-hidden`}
+      className="relative w-full h-full min-h-[500px] rounded-[48px] border-[12px] border-black/5 shadow-2xl overflow-hidden"
     >
       {/* Current Image (will slide out) */}
       <div
@@ -285,7 +308,7 @@ function AnimatedImage({
           alt="Optimist AC with intelligent engineering"
           fill
           className="object-cover rounded-[24px]"
-          sizes={isMobile ? "100vw" : "(max-width: 1024px) 100vw, 60vw"}
+          sizes="(max-width: 1024px) 100vw, 60vw"
           priority
         />
       </div>
@@ -301,7 +324,7 @@ function AnimatedImage({
           alt="Optimist AC with intelligent engineering"
           fill
           className="object-cover rounded-[24px]"
-          sizes={isMobile ? "100vw" : "(max-width: 1024px) 100vw, 60vw"}
+          sizes="(max-width: 1024px) 100vw, 60vw"
         />
       </div>
     </div>
@@ -314,10 +337,48 @@ export function EngineeredSection() {
   const headerRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  const mobileCarouselRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Toggle accordion - click same item to close, click different to switch
   const handleFeatureClick = useCallback((id: number) => {
     setActiveFeature((prev) => (prev === id ? null : id));
+  }, []);
+
+  // Mobile: Auto-select card on scroll using Intersection Observer
+  useEffect(() => {
+    const carousel = mobileCarouselRef.current;
+    if (!carousel) return;
+
+    // Only run on mobile (lg breakpoint is 1024px)
+    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    if (!mediaQuery.matches) return;
+
+    const observerOptions = {
+      root: carousel,
+      rootMargin: "0px -50% 0px 0px", // Detect when card enters left half of viewport
+      threshold: 0.6,
+    };
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cardId = parseInt(entry.target.getAttribute("data-feature-id") || "1");
+          setActiveFeature(cardId);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observe all card elements
+    cardRefs.current.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   useGSAP(
@@ -398,7 +459,7 @@ export function EngineeredSection() {
           ref={headerRef}
           className="flex flex-col lg:flex-row items-start justify-between mb-2 lg:mb-4 gap-8"
         >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1]">
+          <h2 className="font-display text-[32px] md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1]">
             <span className="font-[600] text-[#074FD5]">
               The intelligence you don&apos;t see.
             </span>
@@ -410,7 +471,7 @@ export function EngineeredSection() {
 
           <Link
             href="#"
-            className="flex items-center gap-2 px-6 py-3 border border-[#00000033] rounded-full text-[#1A1A1A] font-semibold text-sm hover:bg-white transition-all shadow-sm hover:shadow-md whitespace-nowrap lg:mt-2"
+            className="hidden lg:flex items-center gap-2 px-6 py-3 border border-[#00000033] rounded-full text-[#1A1A1A] font-semibold text-sm hover:bg-white transition-all shadow-sm hover:shadow-md whitespace-nowrap lg:mt-2"
           >
             Learn how our core works
             <ArrowUpRight className="w-4 h-4" />
@@ -441,65 +502,64 @@ export function EngineeredSection() {
         {/* Mobile Layout - Stacked with horizontal carousel */}
         <div className="lg:hidden">
           {/* AC Image with slide animation */}
-          <div className="relative mb-10">
+          <div className="relative mb-10 transition-all duration-500 ease-out">
             <AnimatedImage activeFeatureId={activeFeature} isMobile={true} />
           </div>
 
-          {/* Features Carousel (Original Design) */}
+          {/* Features Carousel */}
           <div
-            ref={featuresRef}
-            className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide"
+            ref={mobileCarouselRef}
+            className="flex gap-3 overflow-x-auto pb-8 scrollbar-hide scroll-smooth"
             style={{ scrollSnapType: "x mandatory" }}
           >
-            {features.map((feature) => (
+            {features.map((feature, index) => (
               <div
                 key={feature.id}
+                ref={(el) => { cardRefs.current[index] = el; }}
+                data-feature-id={feature.id}
                 onClick={() => handleFeatureClick(feature.id)}
-                className={`flex-shrink-0 w-[300px] rounded-[24px] p-6 transition-all duration-300 cursor-pointer ${
+                className={`feature-card flex-shrink-0 w-[280px] rounded-[20px] p-4 cursor-pointer transition-all duration-500 ease-out ${
                   activeFeature === feature.id
-                    ? "bg-white"
-                    : "bg-[#F3F4F6]/50 border-transparent"
+                    ? "bg-white/80 scale-[1.02]"
+                    : "bg-[#F3F4F6]/50 scale-100 opacity-70"
                 }`}
                 style={{ 
                   scrollSnapAlign: "start",
                   boxShadow: activeFeature === feature.id 
-                    ? "0px -3px 5px 0px #00000033 inset" 
-                    : undefined
+                    ? "0px 3px 20px 0px #0000001A, 0px -3px 5px 0px #00000033 inset" 
+                    : "0px 3px 20px 0px #0000001A"
                 }}
               >
-                <div className="flex flex-col gap-4">
+                {/* Horizontal layout: Icon + Text */}
+                <div className="flex items-start gap-3">
                   {/* Icon */}
-                
-                    <div className="w-10 h-10 relative">
-                      <Image
-                        src={
-                          activeFeature === feature.id
-                            ? "/LightningBlue.png"
-                            : "/LightningWhite.png"
-                        }
-                        alt="Lightning icon"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-               
-
-                  {/* Text */}
-                  <div>
-                    <h3
-                      className={`text-lg font-semibold ${
+                  <div className={`w-10 h-10 flex-shrink-0 relative transition-transform duration-500 ${
+                    activeFeature === feature.id ? "scale-110" : "scale-100"
+                  }`}>
+                    <Image
+                      src={
                         activeFeature === feature.id
-                          ? "text-[#1A1A1A]"
-                          : "text-[#4B5563]"
-                      }`}
-                    >
+                          ? "/LightningBlue.png"
+                          : "/LightningWhite.png"
+                      }
+                      alt="Lightning icon"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+
+                  {/* Text - Title and Description stacked */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className={`text-base font-semibold leading-tight transition-colors duration-500 ${
+                      activeFeature === feature.id ? "text-[#1A1A1A]" : "text-[#6B7280]"
+                    }`}>
                       {feature.title}
                     </h3>
-                    {activeFeature === feature.id && (
-                      <p className="text-base text-[#6B7280] mt-2 font-medium">
-                        {feature.description}
-                      </p>
-                    )}
+                    <p className={`text-sm mt-1 font-medium leading-snug transition-all duration-500 ${
+                      activeFeature === feature.id ? "text-[#6B7280] opacity-100" : "text-[#9CA3AF] opacity-80"
+                    }`}>
+                      {feature.description}
+                    </p>
                   </div>
                 </div>
               </div>
