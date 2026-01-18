@@ -185,7 +185,7 @@ function HeroACImage({ isMobile }: { isMobile: boolean }) {
       <motion.img
         src="/hero_ac.png"
         alt="Optimist AC"
-        className={`object-contain w-full h-auto max-h-full ${isMobile ? "mb-8" : ""}`}
+        className="object-contain w-full h-auto max-h-full"
         initial={{ opacity: 0, scale: 1 }}
         animate={{ opacity: 1, scale: isMobile ? 0.8 : 0.6 }}
         transition={{ duration: 1.5, ease: "easeOut", delay: 1 }}
@@ -311,7 +311,7 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className={`hero-section relative flex flex-col overflow-x-hidden ${isMobile ? "min-h-screen" : "h-screen overflow-hidden"
+      className={`hero-section relative flex flex-col overflow-x-hidden ${isMobile ? "h-[680px]" : "h-screen overflow-hidden"
         }`}
       style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
     >
@@ -327,7 +327,7 @@ export function HeroSection() {
       {/* Content Container */}
       <div
         ref={contentRef}
-        className="relative z-10 flex-1 flex flex-col px-4 md:px-8 lg:px-16 xl:px-24 pt-24 md:pt-28 lg:pt-32"
+        className="relative z-10 flex-1 flex flex-col px-4 md:px-8 lg:px-16 xl:px-24 pt-32 md:pt-28 lg:pt-32"
         style={{ willChange: "transform, opacity" }}
       >
         {/* Desktop Layout: flex row with content left and buttons right */}
@@ -431,6 +431,7 @@ export function HeroSection() {
           </div>
         </div>
 
+        {/* AC Image - positioned to overlap with gradient bottom on mobile */}
         <div className="absolute bottom-0 left-0 right-0">
           <HeroACImage isMobile={isMobile} />
         </div>
