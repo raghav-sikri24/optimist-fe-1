@@ -122,12 +122,12 @@ export function TestimonialsSection() {
               {/* Mobile Layout - Stacked */}
               <div className="md:hidden">
                 {/* Video Thumbnail */}
-                <div className="relative aspect-[4/5]">
+                <div className="relative aspect-[4/5] rounded-[36px]">
                   <Image
                     src={testimonial.image}
                     alt={testimonial.name}
                     fill
-                    className="object-cover"
+                    className="object-cover rounded-[36px]"
                     sizes="85vw"
                   />
                   {/* Gradient Overlay */}
@@ -152,7 +152,7 @@ export function TestimonialsSection() {
 
                 {/* Quote Content */}
                 <div className="p-5">
-                  <p className="text-gray-700 text-base leading-relaxed mb-4">
+                  <p className="text-gray-600 text-base leading-relaxed mb-4">
                     {testimonial.quote}
                   </p>
 
@@ -181,11 +181,11 @@ export function TestimonialsSection() {
                       src={testimonial.image}
                       alt={testimonial.name}
                       fill
-                      className="object-cover"
+                      className="object-cover rounded-[36px]"
                       sizes="320px"
                     />
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 rounded-[36px] bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                     {/* Name & Date */}
                     <div className="absolute bottom-5 left-5">

@@ -61,7 +61,7 @@ export function CTASection() {
         {/* Top Card - 45°C+ Performance */}
         <div
           ref={topCardRef}
-          className="relative rounded-[24px] md:rounded-[32px] overflow-hidden h-[200px] md:h-[280px]"
+          className="relative rounded-[24px] md:rounded-[32px] overflow-hidden h-[200px] md:h-[380px]"
         >
           {/* Video Background */}
           <video
@@ -73,6 +73,16 @@ export function CTASection() {
           >
             <source src="/TreeCool.mp4" type="video/mp4" />
           </video>
+
+          {/* Blue Overlay with Blur */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "#3478F6",
+              filter: "blur(100px)",
+              opacity: 0.5,
+            }}
+          />
 
           {/* Gradient Overlay - from transparent to black at bottom */}
           <div
@@ -87,7 +97,7 @@ export function CTASection() {
           <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-6 md:px-10 md:pb-8">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="font-display text-[32px] md:text-[48px] lg:text-[56px] font-bold italic text-[#AEFFD8] leading-tight">
+                <h2 className="font-display text-[32px] md:text-[48px] lg:text-[56px] font-bold text-[#AEFFD8] leading-tight">
                   45°C+ performance.
                 </h2>
                 <p className="text-white/80 text-base md:text-lg mt-1">

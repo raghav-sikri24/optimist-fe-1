@@ -255,6 +255,8 @@ export function ProductPickerSection() {
         <div
           ref={cardRef}
           className="bg-[#F8F8FA] rounded-[24px] md:rounded-[32px] overflow-hidden"
+          style={{boxShadow:"0px 9px 30px 0px #00000017"
+          }}
         >
           {/* Tab Navigation */}
           <div className="border-b border-gray-200">
@@ -264,8 +266,8 @@ export function ProductPickerSection() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-1 py-4 md:py-5 text-center text-sm md:text-base font-semibold transition-all duration-300 relative ${activeTab === tab.id
-                    ? "text-optimist-blue-primary"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "text-optimist-blue-primary bg-[#3478F612]"
+                    : "text-gray-500 hover:text-gray-700 bg-[#F5F5F5]"
                     }`}
                 >
                   {tab.label}
@@ -304,53 +306,62 @@ export function ProductPickerSection() {
               </div>
 
               {/* Left Column - Product Info */}
-              <div className="flex flex-col justify-center">
-                {/* Rating Badge */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full shadow-sm w-fit mb-4 md:mb-6">
-                  <Image
-                    src="/GoldenStar.png"
-                    alt="Rating"
-                    width={20}
-                    height={20}
-                    className="w-5 h-5"
-                  />
-                  <span className="text-sm font-semibold text-gray-900">
-                    {activeProduct.rating}
-                  </span>
+              <div className="flex flex-col justify-between h-full">
+                {/* Top Group: Rating, Headline, Features - 24px spacing */}
+                <div className="flex flex-col gap-6">
+                  {/* Rating Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full shadow-sm w-fit">
+                    <Image
+                      src="/GoldenStar.png"
+                      alt="Rating"
+                      width={20}
+                      height={20}
+                      className="w-5 h-5"
+                    />
+                    <span className="text-sm font-semibold text-gray-900">
+                      {activeProduct.rating}
+                    </span>
+                  </div>
+
+                  {/* Headline */}
+                  <div>
+                    <h3 className="font-display text-[28px] md:text-[36px] lg:text-[42px] leading-[28px] md:leading-[36px] lg:leading-[42px] font-[600] text-gray-900">
+                      {activeProduct.headline}
+                    </h3>
+                    <span className="font-display text-[28px] md:text-[36px] lg:text-[42px] leading-tight font-bold" style={{    background: "linear-gradient(90deg, #3478F6 0%, #074FD5 100%)",
+    WebkitBackgroundClip: "text",
+    color: "transparent",
+
+}}>
+                      {activeProduct.tagline}
+                    </span>
+                  </div>
+
+                  {/* Features Row */}
+                  <div className="flex items-center flex-wrap gap-2 md:gap-3">
+                    {activeProduct.features.map((feature, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 md:gap-3"
+                      >
+                        <span className="text-sm md:text-[16px] md:leading-[16px] font-[400] text-gray-600 font-normal">
+                          {feature}
+                        </span>
+                        {index < activeProduct.features.length - 1 && (
+                          <div className="w-px h-4 bg-gray-300" />
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Headline */}
-                <h3 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-1 md:mb-2">
-                  {activeProduct.headline}
-                </h3>
-                <p className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-optimist-blue-primary mb-6 md:mb-8">
-                  {activeProduct.tagline}
-                </p>
-
-                {/* Features Row */}
-                <div className="flex items-center gap-3 md:gap-4 mb-8 md:mb-10">
-                  {activeProduct.features.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 md:gap-4"
-                    >
-                      <span className="text-sm md:text-base text-gray-700">
-                        {feature}
-                      </span>
-                      {index < activeProduct.features.length - 1 && (
-                        <div className="w-px h-4 bg-gray-300" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Price and CTA */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6">
-                  <div className="flex flex-col">
-                    <span className="text-xl md:text-2xl font-bold text-gray-900">
+                {/* Bottom: Price and CTA */}
+                <div className="flex flex-row items-center gap-6 md:gap-8 mt-8 lg:mt-0">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-lg md:text-[20px] md:leading-[20px] font-[400] text-gray-900">
                       {activeProduct.price}
                     </span>
-                    <span className="text-xs md:text-sm text-gray-500 mt-0.5">
+                    <span className="text-xs md:text-sm text-gray-500">
                       {activeProduct.savings}
                     </span>
                   </div>
@@ -358,7 +369,7 @@ export function ProductPickerSection() {
                     href={`/products/${activeProduct.id}`}
                     className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-white font-semibold text-sm md:text-base"
                   >
-                    Buy Now
+                  Notify Me  
                   </Link>
                 </div>
               </div>

@@ -78,7 +78,7 @@ export function IndiaFirstSection() {
     >
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
         {/* Desktop: 2-column grid, Mobile: stacked */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-4 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-4 md:gap-6">
           {/* Left Column - Dark Product Card */}
           <div
             ref={leftCardRef}
@@ -102,7 +102,7 @@ export function IndiaFirstSection() {
             {/* Content */}
             <div className="relative z-10 p-6 md:p-10 lg:p-12">
               {/* Headline */}
-              <h2 className="font-display text-[#AEFFD8] text-[32px] leading-[36px] md:text-[48px] md:leading-[52px] lg:text-[56px] lg:leading-[60px] font-bold mb-4 md:mb-6">
+              <h2 className="font-display text-[#AEFFD8] text-[32px] leading-[36px] md:text-[48px] md:leading-[52px] lg:text-[92px] lg:leading-[92px] font-[600] mb-4 md:mb-6">
                 <span >
                   Built-in gas level
                   <br />
@@ -117,13 +117,13 @@ export function IndiaFirstSection() {
               <div className="flex items-center gap-3 md:gap-4">
                 <Link
                   href="/products"
-                  className="btn-buy-now hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
+                  className="btn-buy-now w-[160px] hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
                 >
                   Buy Now
                 </Link>
                 <Link
                   href="#why-optimist"
-                  className="btn-why-optimist hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
+                  className="btn-why-optimist w-[160px] hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
                 >
                   Why Optimist ?
                 </Link>
@@ -132,13 +132,15 @@ export function IndiaFirstSection() {
 
             {/* AC Image - Positioned at bottom right */}
             {/* Mobile AC Image */}
-            <div className="absolute bottom-0 right-[-5%] w-[90%] md:hidden">
+            <div className="absolute bottom-0 right-0 w-[90%] md:hidden">
               <Image
                 src="/mobile.png"
                 alt="Optimist AC Unit"
-                width={600}
-                height={300}
-                className="w-full h-auto"
+                
+      width={500}
+                height={50}
+          objectFit="cover"
+                className=""
                 priority
               />
             </div>
@@ -159,18 +161,41 @@ export function IndiaFirstSection() {
           {/* Right Column - Flower + Badge Cards */}
           <div className="flex flex-col gap-4 md:gap-6">
             {/* Flower Image */}
-            <div
+            <div 
               ref={flowerRef}
               className="relative bg-white border border-gray-200 rounded-[24px] md:rounded-[32px] overflow-hidden flex-1 min-h-[240px] md:min-h-[300px] lg:min-h-[340px] flex items-center justify-center"
             >
-              <Image
-                src="/Flower.png"
-                alt="Optimist Tree"
-                width={400}
-                height={400}
-                className="object-contain w-[70%] h-auto"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-              />
+              {/* Star shape with palm tree video */}
+              <svg width="0" height="0" className="absolute">
+                <defs>
+                  <clipPath id="starClip" clipPathUnits="objectBoundingBox">
+                    <path d="M0.609 0.609C0.690 0.733 0.738 0.872 0.764 1.055L0.643 1.077C0.619 0.917 0.578 0.795 0.508 0.687C0.504 0.681 0.496 0.683 0.495 0.690C0.448 0.979 0.460 1.287 0.534 1.576H0.407C0.340 1.292 0.328 0.993 0.368 0.708C0.369 0.700 0.361 0.695 0.356 0.701C0.302 0.759 0.244 0.841 0.200 0.935L0.091 0.871C0.148 0.749 0.231 0.634 0.312 0.559C0.318 0.554 0.315 0.544 0.308 0.545C0.207 0.548 0.125 0.581 0.051 0.618L0 0.492C0.092 0.446 0.201 0.403 0.340 0.407C0.347 0.407 0.350 0.398 0.345 0.392C0.305 0.350 0.257 0.318 0.198 0.296L0.239 0.165C0.323 0.198 0.394 0.249 0.450 0.315C0.454 0.320 0.460 0.318 0.462 0.312C0.499 0.202 0.546 0.097 0.601 0L0.705 0.074C0.664 0.146 0.629 0.222 0.598 0.302C0.595 0.309 0.602 0.316 0.608 0.312C0.692 0.260 0.806 0.209 0.965 0.169L0.991 0.304C0.831 0.344 0.723 0.395 0.647 0.447C0.641 0.451 0.642 0.461 0.649 0.463C0.773 0.503 0.893 0.575 1 0.676L0.921 0.782C0.851 0.716 0.748 0.639 0.617 0.596C0.611 0.594 0.605 0.603 0.609 0.609Z" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div 
+                className="relative w-[80%] aspect-[349/311]"
+                style={{ clipPath: "url(#starClip)" }}
+              >
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                >
+                  <source src="/TreeCool.mp4" type="video/mp4" />
+                </video>
+                {/* Blue Overlay with Blur */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: "#3478F6",
+                    filter: "blur(100px)",
+                    opacity: 0.5,
+                  }}
+                />
+              </div>
             </div>
 
             {/* Badge Cards Container */}

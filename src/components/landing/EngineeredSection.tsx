@@ -106,7 +106,10 @@ function AccordionItem({
             ? "bg-white/80 border-white shadow-lg shadow-black/5"
             : "bg-[#F3F4F6]/50 border-transparent hover:bg-white/40"
         }`}
-        style={{ animationDelay: `${index * 0.1}s` }}
+        style={{ animationDelay: `${index * 0.1}s`, boxShadow: "0px 3px 20px 0px #0000001A",
+
+       
+        }}
         aria-expanded={isActive}
       >
         {/* Header row with icon and title */}
@@ -127,7 +130,7 @@ function AccordionItem({
           <div className="flex-1">
             <h3
               className={`text-lg font-semibold transition-colors duration-300 ${
-                isActive ? "text-[#1A1A1A]" : "text-[#4B5563]"
+                isActive ? "text-[#000000]" : "text-[#000000]"
               }`}
             >
               {feature.title}
@@ -381,17 +384,17 @@ export function EngineeredSection() {
     <section
       ref={sectionRef}
       id="why-optimist"
-      className="py-12 md:py-16 lg:py-24 overflow-x-hidden"
-      style={{
+      className=" my-6 bg-white md:my-8 lg:my-12"
+     
+    >
+      <div className="py-12 md:py-16 lg:py-16 overflow-x-hidden mx-auto px-4 md:px-6 lg:px-8"  style={{
         background:
           "linear-gradient(89.33deg, #CAC9C9 1.16%, #EEEAEA 49.5%, #F3F1F1 60.8%, #CAC9C9 115.48%)",
-      }}
-    >
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
+      }}>
         {/* Header */}
         <div
           ref={headerRef}
-          className="flex flex-col lg:flex-row items-start justify-between mb-12 lg:mb-20 gap-8"
+          className="flex flex-col lg:flex-row items-start justify-between mb-5 lg:mb-8 gap-8"
         >
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] tracking-tight">
             <span className="font-bold text-[#074FD5]">
@@ -459,14 +462,8 @@ export function EngineeredSection() {
               >
                 <div className="flex flex-col gap-4">
                   {/* Icon */}
-                  <div
-                    className={`w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center ${
-                      activeFeature === feature.id
-                        ? "bg-gradient-to-br from-[#074FD5] to-[#04348C]"
-                        : "bg-white/70"
-                    }`}
-                  >
-                    <div className="w-5 h-5 relative">
+                
+                    <div className="w-10 h-10 relative">
                       <Image
                         src={
                           activeFeature === feature.id
@@ -478,7 +475,7 @@ export function EngineeredSection() {
                         className="object-contain"
                       />
                     </div>
-                  </div>
+               
 
                   {/* Text */}
                   <div>

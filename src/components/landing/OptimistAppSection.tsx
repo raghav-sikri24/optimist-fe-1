@@ -99,9 +99,10 @@ function FeatureCard({
 }) {
   return (
     <div
-      className={`feature-card bg-white/95 backdrop-blur-md rounded-[24px] md:rounded-[32px] p-3 md:p-4 shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex items-center gap-3 md:gap-5 border border-gray-100 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 ${
+      className={`feature-card backdrop-blur-md rounded-[20px] md:rounded-[32px] p-3 md:p-4 shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex items-center gap-3 md:gap-5 border border-gray-100 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 ${
         iconPosition === "right" ? "flex-row-reverse" : "flex-row"
       } ${className}`}
+      style={{background:"linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",boxShadow: "0px 4px 30px 0px #0000001F"}}
     >
       {/* Icon Box */}
       <div className="flex-shrink-0">
@@ -109,10 +110,10 @@ function FeatureCard({
       </div>
       {/* Text */}
       <div className="flex-1 min-w-0">
-        <h4 className="text-[16px] md:text-[20px] font-bold text-gray-900 leading-tight mb-0.5 md:mb-1 tracking-tight">
+        <h4 className="text-[14px] md:text-[16px] font-bold text-gray-900 leading-tight mb-0.5 md:mb-1 tracking-tight">
           {title}
         </h4>
-        <p className="text-[13px] md:text-[15px] text-gray-400 leading-snug font-medium">
+        <p className="text-[12px] md:text-[14px] text-gray-400 leading-snug font-medium">
           {description}
         </p>
       </div>
@@ -275,10 +276,10 @@ export function OptimistAppSection() {
         <div className="relative z-10 px-4 md:px-8 lg:px-16 pt-12 md:pt-16 pb-0">
           {/* Header */}
           <div ref={headerRef} className="text-center mb-8 md:mb-12">
-            <h2 className="font-display text-[40px] md:text-[56px] lg:text-[64px] font-bold text-gray-900 mb-2 tracking-tight leading-tight">
+            <h2 className="font-display text-[40px] font-bold text-gray-900 mb-2 tracking-tight leading-tight">
               Optimist App
             </h2>
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-400 font-medium">
+            <p className="text-[20px] text-gray-400 font-medium">
               Your full-control panel, right in your hand.
             </p>
           </div>

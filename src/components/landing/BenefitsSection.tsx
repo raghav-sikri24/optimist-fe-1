@@ -175,7 +175,7 @@ export function BenefitsSection() {
             {benefits.map((benefit) => (
               <div
                 key={benefit.id}
-                className="benefit-card flex-shrink-0 w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(80%-12px)] relative rounded-[24px] overflow-hidden snap-start"
+                className="benefit-card flex-shrink-0 w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(70%-12px)] relative rounded-[24px] overflow-hidden snap-start transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
               >
                 {/* Image Background */}
                 <div className="relative aspect-[4/5] md:aspect-[16/10]">

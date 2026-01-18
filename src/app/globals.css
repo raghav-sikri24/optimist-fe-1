@@ -9,18 +9,18 @@
   --optimist-cream: #f5f0e6;
   --optimist-cream-muted: #d4d0c4;
   --optimist-headline: #FFFCDC;
-  
+
   /* Blue Gradient Colors */
   --optimist-blue-deep: #1e3a8a;
   --optimist-blue-primary: #2563eb;
   --optimist-blue-light: #0ea5e9;
   --optimist-blue-glow: #38bdf8;
   --optimist-blue-hero: #3478F6;
-  
+
   /* Accent Colors */
   --optimist-gold: #d4a017;
   --optimist-red: #dc2626;
-  
+
   /* UI Colors */
   --optimist-border: rgba(245, 240, 230, 0.2);
   --optimist-border-light: rgba(245, 240, 230, 0.4);
@@ -43,7 +43,7 @@
   --color-optimist-red: var(--optimist-red);
   --color-optimist-border: var(--optimist-border);
   --color-optimist-border-light: var(--optimist-border-light);
-  
+
   /* Fonts */
   --font-sans: var(--font-abc-solar);
   --font-display: var(--font-abc-solar-display);
@@ -55,7 +55,7 @@ html {
 }
 
 body {
-  background: var(--optimist-black);
+  background: "#FFFFFF";
   color: var(--optimist-cream);
   font-family: var(--font-abc-solar), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -86,7 +86,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  box-shadow: 
+  box-shadow:
     0px 35px 120px 0px rgba(52, 120, 246, 0.2),
     0px 145px 120px 4px rgba(52, 120, 246, 0.12);
   pointer-events: none;
@@ -95,40 +95,36 @@ body {
 /* Blue Ellipse Glow */
 .hero-blue-glow {
   position: absolute;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(52, 120, 246, 0.9) 0%,
-    rgba(52, 120, 246, 0.6) 30%,
-    rgba(52, 120, 246, 0.3) 60%,
-    transparent 100%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(52, 120, 246, 0.9) 0%,
+      rgba(52, 120, 246, 0.6) 30%,
+      rgba(52, 120, 246, 0.3) 60%,
+      transparent 100%);
   border-radius: 50%;
   pointer-events: none;
 }
 
 /* Blue Gradient Background */
 .blue-gradient-bg {
-  background: 
-    radial-gradient(
-      ellipse 80% 60% at 70% 40%,
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%,
       var(--optimist-blue-light) 0%,
       var(--optimist-blue-primary) 30%,
       var(--optimist-blue-deep) 60%,
-      transparent 100%
-    );
+      transparent 100%);
 }
 
 /* Button Styles */
 .btn-primary {
   background: linear-gradient(135deg, var(--optimist-blue-light) 0%, var(--optimist-blue-primary) 100%);
-  box-shadow: 
+  box-shadow:
     0 0 20px rgba(14, 165, 233, 0.4),
     0 0 40px rgba(14, 165, 233, 0.2);
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  box-shadow: 
+  box-shadow:
     0 0 30px rgba(14, 165, 233, 0.6),
     0 0 60px rgba(14, 165, 233, 0.3);
   transform: translateY(-2px);
@@ -154,7 +150,7 @@ body {
 
 .btn-buy-now:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0px 2px 12.5px 2px #003FB2 inset,
     0px 4px 20px rgba(18, 101, 255, 0.4);
 }
@@ -175,11 +171,11 @@ body {
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.44) 56.25%, rgba(255, 255, 255, 0.23) 100%);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
-  mask: 
-    linear-gradient(#fff 0 0) content-box, 
+  mask:
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -287,17 +283,17 @@ body {
   display: none;
 }
 
-.bg-test{
+.bg-test {
   background-color: red;
 }
 
-.border-test{
+.border-test {
   border: 2px solid red;
 }
 
 .background-gradient {
-    z-index: -2;
-    background: linear-gradient(rgb(10, 10, 10) 50%, rgb(29, 29, 29) 92%);
-    position: fixed;
-    inset: 0%;
+  z-index: -2;
+  background: linear-gradient(rgb(10, 10, 10) 50%, rgb(29, 29, 29) 92%);
+  position: fixed;
+  inset: 0%;
 }
