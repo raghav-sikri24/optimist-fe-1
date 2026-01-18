@@ -94,7 +94,15 @@ export function MadeSimpleSection() {
             {/* Content */}
             <div className="relative z-10 p-6 md:p-8 lg:p-10 flex flex-col justify-start pt-10 md:pt-14 lg:pt-16 h-full">
               {/* Headline */}
-              <h2 className="font-display text-[32px] leading-[38px] md:text-[44px] md:leading-[50px] lg:text-[56px] lg:leading-[62px] font-bold text-[#1E6FD9] mb-6 md:mb-8">
+              <h2
+                className="font-display text-[32px] leading-[38px] md:text-[44px] md:leading-[50px] lg:text-[56px] lg:leading-[62px] font-bold mb-6 md:mb-8"
+                style={{
+                  background: "linear-gradient(151.7deg, #1265FF 25.27%, #69CDEB 87.59%, #46F5A0 120.92%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 Made simple.
                 <br />
                 Nothing more,
