@@ -435,7 +435,7 @@ export function HeroSection() {
       </div>
 
       {/* AC Image - positioned relative to section, not content container */}
-      <div className="absolute bottom-[120px] md:bottom-[-100px] left-0 right-0 z-20">
+      <div className="absolute bottom-[120px] md:bottom-[0px] left-0 right-0 z-20">
         <HeroACImage isMobile={isMobile} />
       </div>
     </section>

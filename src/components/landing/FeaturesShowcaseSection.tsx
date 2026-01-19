@@ -165,10 +165,15 @@ export function FeaturesShowcaseSection() {
                 {feature.description}
               </p>
 
-              {/* Mobile arrow - below description, pointing down to image */}
+              {/* Mobile arrow - L-shaped, pointing right to image */}
               <div className="flex lg:hidden flex-col items-start mt-6">
-                <div className="w-[1px] h-12 bg-[#C4C4C4]" />
-                <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[8px] border-t-[#C4C4C4]" />
+                {/* Vertical line */}
+                <div className="w-[1px] h-8 bg-[#C4C4C4]" />
+                {/* Horizontal line with arrow */}
+                <div className="flex items-center">
+                  <div className="w-12 h-[1px] bg-[#C4C4C4]" />
+                  <div className="w-0 h-0 border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent border-l-[8px] border-l-[#C4C4C4]" />
+                </div>
               </div>
             </div>
 
