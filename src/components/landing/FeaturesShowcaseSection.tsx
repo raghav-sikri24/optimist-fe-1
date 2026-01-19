@@ -48,51 +48,34 @@ export function FeaturesShowcaseSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
 
-  const isSeeking = useRef(false);
-
   useGSAP(
     () => {
       const video = videoRef.current;
-      if (!video || !sectionRef.current || videoDuration === 0) return;
+      if (!video || !sectionRef.current) return;
 
       // Ensure video is ready to be scrubbed
       video.pause();
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1, // Increased damping for smoother transition
-        },
-      });
-
-      // Use a proxy object for smoothness
-      const scrollProxy = { time: 0 };
-      tl.to(scrollProxy, {
-        time: videoDuration,
-        ease: "none",
-        onUpdate: () => {
-          if (video.readyState >= 1 && !isSeeking.current) {
-            isSeeking.current = true;
-            video.currentTime = scrollProxy.time;
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.1,
+        onUpdate: (self) => {
+          if (video.readyState >= 1 && Number.isFinite(video.duration)) {
+            const progress = self.progress;
+            const time = progress * video.duration;
+            if (Math.abs(video.currentTime - time) > 0.05) {
+              video.currentTime = time;
+            }
           }
         }
       });
 
-      // Listen for seeked event to allow next seek
-      const onSeeked = () => {
-        isSeeking.current = false;
-      };
-      video.addEventListener("seeked", onSeeked);
-
-      return () => {
-        video.removeEventListener("seeked", onSeeked);
-      };
+      console.log("ScrollTrigger created for video scrubbing");
     },
     {
       scope: sectionRef,
-      dependencies: [videoDuration],
     }
   );
 
