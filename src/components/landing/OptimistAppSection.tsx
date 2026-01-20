@@ -26,6 +26,9 @@ interface FeatureCardData {
   // Desktop positions (from Figma)
   desktopLeft?: number;
   desktopTop: number;
+  // Hand image position offset (to keep all hands at same visual position)
+  handOffsetX?: number;
+  handOffsetY?: number;
 }
 
 const FEATURES: FeatureCardData[] = [
@@ -37,6 +40,8 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Live Energy Meter.png",
     desktopLeft: 80,
     desktopTop: 180,
+    handOffsetX: 0,
+    handOffsetY: 0,
   },
   {
     id: "bills",
@@ -46,6 +51,8 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Projected Monthly Bills.png",
     desktopLeft: 30,
     desktopTop: 380,
+    handOffsetX: 0,
+    handOffsetY: 0,
   },
   {
     id: "filter",
@@ -55,6 +62,8 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Filter tracking.png",
     desktopLeft: 120,
     desktopTop: 580,
+    handOffsetX: 0,
+    handOffsetY: 0,
   },
   {
     id: "gas-level",
@@ -64,6 +73,8 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Gas level indicator.png",
     desktopLeft: 966,
     desktopTop: 160,
+    handOffsetX: -4,
+    handOffsetY: 0,
   },
   {
     id: "service",
@@ -73,6 +84,8 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Service assistance.png",
     desktopLeft: 1016,
     desktopTop: 360,
+    handOffsetX: 0,
+    handOffsetY: 0,
   },
   {
     id: "scheduling",
@@ -82,6 +95,8 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Scheduling.png",
     desktopLeft: 1000,
     desktopTop: 560,
+    handOffsetX: 0,
+    handOffsetY: 0,
   },
 ];
 
@@ -155,7 +170,7 @@ function MobileFeatureCard({ feature, isActive, onTap }: MobileFeatureCardProps)
   return (
     <div
       className={`
-        flex-shrink-0 w-[140px] h-[160px] rounded-[12px] overflow-hidden p-2.5
+        flex-shrink-0 w-[280px] h-[120px] rounded-[16px] overflow-hidden
         transition-all duration-300 cursor-pointer
         ${isActive ? "scale-[1.02] -translate-y-0.5" : ""}
       `}
@@ -170,24 +185,29 @@ function MobileFeatureCard({ feature, isActive, onTap }: MobileFeatureCardProps)
       }}
       onClick={() => onTap(feature.id)}
     >
-      {/* Icon Container - using same icons as desktop */}
-      <div className="w-full h-[58px] bg-[#181818] rounded-[8px] flex items-center justify-center mb-2.5">
-        <Image
-          src={feature.icon}
-          alt={feature.title}
-          width={40}
-          height={40}
-          className="w-10 h-10 object-contain"
-        />
-      </div>
+      {/* Horizontal layout matching desktop */}
+      <div className="flex h-full p-2.5 gap-3">
+        {/* Icon Container - same style as desktop */}
+        <div className="flex-shrink-0 w-[90px] h-[98px] bg-[#181818] rounded-[10px] flex items-center justify-center">
+          <Image
+            src={feature.icon}
+            alt={feature.title}
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain"
+          />
+        </div>
 
-      {/* Text Content */}
-      <p className={`font-display text-[13px] font-bold leading-tight mb-1.5 line-clamp-2 ${isActive ? "text-white" : "text-black"}`}>
-        {feature.title}
-      </p>
-      <p className={`font-display text-[11px] leading-normal line-clamp-2 ${isActive ? "text-white/70" : "text-black/60"}`}>
-        {feature.description}
-      </p>
+        {/* Text Content - horizontal layout like desktop */}
+        <div className="flex flex-col justify-center gap-2 flex-1 min-w-0">
+          <p className={`font-display text-[14px] font-bold leading-tight ${isActive ? "text-white" : "text-black"}`}>
+            {feature.title}
+          </p>
+          <p className={`font-display text-[12px] leading-normal ${isActive ? "text-white/70" : "text-black/60"}`}>
+            {feature.description}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -212,38 +232,50 @@ export function OptimistAppSection() {
     const carousel = mobileCarouselRef.current;
     if (!carousel) return;
 
+    let scrollTimeout: NodeJS.Timeout;
+
     const handleScroll = () => {
-      const cards = carousel.querySelectorAll('.mobile-feature-card');
-      if (!cards.length) return;
+      // Debounce for smoother updates
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const cards = carousel.querySelectorAll('.mobile-feature-card');
+        if (!cards.length) return;
 
-      const carouselRect = carousel.getBoundingClientRect();
-      const carouselCenter = carouselRect.left + carouselRect.width / 2;
+        const carouselRect = carousel.getBoundingClientRect();
+        const carouselCenter = carouselRect.left + carouselRect.width / 2;
 
-      let closestCard: Element | null = null;
-      let closestDistance = Infinity;
+        let closestCard: Element | null = null;
+        let closestDistance = Infinity;
 
-      cards.forEach((card) => {
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const distance = Math.abs(carouselCenter - cardCenter);
+        cards.forEach((card) => {
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
+          const distance = Math.abs(carouselCenter - cardCenter);
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestCard = card;
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestCard = card;
+          }
+        });
+
+        if (closestCard) {
+          const featureId = (closestCard as HTMLElement).dataset.featureId as FeatureId;
+          if (featureId) {
+            setActiveFeature(featureId);
+          }
         }
-      });
-
-      if (closestCard) {
-        const featureId = (closestCard as HTMLElement).dataset.featureId as FeatureId;
-        if (featureId && featureId !== activeFeature) {
-          setActiveFeature(featureId);
-        }
-      }
+      }, 50);
     };
 
+    // Initial check on mount
+    handleScroll();
+
     carousel.addEventListener('scroll', handleScroll, { passive: true });
-    return () => carousel.removeEventListener('scroll', handleScroll);
-  }, [activeFeature]);
+    return () => {
+      carousel.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
 
   // Get current hand image based on hover/active state
   const getCurrentHandImage = useCallback(() => {
@@ -373,36 +405,57 @@ export function OptimistAppSection() {
             />
           </div>
 
-          {/* Hand/Phone Image */}
+          {/* Hand/Phone Image - Fixed position container */}
           <div
             ref={phoneRef}
             className="absolute z-20 pointer-events-none will-change-[transform,opacity]"
             style={{ 
-              left: "55%", 
+              left: "60%", 
               top: "140px",
               transform: "translateX(-50%)",
               width: "800px",
               height: "700px",
+              overflow: "hidden",
             }}
           >
-            {/* All hand images for crossfade effect on desktop */}
-            {FEATURES.map((feature) => (
-              <Image
-                key={feature.id}
-                src={feature.handImage}
-                alt="Optimist App"
-                fill
-                sizes="700px"
-                quality={85}
-                className={`object-contain transition-opacity duration-300 ${
-                  getCurrentHandImage() === feature.handImage
-                    ? "opacity-100"
-                    : "opacity-0"
-                }`}
-                priority={feature.id === "energy-meter"}
-                loading={feature.id === "energy-meter" ? undefined : "lazy"}
-              />
-            ))}
+            {/* All hand images stacked - using fixed pixel positioning for consistency */}
+            {FEATURES.map((feature) => {
+              // Calculate position - all images positioned at same fixed coordinates
+              const offsetX = feature.handOffsetX || 0;
+              const offsetY = feature.handOffsetY || 0;
+              
+              return (
+                <div
+                  key={feature.id}
+                  className={`absolute transition-opacity duration-300 ${
+                    getCurrentHandImage() === feature.handImage
+                      ? "opacity-100"
+                      : "opacity-0"
+                  }`}
+                  style={{
+                    left: `${offsetX}px`,
+                    top: `${offsetY}px`,
+                    width: "800px",
+                    height: "700px",
+                  }}
+                >
+                  <Image
+                    src={feature.handImage}
+                    alt="Optimist App"
+                    width={800}
+                    height={700}
+                    quality={85}
+                    className="w-full h-full"
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center center",
+                    }}
+                    priority={feature.id === "energy-meter"}
+                    loading={feature.id === "energy-meter" ? undefined : "lazy"}
+                  />
+                </div>
+              );
+            })}
           </div>
 
           {/* Bottom Fade Gradient */}
@@ -442,20 +495,20 @@ export function OptimistAppSection() {
         </div>
 
         {/* ============ MOBILE LAYOUT ============ */}
-        <div className="lg:hidden relative overflow-hidden">
+        <div className="lg:hidden relative overflow-hidden" style={{ minHeight: "750px" }}>
           {/* Background Ellipses - Mobile */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {/* Outer Ellipse */}
             <div 
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: "196px", width: "100%", maxWidth: "1258px" }}
+              style={{ top: "120px", width: "150%", maxWidth: "1258px" }}
             >
               <Image
                 src="/Ellipse 6512.png"
                 alt=""
                 width={1258}
                 height={1258}
-                sizes="100vw"
+                sizes="150vw"
                 className="w-full h-auto"
                 style={{ transform: "scale(1.112)" }}
                 loading="lazy"
@@ -465,14 +518,14 @@ export function OptimistAppSection() {
             {/* Inner Ellipse */}
             <div 
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: "350px", width: "80%", maxWidth: "753px" }}
+              style={{ top: "280px", width: "100%", maxWidth: "753px" }}
             >
               <Image
                 src="/Ellipse 6513.png"
                 alt=""
                 width={753}
                 height={753}
-                sizes="80vw"
+                sizes="100vw"
                 className="w-full h-auto"
                 style={{ transform: "scale(1.187)" }}
                 loading="lazy"
@@ -491,48 +544,41 @@ export function OptimistAppSection() {
             </p>
           </div>
 
-          {/* Hand/Phone Image Container - Mobile */}
-          <div className="relative z-10">
-            {/* Hand Image - 512px x 438px from Figma, responsive */}
-            {/* OPTIMIZATION: Only render the active image on mobile to prevent memory crashes */}
-            <div 
-              ref={phoneRef} 
-              className="relative flex justify-center"
-              style={{ marginTop: "-20px" }}
-            >
-              <div 
-                className="relative w-full"
-                style={{ 
-                  maxWidth: "512px",
-                  aspectRatio: "512 / 438",
-                }}
-              >
-                <Image
-                  key={activeFeature}
-                  src={FEATURES.find(f => f.id === activeFeature)?.handImage || FEATURES[0].handImage}
-                  alt="Optimist App"
-                  fill
-                  sizes="(max-width: 512px) 100vw, 512px"
-                  quality={80}
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
-
-            {/* White Gradient at bottom of hand */}
-            <div 
-              className="absolute left-0 right-0 bottom-0 h-[100px] pointer-events-none z-20"
-              style={{
-                background: "linear-gradient(178deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 1) 100%)",
-              }}
+          {/* Hand/Phone Image Container - Mobile - positioned bottom right */}
+          <div 
+            ref={phoneRef} 
+            className="absolute z-10 pointer-events-none"
+            style={{ 
+              right: "-180px",
+              bottom: "150px",
+              width: "800px",
+              height: "520px",
+            }}
+          >
+            <Image
+              key={activeFeature}
+              src={FEATURES.find(f => f.id === activeFeature)?.handImage || FEATURES[0].handImage}
+              alt="Optimist App"
+              fill
+              sizes="620px"
+              quality={80}
+              className="object-contain object-right-bottom"
+              priority
             />
           </div>
 
-          {/* Horizontal Scrollable Carousel */}
+          {/* White Gradient at bottom */}
+          <div 
+            className="absolute left-0 right-0 bottom-0 h-[180px] pointer-events-none z-20"
+            style={{
+              background: "linear-gradient(178deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)",
+            }}
+          />
+
+          {/* Horizontal Scrollable Carousel - positioned at bottom */}
           <div
             ref={mobileCarouselRef}
-            className="relative z-20 flex gap-3 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide"
+            className="absolute bottom-0 left-0 right-0 z-30 flex gap-3 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {FEATURES.map((feature) => (

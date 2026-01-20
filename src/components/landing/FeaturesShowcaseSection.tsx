@@ -366,7 +366,7 @@ export function FeaturesShowcaseSection() {
             <div 
               style={{
                 position: 'absolute',
-                top: 0,
+                top: 50,
                 left: 0,
                 right: 0,
                 bottom: 0,
@@ -378,13 +378,14 @@ export function FeaturesShowcaseSection() {
               <video
                 ref={mobileVideoRef}
                 src="/PointersAnimation.mp4#t=0.001"
-                className="h-[50%] sm:h-[200%] md:h-[120%] w-auto max-w-none object-contain"
+                className="h-[100%] w-auto max-w-none object-cover translate-x-[5%]"
                 muted
                 playsInline
                 preload="auto"
                 onLoadedMetadata={handleMobileVideoLoaded}
                 onCanPlay={handleMobileVideoLoaded}
                 onCanPlayThrough={handleMobileVideoLoaded}
+                style={{ WebkitTransform: 'translateZ(0) translateX(25%)' }}
               />
             </div>
           </div>
@@ -443,7 +444,7 @@ export function FeaturesShowcaseSection() {
         className="relative bg-[#E7E7E7] hidden lg:block"
       >
         {/* Background Leaf Pattern */}
-        <div className="absolute top-0 left-0 fixed w-full max-w-[800px] opacity-10 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 sticky w-full max-w-[800px] opacity-10 pointer-events-none z-0">
           <Image
             src="/Leaf Swaying.gif"
             alt=""
@@ -454,7 +455,7 @@ export function FeaturesShowcaseSection() {
           />
         </div>
 
-        <div className="flex flex-row pb-4">
+        <div className="flex mt-[-400px] flex-row pb-4">
           {/* Left Scrollable Content */}
           <div className="w-1/2 relative z-10">
             <div className="flex flex-col">

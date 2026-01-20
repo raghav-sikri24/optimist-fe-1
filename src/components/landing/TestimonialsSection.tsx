@@ -14,8 +14,7 @@ const testimonials = [
     date: "May 2025",
     quote:
       "We hit 47–48°C outside and the cooling never dropped. Airflow stayed steady through the day. No power dips, no noise spikes.",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face",
+    image: "/RohanMehta.png",
   },
   {
     id: 2,
@@ -24,8 +23,7 @@ const testimonials = [
     date: "April 2025",
     quote:
       "What surprised me wasn't just the cooling. Our electricity bill was noticeably lower than last summer, even with longer usage.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop&crop=face",
+    image: "/AnanyaRao.png",
   },
   {
     id: 3,
@@ -34,8 +32,7 @@ const testimonials = [
     date: "June 2025",
     quote:
       "The gas level indicator is a small thing, but it changes everything. I finally know when service is actually needed.",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face",
+    image: "/KunalShah.png",
   },
 ];
 
@@ -192,12 +189,12 @@ export function TestimonialsSection() {
                     </div>
 
                     {/* Play Button */}
-                    <button className="absolute bottom-5 right-5 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+                    {/* <button className="absolute bottom-5 right-5 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
                       <Play
                         className="w-5 h-5 text-gray-900 ml-0.5"
                         fill="currentColor"
                       />
-                    </button>
+                    </button> */}
                   </div>
                 </div>
 

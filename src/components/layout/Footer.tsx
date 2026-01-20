@@ -139,7 +139,7 @@ export function Footer() {
         {/* Top Section - Links & Newsletter */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 mb-0 md:mb-4">
           {/* Column 1 - Nav Links */}
-          <div/>
+      
           {/* <nav className="flex flex-col gap-4">
             {navLinksCol1.map((link) => (
               <Link
@@ -153,7 +153,7 @@ export function Footer() {
           </nav> */}
 
           {/* Column 2 - Nav Links */}
-          <div/>
+          
           {/* <nav className="flex flex-col gap-4">
             {navLinksCol2.map((link) => (
               <Link
@@ -165,6 +165,7 @@ export function Footer() {
               </Link>
             ))}
           </nav> */}
+    
 
           {/* Column 3 - Social Links */}
           <div className="col-span-2 md:col-span-1">
@@ -184,7 +185,7 @@ export function Footer() {
               ))}
             </div>
           </div>
-
+          <div/>      <div/>
           {/* Column 4 - Newsletter */}
           <div className="col-span-2 md:col-span-2">
             <p className="text-xs uppercase tracking-wider text-[#FFFCDC] mb-4">
