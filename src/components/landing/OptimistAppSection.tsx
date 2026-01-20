@@ -1,354 +1,216 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
 // ============================================
-// PARALLAX CONFIGURATION
+// FEATURE CARD DATA
 // ============================================
-const PARALLAX_CONFIG = {
-  // Maximum rotation in radians (subtle tilt feel)
-  maxRotationX: 0.12, // ~7 degrees
-  maxRotationY: 0.15, // ~8.5 degrees
-  // Lerp factor for smooth inertia (0.03-0.08 for "Surge" feel)
-  lerpFactor: 0.06,
-  // Responsiveness multiplier for smaller screens
-  mobileMultiplier: 0.7,
-  // Whether effect is active (disable on touch devices)
-  enableOnTouch: false,
-};
+type FeatureId = 
+  | "energy-meter"
+  | "bills"
+  | "filter"
+  | "gas-level"
+  | "service"
+  | "scheduling"
+  | null;
 
-// Utility: Linear interpolation
-function lerp(start: number, end: number, factor: number): number {
-  return start + (end - start) * factor;
-}
-
-// ============================================
-// CUSTOM HOOK: useMouseParallax
-// Tracks normalized mouse coords and applies smooth rotation using GSAP
-// GSAP handles cross-browser compatibility (especially Safari) automatically
-// ============================================
-function useMouseParallax(
-  containerRef: React.RefObject<HTMLElement | null>,
-  targetRef: React.RefObject<HTMLElement | null>,
-  config = PARALLAX_CONFIG
-) {
-  // Target rotation (where we want to be)
-  const targetRotation = useRef({ x: 0, y: 0 });
-  // Current rotation (smoothly interpolated)
-  const currentRotation = useRef({ x: 0, y: 0 });
-  // Track if mouse is over container
-  const isHovering = useRef(false);
-  // GSAP ticker callback reference
-  const tickerCallback = useRef<(() => void) | null>(null);
-
-  // Responsive scaling based on viewport
-  const getResponsiveMultiplier = useCallback(() => {
-    if (typeof window === "undefined") return 1;
-    return window.innerWidth < 1024 ? config.mobileMultiplier : 1;
-  }, [config.mobileMultiplier]);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const target = targetRef.current;
-    if (!container || !target) return;
-
-    // Check for touch device
-    const isTouchDevice =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice && !config.enableOnTouch) return;
-
-    // Initialize GSAP transform - this sets up the element for 3D transforms
-    gsap.set(target, {
-      rotationX: 0,
-      rotationY: 0,
-      z: 0,
-      transformPerspective: 1500,
-      transformStyle: "preserve-3d",
-      force3D: true,
-    });
-
-    // Mouse move handler - calculate normalized coords (-1 to +1)
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isHovering.current) return;
-
-      const rect = container.getBoundingClientRect();
-      // Normalize mouse position to -1 to +1 range
-      const normalizedX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const normalizedY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-
-      const multiplier = getResponsiveMultiplier();
-
-      // Set target rotation (inverted for natural feel)
-      // Mouse moves right → rotate left (negative Y rotation)
-      // Mouse moves down → rotate up (negative X rotation)
-      // Convert radians to degrees for GSAP
-      const radToDeg = 180 / Math.PI;
-      targetRotation.current = {
-        x: -normalizedY * config.maxRotationX * multiplier * radToDeg,
-        y: normalizedX * config.maxRotationY * multiplier * radToDeg,
-      };
-    };
-
-    const handleMouseEnter = () => {
-      isHovering.current = true;
-    };
-
-    const handleMouseLeave = () => {
-      isHovering.current = false;
-      // Reset target to neutral position
-      targetRotation.current = { x: 0, y: 0 };
-    };
-
-    // Animation loop using GSAP ticker (syncs with GSAP's rendering pipeline)
-    tickerCallback.current = () => {
-      // Smooth lerp towards target rotation
-      currentRotation.current.x = lerp(
-        currentRotation.current.x,
-        targetRotation.current.x,
-        config.lerpFactor
-      );
-      currentRotation.current.y = lerp(
-        currentRotation.current.y,
-        targetRotation.current.y,
-        config.lerpFactor
-      );
-
-      // Apply transform using GSAP - handles all browser prefixes automatically
-      gsap.set(target, {
-        rotationX: currentRotation.current.x,
-        rotationY: currentRotation.current.y,
-        z: 0.01, // Small z value helps Safari render the 3D transform
-        force3D: true,
-      });
-    };
-
-    // Add to GSAP's ticker (runs every frame, synced with GSAP)
-    gsap.ticker.add(tickerCallback.current);
-
-    // Attach event listeners
-    container.addEventListener("mousemove", handleMouseMove);
-    container.addEventListener("mouseenter", handleMouseEnter);
-    container.addEventListener("mouseleave", handleMouseLeave);
-
-    // Cleanup
-    return () => {
-      if (tickerCallback.current) {
-        gsap.ticker.remove(tickerCallback.current);
-      }
-      container.removeEventListener("mousemove", handleMouseMove);
-      container.removeEventListener("mouseenter", handleMouseEnter);
-      container.removeEventListener("mouseleave", handleMouseLeave);
-      // Reset transform using GSAP
-      gsap.set(target, { rotationX: 0, rotationY: 0, z: 0, clearProps: "transform" });
-    };
-  }, [containerRef, targetRef, config, getResponsiveMultiplier]);
-}
-
-// Gauge icon component
-function GaugeIcon() {
-  return (
-    <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] bg-[#111111] rounded-[20px] md:rounded-[24px] flex items-center justify-center flex-shrink-0">
-      <div className="relative w-full h-full flex flex-col items-center justify-center p-2">
-        {/* Gauge Arc */}
-        <div className="relative w-12 md:w-16 h-8 md:h-10 mb-1 flex items-center justify-center">
-          <svg
-            width="64"
-            height="32"
-            viewBox="0 0 64 32"
-            fill="none"
-            className="absolute top-0 w-12 md:w-16"
-          >
-            <path
-              d="M 4 28 A 28 28 0 0 1 60 28"
-              stroke="#222222"
-              strokeWidth="6"
-              strokeLinecap="round"
-            />
-            <path
-              d="M 4 28 A 28 28 0 0 1 42 5"
-              stroke="#3B82F6"
-              strokeWidth="6"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span className="text-white text-[11px] md:text-[14px] font-bold mt-2 md:mt-3">
-            24°C
-          </span>
-        </div>
-        {/* Three Icons below */}
-        <div className="flex gap-1.5 md:gap-2 mt-1 md:mt-2">
-          <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full opacity-80" />
-          </div>
-          <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full opacity-80" />
-          </div>
-          <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full opacity-80" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Bar chart icon for bills feature
-function BillsIcon() {
-  return (
-    <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] bg-[#111111] rounded-[20px] md:rounded-[24px] flex items-center justify-center flex-shrink-0">
-      <div className="relative w-full h-full flex flex-col items-center justify-center p-2">
-        {/* Bar Chart */}
-        <div className="flex items-end gap-1 md:gap-1.5 h-8 md:h-10 mb-1 md:mb-2">
-          <div className="w-1.5 md:w-2 h-3 md:h-4 bg-[#222222] rounded-full" />
-          <div className="w-1.5 md:w-2 h-6 md:h-8 bg-[#222222] rounded-full" />
-          <div className="w-1.5 md:w-2 h-5 md:h-6 bg-[#222222] rounded-full" />
-          <div className="w-1.5 md:w-2 h-8 md:h-10 bg-[#222222] rounded-full" />
-          <div className="w-1.5 md:w-2 h-4 md:h-5 bg-[#222222] rounded-full" />
-          <div className="w-1.5 md:w-2 h-9 md:h-12 bg-[#10B981] rounded-full" />
-        </div>
-        {/* Three Icons below */}
-        <div className="flex gap-1.5 md:gap-2">
-          <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full opacity-80" />
-          </div>
-          <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full opacity-80" />
-          </div>
-          <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white rounded-full opacity-80" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FeatureCard({
-  title,
-  description,
-  iconType = "gauge",
-  iconPosition = "left",
-  className = "",
-}: {
+interface FeatureCardData {
+  id: FeatureId;
   title: string;
   description: string;
-  iconType?: "gauge" | "bills";
-  iconPosition?: "left" | "right";
-  className?: string;
-}) {
+  icon: string;
+  handImage: string;
+  // Desktop positions (from Figma)
+  desktopLeft?: number;
+  desktopTop: number;
+}
+
+const FEATURES: FeatureCardData[] = [
+  {
+    id: "energy-meter",
+    title: "Live Energy Meter",
+    description: "Track. Predict. Save.",
+    icon: "/icons/thermometer.svg",
+    handImage: "/hands/Live Energy Meter.png",
+    desktopLeft: 80,
+    desktopTop: 180,
+  },
+  {
+    id: "bills",
+    title: "Projected Monthly Bills",
+    description: "No surprises. Just real numbers.",
+    icon: "/icons/scroll.svg",
+    handImage: "/hands/Projected Monthly Bills.png",
+    desktopLeft: 30,
+    desktopTop: 380,
+  },
+  {
+    id: "filter",
+    title: "Filter Health",
+    description: "Clean when needed. No more guessing.",
+    icon: "/icons/filter.svg",
+    handImage: "/hands/Filter tracking.png",
+    desktopLeft: 120,
+    desktopTop: 580,
+  },
+  {
+    id: "gas-level",
+    title: "Gas Level Indicator",
+    description: "Know before it's an issue.",
+    icon: "/icons/gastank.svg",
+    handImage: "/hands/Gas level indicator.png",
+    desktopLeft: 966,
+    desktopTop: 160,
+  },
+  {
+    id: "service",
+    title: "Intelligence Service Assistance",
+    description: "Diagnose remotely. Service seamlessly",
+    icon: "/icons/headset.svg",
+    handImage: "/hands/Service assistance.png",
+    desktopLeft: 1016,
+    desktopTop: 360,
+  },
+  {
+    id: "scheduling",
+    title: "Scheduling",
+    description: "Start or stop automatically, on your time.",
+    icon: "/icons/calendar.svg",
+    handImage: "/hands/Scheduling.png",
+    desktopLeft: 1000,
+    desktopTop: 560,
+  },
+];
+
+// ============================================
+// DESKTOP FEATURE CARD COMPONENT
+// ============================================
+interface FeatureCardProps {
+  feature: FeatureCardData;
+  onHover: (id: FeatureId) => void;
+  onLeave: () => void;
+}
+
+function DesktopFeatureCard({
+  feature,
+  onHover,
+  onLeave,
+}: FeatureCardProps) {
   return (
     <div
-      className={`feature-card backdrop-blur-md rounded-[20px] md:rounded-[32px] p-3 md:p-4 shadow-[0_8px_32px_rgba(0,0,0,0.08)] flex items-center gap-3 md:gap-5 border border-gray-100 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] hover:-translate-y-1 ${
-        iconPosition === "right" ? "flex-row-reverse" : "flex-row"
-      } ${className}`}
-      style={{background:"linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",boxShadow: "0px 4px 30px 0px #0000001F"}}
+      className="w-[314px] h-[142px] rounded-[20px] overflow-hidden absolute transition-all duration-300 hover:shadow-[0px_8px_40px_0px_rgba(0,0,0,0.18)] hover:-translate-y-1 cursor-pointer"
+      style={{
+        background: "linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",
+        border: "3px solid rgba(0,0,0,0.03)",
+        boxShadow: "0px 4px 30px 0px rgba(0,0,0,0.12)",
+        left: feature.desktopLeft !== undefined ? `${feature.desktopLeft}px` : undefined,
+        top: `${feature.desktopTop}px`,
+      }}
+      onMouseEnter={() => onHover(feature.id)}
+      onMouseLeave={onLeave}
     >
-      {/* Icon Box */}
-      <div className="flex-shrink-0">
-        {iconType === "bills" ? <BillsIcon /> : <GaugeIcon />}
+      {/* Icon Container - positioned at left:12px, top:13px */}
+      <div 
+        className="absolute w-[106px] h-[116px] bg-[#181818] rounded-[13px] overflow-hidden flex items-center justify-center"
+        style={{ left: "12px", top: "13px" }}
+      >
+        <Image
+          src={feature.icon}
+          alt={feature.title}
+          width={48}
+          height={48}
+          className="w-12 h-12 object-contain"
+        />
       </div>
-      {/* Text */}
-      <div className="flex-1 min-w-0">
-        <h4 className="text-[14px] md:text-[16px] font-bold text-gray-900 leading-tight mb-0.5 md:mb-1 tracking-tight">
-          {title}
-        </h4>
-        <p className="text-[12px] md:text-[14px] text-gray-400 leading-snug font-medium">
-          {description}
+
+      {/* Text Content - positioned at left:134px, top:20px */}
+      <div 
+        className="absolute flex flex-col gap-[14px] w-[141px]"
+        style={{ left: "134px", top: "20px" }}
+      >
+        <p className="font-display text-[16px] font-bold text-black leading-[1.14]">
+          {feature.title}
+        </p>
+        <p className="font-display text-[14px] text-black opacity-60 leading-normal">
+          {feature.description}
         </p>
       </div>
     </div>
   );
 }
 
-// Mobile feature card for carousel
-function MobileFeatureCard({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
+// ============================================
+// MOBILE FEATURE CARD COMPONENT
+// ============================================
+interface MobileFeatureCardProps {
+  feature: FeatureCardData;
+  isActive?: boolean;
+  onTap: (id: FeatureId) => void;
+}
+
+function MobileFeatureCard({ feature, isActive, onTap }: MobileFeatureCardProps) {
   return (
-    <div 
-      className="feature-card flex-shrink-0 w-[180px] rounded-[16px] p-2.5 border border-gray-200"
+    <div
+      className={`
+        flex-shrink-0 w-[133px] rounded-[8px] overflow-hidden p-2
+        transition-all duration-300
+      `}
       style={{
-        background: "linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",
-        boxShadow: "0px 4px 20px 0px rgba(0, 0, 0, 0.08)"
+        background: isActive 
+          ? "#3478f6" 
+          : "linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",
+        border: isActive ? "1px solid #3478f6" : "1px solid rgba(0,0,0,0.12)",
+        boxShadow: "0px 2.161px 16.205px 0px rgba(0,0,0,0.12)",
       }}
+      onClick={() => onTap(feature.id)}
     >
-      {/* Dark Icon Container */}
-      <div className="w-full h-[120px] bg-[#111111] rounded-[12px] flex items-center justify-center mb-3">
-        <div className="relative flex flex-col items-center justify-center">
-          {/* Gauge Arc */}
-          <div className="relative w-20 h-12 mb-1 flex items-center justify-center">
-            <svg
-              width="80"
-              height="40"
-              viewBox="0 0 80 40"
-              fill="none"
-              className="absolute top-0"
-            >
-              {/* Background arc */}
-              <path
-                d="M 8 36 A 32 32 0 0 1 72 36"
-                stroke="#222222"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              {/* Blue progress arc */}
-              <path
-                d="M 8 36 A 32 32 0 0 1 52 8"
-                stroke="#3B82F6"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="text-white text-[16px] font-bold mt-4">24°C</span>
-          </div>
-          {/* Three Blue Dots */}
-          <div className="flex gap-2.5 mt-2">
-            <div className="w-4 h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-90" />
-            </div>
-            <div className="w-4 h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-90" />
-            </div>
-            <div className="w-4 h-4 rounded-full bg-[#3B82F6] flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-white rounded-full opacity-90" />
-            </div>
-          </div>
-        </div>
+      {/* Icon Container - using same icons as desktop */}
+      <div className="w-full h-[58px] bg-[#181818] rounded-[7px] flex items-center justify-center mb-3">
+        <Image
+          src={feature.icon}
+          alt={feature.title}
+          width={40}
+          height={40}
+          className="w-10 h-10 object-contain"
+        />
       </div>
+
       {/* Text Content */}
-      <h4 className="text-[15px] font-bold text-gray-900 leading-tight mb-0.5">
-        {title}
-      </h4>
-      <p className="text-[13px] text-gray-500 leading-snug">{description}</p>
+      <p className={`font-display text-[14px] font-bold leading-none mb-1.5 ${isActive ? "text-white" : "text-black"}`}>
+        {feature.title}
+      </p>
+      <p className={`font-display text-[12px] leading-normal ${isActive ? "text-white opacity-60" : "text-black opacity-60"}`}>
+        {feature.description}
+      </p>
     </div>
   );
 }
 
+// ============================================
+// MAIN COMPONENT
+// ============================================
 export function OptimistAppSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const parallaxContentRef = useRef<HTMLDivElement>(null); // Inner content that receives parallax
   const headerRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  
+  const [hoveredFeature, setHoveredFeature] = useState<FeatureId>(null);
+  // Default to first item (energy-meter) for mobile
+  const [activeFeature, setActiveFeature] = useState<FeatureId>("energy-meter");
 
-  // ============================================
-  // PARALLAX EFFECT SETUP
-  // Apply smooth 3D tilt to the FULL component content
-  // sectionRef = area that tracks mouse movement
-  // parallaxContentRef = entire inner content that receives the tilt
-  // The lerping happens in the animation loop (equivalent to R3F useFrame)
-  // ============================================
-  useMouseParallax(sectionRef, parallaxContentRef);
+  // Get current hand image based on hover/active state
+  const getCurrentHandImage = useCallback(() => {
+    const featureId = hoveredFeature || activeFeature;
+    const feature = FEATURES.find((f) => f.id === featureId);
+    return feature?.handImage || "/hands/Live Energy Meter.png";
+  }, [hoveredFeature, activeFeature]);
 
+  // GSAP animations
   useGSAP(
     () => {
       const tl = gsap.timeline({
@@ -395,278 +257,238 @@ export function OptimistAppSection() {
     { scope: sectionRef }
   );
 
+  const handleCardHover = (id: FeatureId) => {
+    setHoveredFeature(id);
+  };
+
+  const handleCardLeave = () => {
+    setHoveredFeature(null);
+  };
+
+  const handleMobileCardTap = (id: FeatureId) => {
+    setActiveFeature(id);
+  };
+
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-4 md:py-6 px-4 md:px-6"
+      className="bg-white py-4 md:py-6 px-4 md:px-10"
     >
-      {/* Rounded Container with Border - STATIC frame */}
+      {/* Main Container - 1360px x 917px from Figma */}
       <div
         ref={containerRef}
-        className={`relative max-w-[1440px] mx-auto bg-gradient-to-b from-white via-[#f5f9ff] to-[#e8f1ff] rounded-[32px] md:rounded-[48px] border border-gray-200/50 transition-shadow duration-500 ease-out ${
-          isHovered ? "shadow-2xl" : "shadow-xl"
-        }`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="relative max-w-[1360px] mx-auto rounded-[24px] lg:rounded-[44px] overflow-hidden"
+        style={{
+          background: "linear-gradient(90deg, rgba(236, 236, 236, 0.2) 0%, rgba(236, 236, 236, 0.2) 100%), linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%)",
+          border: "1px solid rgba(33,33,33,0.12)",
+        }}
       >
-        {/* Inner content wrapper - receives parallax tilt via GSAP */}
-        {/* GSAP handles transformPerspective and preserve-3d internally for cross-browser support */}
-        <div
-          ref={parallaxContentRef}
-          style={{
-            transformOrigin: "center center",
-          }}
-        >
-        {/* Background Semi-Elliptical Gradients from Bottom */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Outer Ellipse Image - Desktop Only */}
-          <div className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[65%]">
+        {/* ============ DESKTOP LAYOUT ============ */}
+        <div className="hidden lg:block relative h-[800px]">
+          {/* Background Ellipse - Outer (Group) */}
+          <div 
+            className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+            style={{ top: "120px", width: "1258px", height: "1258px" }}
+          >
             <Image
               src="/Ellipse 6512.png"
               alt=""
-              width={1600}
-              height={1100}
-              className="w-[1600px] h-auto"
+              width={1258}
+              height={1258}
+              className="w-full h-full"
+              style={{ transform: "scale(1.112)" }}
             />
           </div>
-          {/* Inner Ellipse Image - Desktop Only */}
-          <div className="hidden lg:block absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[50%]">
+
+          {/* Background Ellipse - Inner */}
+          <div 
+            className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+            style={{ top: "380px", width: "753px", height: "753px" }}
+          >
             <Image
               src="/Ellipse 6513.png"
               alt=""
-              width={1200}
-              height={850}
-              className="w-[1200px] h-auto"
+              width={753}
+              height={753}
+              className="w-full h-full"
+              style={{ transform: "scale(1.187)" }}
             />
           </div>
-          {/* Radial glow effect */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[40%] w-[1400px] rounded-[50%] bg-gradient-radial from-[#D4E8FF]/20 via-[#E8F2FF]/10 to-transparent" />
-        </div>
 
-        <div className="relative z-10 px-4 md:px-8 lg:px-16 pt-4 md:pt-8 pb-0">
-          {/* Header */}
-          <div ref={headerRef} className="text-center mb-8 md:mb-12">
-            <h2 className="font-display text-[32px] md:text-[40px] leading-[32px] md:leading-[40px] font-[700] font-bold text-gray-900 mb-2">
+          {/* Hand/Phone Image */}
+          <div
+            ref={phoneRef}
+            className="absolute z-20 pointer-events-none"
+            style={{ 
+              left: "50%", 
+              top: "140px",
+              transform: "translateX(-50%)",
+              width: "700px",
+              height: "650px",
+            }}
+          >
+            {/* All hand images for crossfade effect */}
+            {FEATURES.map((feature) => (
+              <Image
+                key={feature.id}
+                src={feature.handImage}
+                alt="Optimist App"
+                fill
+                className={`object-contain transition-opacity duration-300 ${
+                  getCurrentHandImage() === feature.handImage
+                    ? "opacity-100"
+                    : "opacity-0"
+                }`}
+                priority={feature.id === "energy-meter"}
+              />
+            ))}
+          </div>
+
+          {/* Bottom Fade Gradient */}
+          <div 
+            className="absolute left-0 w-full h-[120px] pointer-events-none z-30 bottom-0"
+            style={{
+              background: "linear-gradient(178deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 1) 100%)",
+            }}
+          />
+
+          {/* Header - centered, top: 43px */}
+          <div 
+            ref={headerRef} 
+            className="absolute left-1/2 -translate-x-1/2 text-center w-[444px] z-10"
+            style={{ top: "43px" }}
+          >
+            <h2 className="font-display text-[40px] font-bold text-black leading-none mb-[14px]">
               Optimist App
             </h2>
-            <p className="text-[16px] md:text-[20px] leading-[16px] md:leading-[20px] text-[#0000006B] font-[400]">
+            <p className="font-display text-[20px] leading-normal" style={{ color: "rgba(0,0,0,0.42)" }}>
               Your full-control panel, right in your hand.
             </p>
           </div>
 
-          {/* Desktop Layout */}
-          <div className="hidden lg:block relative h-[600px]">
-            {/* Blue Gradient Arcs - Desktop Only */}
-            {/* Outer Arc - at bottom curving upward */}
+          {/* Feature Cards */}
+          <div ref={featuresRef} className="absolute inset-0 z-20">
+            {FEATURES.map((feature) => (
+              <div key={feature.id} className="feature-card">
+                <DesktopFeatureCard
+                  feature={feature}
+                  onHover={handleCardHover}
+                  onLeave={handleCardLeave}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ============ MOBILE LAYOUT ============ */}
+        <div className="lg:hidden relative overflow-hidden">
+          {/* Background Ellipses - Mobile */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Outer Ellipse */}
             <div 
-              className="absolute left-1/2 -translate-x-1/2 pointer-events-none z-10"
-              style={{ bottom: "-450px" }}
+              className="absolute left-1/2 -translate-x-1/2"
+              style={{ top: "196px", width: "100%", maxWidth: "1258px" }}
             >
               <Image
                 src="/Ellipse 6512.png"
                 alt=""
-                width={1400}
-                height={900}
-                className="w-[1400px] h-auto"
+                width={1258}
+                height={1258}
+                className="w-full h-auto"
+                style={{ transform: "scale(1.112)" }}
               />
             </div>
-            {/* Inner Arc - at bottom curving upward */}
+            {/* Inner Ellipse */}
             <div 
-              className="absolute left-1/2 -translate-x-1/2 pointer-events-none z-10"
-              style={{ bottom: "-350px" }}
+              className="absolute left-1/2 -translate-x-1/2"
+              style={{ top: "350px", width: "80%", maxWidth: "753px" }}
             >
               <Image
                 src="/Ellipse 6513.png"
                 alt=""
-                width={1100}
-                height={700}
-                className="w-[1100px] h-auto"
+                width={753}
+                height={753}
+                className="w-full h-auto"
+                style={{ transform: "scale(1.187)" }}
               />
             </div>
-
-            {/* Feature Cards positioned along the elliptical arcs */}
-            <div ref={featuresRef} className="absolute inset-0">
-              {/* Left Arc Cards - Top to Bottom */}
-    
-
-              {/* Top Left - Live Energy Meter */}
-              <div
-                className="absolute z-20 transition-transform duration-300 hover:scale-105"
-                style={{ top: "0%", left: "8%" }}
-              >
-                <FeatureCard
-                  title="Live Energy Meter"
-                  description="Track. Predict. Save."
-                  iconType="gauge"
-                  iconPosition="left"
-                  className="w-[320px]"
-                />
-              </div>
-
-              {/* Middle Left - Projected Monthly Bills */}
-              <div
-                className="absolute z-20 transition-transform duration-300 hover:scale-105"
-                style={{ top: "35%", left: "2%" }}
-              >
-                <FeatureCard
-                  title="Projected Monthly Bills"
-                  description="No surprises. Just real numbers."
-                  iconType="bills"
-                  iconPosition="left"
-                  className="w-[320px]"
-                />
-              </div>
-
-              {/* Bottom Left - Filter Health */}
-              <div
-                className="absolute z-20 transition-transform duration-300 hover:scale-105"
-                style={{ top: "70%", left: "6%" }}
-              >
-                <FeatureCard
-                  title="Filter Health"
-                  description="Clean when needed. No more guessing."
-                  iconType="gauge"
-                  iconPosition="left"
-                  className="w-[320px]"
-                />
-              </div>
-
-              {/* Right Arc Cards - Top to Bottom */}
-
-              {/* Top Right - Gas Level Indicator */}
-              <div
-                className="absolute z-20 transition-transform duration-300 hover:scale-105"
-                style={{ top: "0%", right: "8%" }}
-              >
-                <FeatureCard
-                  title="Gas Level Indicator"
-                  description="Know before it's an issue."
-                  iconType="gauge"
-                  iconPosition="right"
-                  className="w-[320px]"
-                />
-              </div>
-
-              {/* Middle Right - Intelligence Service Assistance */}
-              <div
-                className="absolute z-20 transition-transform duration-300 hover:scale-105"
-                style={{ top: "35%", right: "2%" }}
-              >
-                <FeatureCard
-                  title="Intelligence Service Assistance"
-                  description="Diagnose remotely. Service seamlessly"
-                  iconType="gauge"
-                  iconPosition="right"
-                  className="w-[340px]"
-                />
-              </div>
-
-              {/* Bottom Right - Scheduling */}
-              <div
-                className="absolute z-[31] transition-transform duration-300 hover:scale-105"
-                style={{ top: "70%", right: "6%" }}
-              >
-                <FeatureCard
-                  title="Scheduling"
-                  description="Start or stop automatically, on your time."
-                  iconType="gauge"
-                  iconPosition="right"
-                  className="w-[320px]"
-                />
-              </div>
-            </div>
-
-            {/* Hand/Phone Image - Bottom Center-Right */}
-            <div
-              ref={phoneRef}
-              className="absolute z-30 pointer-events-none"
-              style={{
-                bottom: "0px",
-                left: "45%",
-                transform: "translateX(-50%)",
-              }}
-            >
-              <div className="relative w-[900px]">
-                <Image
-                  src="/Hand.png"
-                  alt="Optimist App"
-                  width={850}
-                  height={1500}
-                  className="w-full h-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.2)]"
-                  priority
-                />
-              </div>
-            </div>
           </div>
 
-          {/* Mobile Layout */}
-          <div className="lg:hidden mt-[-50px]">
-            {/* Phone */}
-            <div ref={phoneRef} className="flex justify-center">
-              <div className="relative w-[100%]">
-                <Image
-                  src="/Hand.png"
-                  alt="Optimist App"
-                  width={500}
-                  height={820}
-                  className="w-full h-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
-                  priority
-                />
+          {/* Header - Mobile */}
+          <div ref={headerRef} className="relative z-10 text-center pt-[43px] px-4">
+            <h2 className="font-display text-[32px] font-bold text-black leading-none mb-3">
+              Optimist App
+            </h2>
+            <p className="font-display text-[16px] leading-normal" style={{ color: "rgba(0,0,0,0.42)" }}>
+              Your full-control panel, right in your hand.
+            </p>
+          </div>
+
+          {/* Hand/Phone Image Container - Mobile */}
+          <div className="relative z-10">
+            {/* Hand Image - 512px x 438px from Figma, responsive */}
+            <div 
+              ref={phoneRef} 
+              className="relative flex justify-center"
+              style={{ marginTop: "-20px" }}
+            >
+              <div 
+                className="relative w-full"
+                style={{ 
+                  maxWidth: "512px",
+                  aspectRatio: "512 / 438",
+                }}
+              >
+                {FEATURES.map((feature) => (
+                  <Image
+                    key={feature.id}
+                    src={feature.handImage}
+                    alt="Optimist App"
+                    fill
+                    className={`object-contain transition-opacity duration-300 ${
+                      activeFeature === feature.id
+                        ? "opacity-100"
+                        : "opacity-0"
+                    }`}
+                    priority={feature.id === "energy-meter"}
+                  />
+                ))}
               </div>
             </div>
 
-            {/* Horizontal Scrollable Carousel */}
-            <div
-              ref={featuresRef}
-              className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide"
-              style={{ scrollSnapType: "x mandatory" }}
-            >
-              {mobileFeatures.map((f) => (
-                <div key={f.id} style={{ scrollSnapAlign: "start" }}>
-                  <MobileFeatureCard
-                    title={f.title}
-                    description={f.description}
-                  />
-                </div>
-              ))}
-            </div>
+            {/* White Gradient at bottom of hand */}
+            <div 
+              className="absolute left-0 right-0 bottom-0 h-[100px] pointer-events-none z-20"
+              style={{
+                background: "linear-gradient(178deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 1) 100%)",
+              }}
+            />
+          </div>
+
+          {/* Horizontal Scrollable Carousel */}
+          <div
+            ref={featuresRef}
+            className="relative z-20 flex gap-3 overflow-x-auto pb-6 pt-4 px-3 scrollbar-hide"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {FEATURES.map((feature) => (
+              <div 
+                key={feature.id} 
+                className="feature-card"
+                style={{ scrollSnapAlign: "start" }}
+              >
+                <MobileFeatureCard
+                  feature={feature}
+                  isActive={activeFeature === feature.id}
+                  onTap={handleMobileCardTap}
+                />
+              </div>
+            ))}
           </div>
         </div>
-        </div>{/* Close parallax wrapper */}
       </div>
     </section>
   );
 }
 
-const mobileFeatures = [
-  {
-    id: 1,
-    title: "Live Energy Meter",
-    description: "Track. Predict. Save.",
-  },
-  {
-    id: 2,
-    title: "Projected Monthly Bills",
-    description: "No surprises. Just real numbers.",
-  },
-  {
-    id: 3,
-    title: "Filter Health",
-    description: "Clean when needed. No more guessing.",
-  },
-  {
-    id: 4,
-    title: "Gas Level Indicator",
-    description: "Know before it's an issue.",
-  },
-  {
-    id: 5,
-    title: "Intelligence Service Assistance",
-    description: "Diagnose remotely. Service seamlessly",
-  },
-  {
-    id: 6,
-    title: "Scheduling",
-    description: "Start or stop automatically, on your time.",
-  },
-];
+export default OptimistAppSection;
