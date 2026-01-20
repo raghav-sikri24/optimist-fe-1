@@ -1,4 +1,19 @@
 import { motion } from "framer-motion";
+
+// Scale from bottom using translateY compensation
+// This approach works reliably across all browsers including Safari
+// Safari doesn't support transformBox: 'fill-box' on SVG <g> elements correctly
+// So we manually compensate with translateY to keep the bottom edge fixed
+const scaleFromBottom = (scale: number, height: number = 622) => {
+    // When scaling from center (default), both top and bottom move equally
+    // To keep bottom fixed, we translate down by half the shrinkage amount
+    const compensation = (height * (1 - scale)) / 2;
+    return {
+        scaleY: scale,
+        y: compensation,
+    };
+};
+
 //@ts-ignore
 const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
     const s1_8 = 1.1 - (0.3 * progress); // 100% -> 70%
@@ -17,7 +32,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
         >
             <g clipPath="url(#clip0_1084_2444)">
                 <rect width={1360} height={622} fill="black" />
-                <motion.g animate={{ scaleY: s4_5 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 680-850 */}
+                <motion.g animate={scaleFromBottom(s4_5)}>
                     <mask id="path-1-inside-1_1084_2444" fill="white">
                         <path d="M680 0H850V622H680V0Z" />
                     </mask>
@@ -29,7 +45,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-1-inside-1_1084_2444)"
                     />
                 </motion.g>
-                <motion.g filter="url(#filter0_d_1084_2444)" animate={{ scaleY: s3_6 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 850-1020 */}
+                <motion.g filter="url(#filter0_d_1084_2444)" animate={scaleFromBottom(s3_6)}>
                     <mask id="path-3-inside-2_1084_2444" fill="white">
                         <path d="M1020 0H850V622H1020V0Z" />
                     </mask>
@@ -45,7 +62,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-3-inside-2_1084_2444)"
                     />
                 </motion.g>
-                <motion.g filter="url(#filter1_d_1084_2444)" animate={{ scaleY: s2_7 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 1020-1190 */}
+                <motion.g filter="url(#filter1_d_1084_2444)" animate={scaleFromBottom(s2_7)}>
                     <mask id="path-5-inside-3_1084_2444" fill="white">
                         <path d="M1190 0H1020V622H1190V0Z" />
                     </mask>
@@ -61,7 +79,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-5-inside-3_1084_2444)"
                     />
                 </motion.g>
-                <motion.g filter="url(#filter2_d_1084_2444)" animate={{ scaleY: s1_8 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 1190-1360 */}
+                <motion.g filter="url(#filter2_d_1084_2444)" animate={scaleFromBottom(s1_8)}>
                     <mask id="path-7-inside-4_1084_2444" fill="white">
                         <path d="M1360 0H1190V622H1360V0Z" />
                     </mask>
@@ -77,7 +96,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-7-inside-4_1084_2444)"
                     />
                 </motion.g>
-                <motion.g animate={{ scaleY: s4_5 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 510-680 */}
+                <motion.g animate={scaleFromBottom(s4_5)}>
                     <mask id="path-9-inside-5_1084_2444" fill="white">
                         <path d="M510 0H680V622H510V0Z" />
                     </mask>
@@ -89,7 +109,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-9-inside-5_1084_2444)"
                     />
                 </motion.g>
-                <motion.g filter="url(#filter3_d_1084_2444)" animate={{ scaleY: s3_6 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 340-510 */}
+                <motion.g filter="url(#filter3_d_1084_2444)" animate={scaleFromBottom(s3_6)}>
                     <mask id="path-11-inside-6_1084_2444" fill="white">
                         <path d="M340 0H510V622H340V0Z" />
                     </mask>
@@ -105,7 +126,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-11-inside-6_1084_2444)"
                     />
                 </motion.g>
-                <motion.g filter="url(#filter4_d_1084_2444)" animate={{ scaleY: s2_7 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 170-340 */}
+                <motion.g filter="url(#filter4_d_1084_2444)" animate={scaleFromBottom(s2_7)}>
                     <mask id="path-13-inside-7_1084_2444" fill="white">
                         <path d="M170 0H340V622H170V0Z" />
                     </mask>
@@ -121,7 +143,8 @@ const BlueGradientBox = ({ progress = 0, ...props }: { progress?: number }) => {
                         mask="url(#path-13-inside-7_1084_2444)"
                     />
                 </motion.g>
-                <motion.g filter="url(#filter5_d_1084_2444)" animate={{ scaleY: s1_8 }} style={{ originY: 1, transformBox: 'fill-box' as const }}>
+                {/* Bar 0-170 */}
+                <motion.g filter="url(#filter5_d_1084_2444)" animate={scaleFromBottom(s1_8)}>
                     <mask id="path-15-inside-8_1084_2444" fill="white">
                         <path d="M0 0H170V622H0V0Z" />
                     </mask>

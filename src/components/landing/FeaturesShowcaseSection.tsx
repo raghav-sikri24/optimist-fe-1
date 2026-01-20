@@ -1,10 +1,20 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { ScrollTrigger } from "@/lib/gsap";
+
+// Helper to detect iOS Safari
+const isIOSSafari = () => {
+  if (typeof window === "undefined") return false;
+  const ua = window.navigator.userAgent;
+  const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  const webkit = !!ua.match(/WebKit/i);
+  const iOSSafari = iOS && webkit && !ua.match(/CriOS/i) && !ua.match(/OPiOS/i);
+  return iOSSafari;
+};
 
 const features = [
   {
@@ -102,6 +112,10 @@ export function FeaturesShowcaseSection() {
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
   const [activeFeature, setActiveFeature] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
+  const [mobileVideoReady, setMobileVideoReady] = useState(false);
+  const videoInitializedRef = useRef(false);
+  const mobileVideoInitializedRef = useRef(false);
 
   // Check screen size for conditional rendering
   useEffect(() => {
@@ -114,6 +128,72 @@ export function FeaturesShowcaseSection() {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
+  // Initialize video for iOS Safari - must happen on user interaction
+  const initializeVideo = useCallback(async (video: HTMLVideoElement | null, initializedRef: React.MutableRefObject<boolean>) => {
+    if (!video || initializedRef.current) return;
+    
+    try {
+      video.muted = true;
+      // Brief play to force iOS to load video data
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+        video.pause();
+        video.currentTime = 0;
+        initializedRef.current = true;
+      }
+    } catch (e) {
+      // Autoplay prevented - this is expected on iOS without user interaction
+    }
+  }, []);
+
+  // Touch handler to initialize video on first user interaction (crucial for iOS Safari)
+  useEffect(() => {
+    const handleFirstTouch = () => {
+      if (!isLargeScreen && mobileVideoRef.current) {
+        initializeVideo(mobileVideoRef.current, mobileVideoInitializedRef);
+      } else if (isLargeScreen && videoRef.current) {
+        initializeVideo(videoRef.current, videoInitializedRef);
+      }
+      // Remove listener after first touch
+      document.removeEventListener('touchstart', handleFirstTouch);
+    };
+
+    document.addEventListener('touchstart', handleFirstTouch, { passive: true });
+    return () => document.removeEventListener('touchstart', handleFirstTouch);
+  }, [isLargeScreen, initializeVideo]);
+
+  // Video load initialization
+  useEffect(() => {
+    const video = isLargeScreen ? videoRef.current : mobileVideoRef.current;
+    if (!video) return;
+
+    video.load();
+    
+    // Try to initialize immediately (works on non-iOS browsers)
+    if (!isIOSSafari()) {
+      const initializedRef = isLargeScreen ? videoInitializedRef : mobileVideoInitializedRef;
+      initializeVideo(video, initializedRef);
+    }
+  }, [isLargeScreen, initializeVideo]);
+
+  // Handle video metadata loaded
+  const handleVideoLoaded = useCallback(() => {
+    setVideoReady(true);
+    // Try to initialize on metadata load
+    if (videoRef.current && !videoInitializedRef.current) {
+      initializeVideo(videoRef.current, videoInitializedRef);
+    }
+  }, [initializeVideo]);
+
+  const handleMobileVideoLoaded = useCallback(() => {
+    setMobileVideoReady(true);
+    // Try to initialize on metadata load
+    if (mobileVideoRef.current && !mobileVideoInitializedRef.current) {
+      initializeVideo(mobileVideoRef.current, mobileVideoInitializedRef);
+    }
+  }, [initializeVideo]);
+
   // Desktop video scrubbing - starts when section enters viewport
   useGSAP(
     () => {
@@ -123,6 +203,30 @@ export function FeaturesShowcaseSection() {
       if (!video || !sectionRef.current) return;
 
       video.pause();
+      
+      // Track target time for smoother seeking
+      let targetTime = 0;
+      let isSeekingAllowed = true;
+
+      // Use requestAnimationFrame for smoother video updates
+      const updateVideoTime = () => {
+        if (!isSeekingAllowed) return;
+        
+        if (video.readyState >= 1 && Number.isFinite(video.duration)) {
+          const diff = Math.abs(video.currentTime - targetTime);
+          if (diff > 0.03) {
+            if ('fastSeek' in video && typeof video.fastSeek === 'function') {
+              try {
+                video.fastSeek(targetTime);
+              } catch {
+                video.currentTime = targetTime;
+              }
+            } else {
+              video.currentTime = targetTime;
+            }
+          }
+        }
+      };
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -130,23 +234,24 @@ export function FeaturesShowcaseSection() {
         end: "bottom bottom",
         scrub: 0.1,
         onUpdate: (self) => {
-          if (video.readyState >= 1 && Number.isFinite(video.duration)) {
-            const progress = self.progress;
-            const time = progress * video.duration;
-            if (Math.abs(video.currentTime - time) > 0.05) {
-              video.currentTime = time;
-            }
+          if (Number.isFinite(video.duration)) {
+            targetTime = self.progress * video.duration;
+            requestAnimationFrame(updateVideoTime);
           }
         }
       });
+
+      return () => {
+        isSeekingAllowed = false;
+      };
     },
     {
       scope: sectionRef,
-      dependencies: [isLargeScreen],
+      dependencies: [isLargeScreen, videoReady],
     }
   );
 
-  // Mobile: Separate triggers for video scrubbing (early start) and pinning
+  // Mobile: ScrollTrigger for content transitions and video scrubbing (no pinning - use CSS sticky instead)
   useGSAP(
     () => {
       if (isLargeScreen) return;
@@ -157,45 +262,57 @@ export function FeaturesShowcaseSection() {
 
       video.pause();
 
-      // Calculate the total scroll distance for pinning
-      const pinScrollDistance = (features.length - 1) * window.innerHeight;
+      // Calculate the total scroll distance
+      const scrollDistance = features.length * window.innerHeight;
+      
+      // Track target time for smoother seeking
+      let targetTime = 0;
+      let rafId: number | null = null;
 
-      // Trigger 1: Video scrubbing - starts when section enters viewport
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top 80%", // Start when section enters viewport
-        end: () => `+=${window.innerHeight * 0.8 + pinScrollDistance}`, // Account for pre-pin scroll + pin duration
-        scrub: 0.3,
-        onUpdate: (self) => {
-          if (video.readyState >= 1 && Number.isFinite(video.duration)) {
-            const progress = self.progress;
-            const time = progress * video.duration;
-            if (Math.abs(video.currentTime - time) > 0.05) {
-              video.currentTime = time;
+      // Use requestAnimationFrame for smoother video updates
+      const updateVideoTime = () => {
+        if (video.readyState >= 1 && Number.isFinite(video.duration)) {
+          const diff = Math.abs(video.currentTime - targetTime);
+          if (diff > 0.03) {
+            try {
+              video.currentTime = targetTime;
+            } catch (e) {
+              // Ignore seeking errors
             }
           }
         }
-      });
+      };
 
-      // Trigger 2: Pinning and content transitions - starts at top
+      // ScrollTrigger for tracking scroll progress (no pin - content uses CSS sticky)
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${pinScrollDistance}`,
-        pin: true,
-        pinSpacing: true,
+        end: `bottom bottom`,
         scrub: 0.3,
         onUpdate: (self) => {
-          // Determine active feature based on scroll progress
           const progress = self.progress;
+          
+          // Update active feature based on scroll progress
           const featureCount = features.length;
           const newActiveFeature = Math.min(
             Math.floor(progress * featureCount),
             featureCount - 1
           );
           setActiveFeature(newActiveFeature);
-        }
+          
+          // Update video time
+          if (Number.isFinite(video.duration)) {
+            targetTime = progress * video.duration;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(updateVideoTime);
+          }
+        },
       });
+
+      // Cleanup
+      return () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      };
     },
     {
       scope: mobileSectionRef,
@@ -205,52 +322,104 @@ export function FeaturesShowcaseSection() {
 
   return (
     <>
-      {/* Mobile Layout - Fixed split screen with content transitions */}
+      {/* Mobile Layout - Uses CSS sticky for reliable mobile behavior */}
+      {/* Outer container creates scroll space (height = features * 100vh) */}
       <div 
         ref={mobileSectionRef}
-        className="lg:hidden relative bg-[#E7E7E7] h-screen"
+        className="lg:hidden block w-full relative"
+        style={{ 
+          height: `${features.length * 100}vh`,
+          backgroundColor: '#E7E7E7',
+        }}
       >
-        {/* Fixed container that gets pinned */}
-        <div className="h-screen w-full flex flex-col">
-          {/* Top: Video Section (55% of screen) */}
-          <div className="h-[55%] w-full overflow-hidden bg-[#E7E7E7] relative">
-            <div className="absolute inset-0 flex items-center justify-center">
+        {/* Sticky container - stays fixed while parent scrolls */}
+        <div 
+          style={{
+            position: 'sticky',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#E7E7E7',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Video Section - Top 55% */}
+          <div 
+            style={{ 
+              height: '55%', 
+              width: '100%',
+              overflow: 'hidden',
+              backgroundColor: '#E7E7E7',
+              position: 'relative',
+              flexShrink: 0,
+            }}
+          >
+            <div 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <video
                 ref={mobileVideoRef}
-                src="/PointersAnimation.mp4"
+                src="/PointersAnimation.mp4#t=0.001"
                 className="h-[50%] sm:h-[100%] md:h-[120%] w-auto max-w-none object-contain"
                 muted
                 playsInline
                 preload="auto"
-                // @ts-ignore
-                webkit-playsinline="true"
-                disablePictureInPicture
+                onLoadedMetadata={handleMobileVideoLoaded}
+                onCanPlay={handleMobileVideoLoaded}
+                onCanPlayThrough={handleMobileVideoLoaded}
               />
             </div>
           </div>
 
-          {/* Bottom: Content Section (45% of screen) */}
-          <div className="h-[45%] w-full bg-[#E7E7E7] relative">
+          {/* Content Section - Bottom 45% */}
+          <div 
+            style={{ 
+              height: '45%', 
+              width: '100%',
+              backgroundColor: '#E7E7E7',
+              position: 'relative',
+              flexShrink: 0,
+            }}
+          >
             {/* Feature content - stacked with fade transitions */}
-            <div className="absolute inset-0">
-              {features.map((feature, index) => (
-                <MobileFeatureContent
-                  key={feature.id}
-                  feature={feature}
-                  isActive={index === activeFeature}
-                />
-              ))}
-            </div>
+            {features.map((feature, index) => (
+              <MobileFeatureContent
+                key={feature.id}
+                feature={feature}
+                isActive={index === activeFeature}
+              />
+            ))}
 
             {/* Scroll hint for first feature */}
             <div 
-              className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-opacity duration-300 ${
-                activeFeature === 0 ? "opacity-60" : "opacity-0"
-              }`}
+              style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.25rem',
+                opacity: activeFeature === 0 ? 0.6 : 0,
+                transition: 'opacity 300ms',
+              }}
             >
-              <span className="text-xs text-[#9CA3AF] uppercase tracking-wider">Scroll</span>
+              <span style={{ fontSize: '0.75rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Scroll</span>
               <svg 
-                className="w-4 h-4 text-[#9CA3AF] animate-bounce" 
+                style={{ width: '1rem', height: '1rem', color: '#9CA3AF' }}
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
@@ -350,14 +519,18 @@ export function FeaturesShowcaseSection() {
             <div className="absolute inset-0 flex items-center justify-center">
               <video
                 ref={videoRef}
-                src="/PointersAnimation.mp4"
+                src="/PointersAnimation.mp4#t=0.001"
                 className="h-[100%] bg-[#E7E7E7] max-w-none w-auto object-cover translate-x-[25%]"
                 muted
                 playsInline
+                autoPlay={false}
                 preload="auto"
-                // @ts-ignore
-                webkit-playsinline="true"
+                onLoadedMetadata={handleVideoLoaded}
+                onCanPlay={handleVideoLoaded}
+                onCanPlayThrough={handleVideoLoaded}
                 disablePictureInPicture
+                controlsList="nodownload nofullscreen noremoteplayback"
+                style={{ WebkitTransform: 'translateZ(0)' }}
               />
             </div>
           </div>
