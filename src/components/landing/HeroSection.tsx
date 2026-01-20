@@ -345,7 +345,7 @@ export function HeroSection() {
           {/* Mobile: center content vertically, shifted up with pb to make room for AC */}
           <div className="flex flex-col justify-center h-full pb-48 md:pb-0 md:h-auto lg:flex-row lg:justify-between lg:items-start max-w-[1400px] mx-auto w-full">
           {/* Left Content */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-4">
             {/* Headline */}
             <h1
               ref={headlineRef}

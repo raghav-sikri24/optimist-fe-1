@@ -272,7 +272,7 @@ export function OptimistAppSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-4 md:py-6 px-4 md:px-10"
+      className="bg-white px-4 md:px-10"
     >
       {/* Main Container - 1360px x 917px from Figma */}
       <div
@@ -324,11 +324,11 @@ export function OptimistAppSection() {
             ref={phoneRef}
             className="absolute z-20 pointer-events-none"
             style={{ 
-              left: "50%", 
+              left: "55%", 
               top: "140px",
               transform: "translateX(-50%)",
-              width: "700px",
-              height: "650px",
+              width: "800px",
+              height: "700px",
             }}
           >
             {/* All hand images for crossfade effect on desktop */}
