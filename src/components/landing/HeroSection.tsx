@@ -226,8 +226,8 @@ export function HeroSection() {
     () => {
       if (!sectionRef.current || !gradientRef.current) return;
 
-      // Skip pinning on mobile - it breaks scrolling
-      if (isMobile) return;
+      // Skip all scroll animations on mobile - use immediate check, not state
+      if (isMobileDevice()) return;
 
       // Create ScrollTrigger for pinning and gradient shrink - DESKTOP ONLY
       ScrollTrigger.create({
@@ -261,7 +261,7 @@ export function HeroSection() {
         },
       });
     },
-    { scope: sectionRef, dependencies: [isMobile] }
+    { scope: sectionRef }
   );
 
   // Initial entrance animations
@@ -342,8 +342,8 @@ export function HeroSection() {
         style={{ willChange: "transform, opacity" }}
       >
         {/* Desktop Layout: flex row with content left and buttons right */}
-        {/* Mobile: center content vertically, shifted up with pb to make room for AC */}
-        <div className="flex flex-col justify-center h-full pb-48 md:pb-0 md:h-auto lg:flex-row lg:justify-between lg:items-start max-w-[1400px] mx-auto w-full">
+          {/* Mobile: center content vertically, shifted up with pb to make room for AC */}
+          <div className="flex flex-col justify-center h-full pb-48 md:pb-0 md:h-auto lg:flex-row lg:justify-between lg:items-start max-w-[1400px] mx-auto w-full">
           {/* Left Content */}
           <div className="flex flex-col">
             {/* Headline */}
