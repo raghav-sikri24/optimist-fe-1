@@ -297,6 +297,8 @@ export function OptimistAppSection() {
               height={1258}
               className="w-full h-full"
               style={{ transform: "scale(1.112)" }}
+              loading="lazy"
+              quality={75}
             />
           </div>
 
@@ -312,6 +314,8 @@ export function OptimistAppSection() {
               height={753}
               className="w-full h-full"
               style={{ transform: "scale(1.187)" }}
+              loading="lazy"
+              quality={75}
             />
           </div>
 
@@ -327,19 +331,22 @@ export function OptimistAppSection() {
               height: "650px",
             }}
           >
-            {/* All hand images for crossfade effect */}
+            {/* All hand images for crossfade effect on desktop */}
             {FEATURES.map((feature) => (
               <Image
                 key={feature.id}
                 src={feature.handImage}
                 alt="Optimist App"
                 fill
+                sizes="700px"
+                quality={85}
                 className={`object-contain transition-opacity duration-300 ${
                   getCurrentHandImage() === feature.handImage
                     ? "opacity-100"
                     : "opacity-0"
                 }`}
                 priority={feature.id === "energy-meter"}
+                loading={feature.id === "energy-meter" ? undefined : "lazy"}
               />
             ))}
           </div>
@@ -394,8 +401,11 @@ export function OptimistAppSection() {
                 alt=""
                 width={1258}
                 height={1258}
+                sizes="100vw"
                 className="w-full h-auto"
                 style={{ transform: "scale(1.112)" }}
+                loading="lazy"
+                quality={60}
               />
             </div>
             {/* Inner Ellipse */}
@@ -408,8 +418,11 @@ export function OptimistAppSection() {
                 alt=""
                 width={753}
                 height={753}
+                sizes="80vw"
                 className="w-full h-auto"
                 style={{ transform: "scale(1.187)" }}
+                loading="lazy"
+                quality={60}
               />
             </div>
           </div>
@@ -427,6 +440,7 @@ export function OptimistAppSection() {
           {/* Hand/Phone Image Container - Mobile */}
           <div className="relative z-10">
             {/* Hand Image - 512px x 438px from Figma, responsive */}
+            {/* OPTIMIZATION: Only render the active image on mobile to prevent memory crashes */}
             <div 
               ref={phoneRef} 
               className="relative flex justify-center"
@@ -439,20 +453,16 @@ export function OptimistAppSection() {
                   aspectRatio: "512 / 438",
                 }}
               >
-                {FEATURES.map((feature) => (
-                  <Image
-                    key={feature.id}
-                    src={feature.handImage}
-                    alt="Optimist App"
-                    fill
-                    className={`object-contain transition-opacity duration-300 ${
-                      activeFeature === feature.id
-                        ? "opacity-100"
-                        : "opacity-0"
-                    }`}
-                    priority={feature.id === "energy-meter"}
-                  />
-                ))}
+                <Image
+                  key={activeFeature}
+                  src={FEATURES.find(f => f.id === activeFeature)?.handImage || FEATURES[0].handImage}
+                  alt="Optimist App"
+                  fill
+                  sizes="(max-width: 512px) 100vw, 512px"
+                  quality={80}
+                  className="object-contain"
+                  priority
+                />
               </div>
             </div>
 

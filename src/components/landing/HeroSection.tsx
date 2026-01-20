@@ -321,17 +321,18 @@ export function HeroSection() {
         WebkitTransformStyle: "preserve-3d",
       }}
     >
-      {/* Blue Gradient Background - passes scroll progress for shrink animation */}
+      {/* Blue Gradient Background - static radial glow on mobile, animated bars on desktop */}
       <div
         ref={gradientRef}
         className="absolute inset-0"
         style={{ 
-          willChange: "transform", 
+          willChange: isMobile ? "auto" : "transform", 
           transformStyle: "preserve-3d",
           WebkitTransformStyle: "preserve-3d",
         }}
       >
-        <HeroBlueGradient1 progress={scrollProgress} />
+        {/* Use HeroBlueGradient1 for both mobile (static) and desktop (animated) */}
+        <HeroBlueGradient1 progress={scrollProgress} isMobile={isMobile} />
       </div>
 
       {/* Content Container */}
@@ -358,7 +359,7 @@ export function HeroSection() {
             {/* Badges Row */}
             <div
               ref={badgesRef}
-              className="flex items-center justify-center gap-4 md:gap-6 mt-6 md:mt-8"
+              className="flex items-center justify-around gap-4 md:gap-6 mt-6 md:mt-8"
             >
               {/* ISEER Badge */}
               <div className="flex items-center gap-2 md:gap-3">
@@ -380,7 +381,7 @@ export function HeroSection() {
               </div>
 
               {/* Divider */}
-              <div className="w-px h-8 md:h-10 bg-optimist-border-light" />
+            
 
               {/* Rating Badge */}
               <div className="flex items-center gap-2 md:gap-3">
