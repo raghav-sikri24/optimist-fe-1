@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -155,20 +155,23 @@ function MobileFeatureCard({ feature, isActive, onTap }: MobileFeatureCardProps)
   return (
     <div
       className={`
-        flex-shrink-0 w-[133px] rounded-[8px] overflow-hidden p-2
-        transition-all duration-300
+        flex-shrink-0 w-[140px] h-[160px] rounded-[12px] overflow-hidden p-2.5
+        transition-all duration-300 cursor-pointer
+        ${isActive ? "scale-[1.02] -translate-y-0.5" : ""}
       `}
       style={{
         background: isActive 
           ? "#3478f6" 
           : "linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",
-        border: isActive ? "1px solid #3478f6" : "1px solid rgba(0,0,0,0.12)",
-        boxShadow: "0px 2.161px 16.205px 0px rgba(0,0,0,0.12)",
+        border: isActive ? "2px solid #3478f6" : "2px solid rgba(0,0,0,0.03)",
+        boxShadow: isActive 
+          ? "0px 8px 40px 0px rgba(0,0,0,0.18)" 
+          : "0px 4px 30px 0px rgba(0,0,0,0.12)",
       }}
       onClick={() => onTap(feature.id)}
     >
       {/* Icon Container - using same icons as desktop */}
-      <div className="w-full h-[58px] bg-[#181818] rounded-[7px] flex items-center justify-center mb-3">
+      <div className="w-full h-[58px] bg-[#181818] rounded-[8px] flex items-center justify-center mb-2.5">
         <Image
           src={feature.icon}
           alt={feature.title}
@@ -179,10 +182,10 @@ function MobileFeatureCard({ feature, isActive, onTap }: MobileFeatureCardProps)
       </div>
 
       {/* Text Content */}
-      <p className={`font-display text-[14px] font-bold leading-none mb-1.5 ${isActive ? "text-white" : "text-black"}`}>
+      <p className={`font-display text-[13px] font-bold leading-tight mb-1.5 line-clamp-2 ${isActive ? "text-white" : "text-black"}`}>
         {feature.title}
       </p>
-      <p className={`font-display text-[12px] leading-normal ${isActive ? "text-white opacity-60" : "text-black opacity-60"}`}>
+      <p className={`font-display text-[11px] leading-normal line-clamp-2 ${isActive ? "text-white/70" : "text-black/60"}`}>
         {feature.description}
       </p>
     </div>
@@ -198,10 +201,49 @@ export function OptimistAppSection() {
   const headerRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
+  const mobileCarouselRef = useRef<HTMLDivElement>(null);
   
   const [hoveredFeature, setHoveredFeature] = useState<FeatureId>(null);
   // Default to first item (energy-meter) for mobile
   const [activeFeature, setActiveFeature] = useState<FeatureId>("energy-meter");
+
+  // Scroll-based active card detection for mobile carousel
+  useEffect(() => {
+    const carousel = mobileCarouselRef.current;
+    if (!carousel) return;
+
+    const handleScroll = () => {
+      const cards = carousel.querySelectorAll('.mobile-feature-card');
+      if (!cards.length) return;
+
+      const carouselRect = carousel.getBoundingClientRect();
+      const carouselCenter = carouselRect.left + carouselRect.width / 2;
+
+      let closestCard: Element | null = null;
+      let closestDistance = Infinity;
+
+      cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(carouselCenter - cardCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestCard = card;
+        }
+      });
+
+      if (closestCard) {
+        const featureId = (closestCard as HTMLElement).dataset.featureId as FeatureId;
+        if (featureId && featureId !== activeFeature) {
+          setActiveFeature(featureId);
+        }
+      }
+    };
+
+    carousel.addEventListener('scroll', handleScroll, { passive: true });
+    return () => carousel.removeEventListener('scroll', handleScroll);
+  }, [activeFeature]);
 
   // Get current hand image based on hover/active state
   const getCurrentHandImage = useCallback(() => {
@@ -477,15 +519,16 @@ export function OptimistAppSection() {
 
           {/* Horizontal Scrollable Carousel */}
           <div
-            ref={featuresRef}
-            className="relative z-20 flex gap-3 overflow-x-auto pb-6 pt-4 px-3 scrollbar-hide"
+            ref={mobileCarouselRef}
+            className="relative z-20 flex gap-3 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {FEATURES.map((feature) => (
               <div 
                 key={feature.id} 
-                className="feature-card"
-                style={{ scrollSnapAlign: "start" }}
+                className="feature-card mobile-feature-card"
+                data-feature-id={feature.id}
+                style={{ scrollSnapAlign: "center" }}
               >
                 <MobileFeatureCard
                   feature={feature}

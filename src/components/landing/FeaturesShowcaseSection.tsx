@@ -230,7 +230,7 @@ export function FeaturesShowcaseSection() {
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: "top 80%", // Start when section top is 80% down the viewport
+        start: "top bottom", // Start as soon as section enters viewport
         end: "bottom bottom",
         scrub: 0.1,
         onUpdate: (self) => {
@@ -251,7 +251,7 @@ export function FeaturesShowcaseSection() {
     }
   );
 
-  // Mobile: ScrollTrigger for content transitions and video scrubbing (no pinning - use CSS sticky instead)
+  // Mobile: Separate ScrollTriggers for video scrubbing and content transitions
   useGSAP(
     () => {
       if (isLargeScreen) return;
@@ -261,9 +261,6 @@ export function FeaturesShowcaseSection() {
       if (!video || !section) return;
 
       video.pause();
-
-      // Calculate the total scroll distance
-      const scrollDistance = features.length * window.innerHeight;
       
       // Track target time for smoother seeking
       let targetTime = 0;
@@ -283,11 +280,27 @@ export function FeaturesShowcaseSection() {
         }
       };
 
-      // ScrollTrigger for tracking scroll progress (no pin - content uses CSS sticky)
+      // ScrollTrigger 1: VIDEO SCRUBBING - starts when section enters viewport
       ScrollTrigger.create({
         trigger: section,
-        start: "top top",
-        end: `bottom bottom`,
+        start: "top bottom", // Start as soon as section enters viewport
+        end: "bottom bottom",
+        scrub: 0.3,
+        onUpdate: (self) => {
+          // Update video time based on scroll progress
+          if (Number.isFinite(video.duration)) {
+            targetTime = self.progress * video.duration;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(updateVideoTime);
+          }
+        },
+      });
+
+      // ScrollTrigger 2: CONTENT TRANSITIONS - starts when section is sticky
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top", // Start when section reaches top (sticky position)
+        end: "bottom bottom",
         scrub: 0.3,
         onUpdate: (self) => {
           const progress = self.progress;
@@ -299,13 +312,6 @@ export function FeaturesShowcaseSection() {
             featureCount - 1
           );
           setActiveFeature(newActiveFeature);
-          
-          // Update video time
-          if (Number.isFinite(video.duration)) {
-            targetTime = progress * video.duration;
-            if (rafId) cancelAnimationFrame(rafId);
-            rafId = requestAnimationFrame(updateVideoTime);
-          }
         },
       });
 
@@ -372,7 +378,7 @@ export function FeaturesShowcaseSection() {
               <video
                 ref={mobileVideoRef}
                 src="/PointersAnimation.mp4#t=0.001"
-                className="h-[50%] sm:h-[100%] md:h-[120%] w-auto max-w-none object-contain"
+                className="h-[50%] sm:h-[200%] md:h-[120%] w-auto max-w-none object-contain"
                 muted
                 playsInline
                 preload="auto"
@@ -413,7 +419,7 @@ export function FeaturesShowcaseSection() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '0.25rem',
-                opacity: activeFeature === 0 ? 0.6 : 0,
+            
                 transition: 'opacity 300ms',
               }}
             >
@@ -437,7 +443,7 @@ export function FeaturesShowcaseSection() {
         className="relative bg-[#E7E7E7] hidden lg:block"
       >
         {/* Background Leaf Pattern */}
-        <div className="absolute top-0 left-0 w-full max-w-[800px] opacity-10 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 sticky w-full max-w-[800px] opacity-10 pointer-events-none z-0">
           <Image
             src="/Leaf Swaying.gif"
             alt=""
@@ -448,7 +454,7 @@ export function FeaturesShowcaseSection() {
           />
         </div>
 
-        <div className="flex flex-row">
+        <div className="flex flex-row pb-4">
           {/* Left Scrollable Content */}
           <div className="w-1/2 relative z-10">
             <div className="flex flex-col">

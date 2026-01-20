@@ -312,9 +312,10 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className={`hero-section relative flex flex-col overflow-x-hidden bg-black h-screen ${isMobile ? "" : "overflow-hidden"
+      className={`hero-section relative flex flex-col overflow-x-hidden bg-black ${isMobile ? "" : "overflow-hidden h-screen"
         }`}
       style={{ 
+        height: isMobile ? '85vh' : undefined,
         perspective: "1000px",
         WebkitPerspective: "1000px",
         transformStyle: "preserve-3d",
@@ -342,8 +343,11 @@ export function HeroSection() {
         style={{ willChange: "transform, opacity" }}
       >
         {/* Desktop Layout: flex row with content left and buttons right */}
-          {/* Mobile: center content vertically, shifted up with pb to make room for AC */}
-          <div className="flex flex-col justify-center h-full pb-48 md:pb-0 md:h-auto lg:flex-row lg:justify-between lg:items-start max-w-[1400px] mx-auto w-full">
+          {/* Mobile: content starts at 25vh (1/4th of screen height) */}
+          <div 
+            className="flex flex-col md:justify-center md:h-auto lg:flex-row lg:justify-between lg:items-start max-w-[1400px] mx-auto w-full"
+            style={{ paddingTop: isMobile ? '15vh' : undefined }}
+          >
           {/* Left Content */}
           <div className="flex flex-col gap-4">
             {/* Headline */}
@@ -352,14 +356,16 @@ export function HeroSection() {
               className="hero-headline hero-headline-size italic"
               style={{ perspective: "1000px" }}
             >
-              <span className="block">Cools more.</span>
-              <span className="block">Uses Less.</span>
+         
+        
+              <span className="block">Best Cooling. </span>
+              <span className="block">Lowest Bills.</span>
             </h1>
 
             {/* Badges Row */}
             <div
               ref={badgesRef}
-              className="flex items-center justify-around gap-4 md:gap-6 mt-6 md:mt-8"
+              className="flex items-center  gap-4 md:gap-6 mt-6 md:mt-8"
             >
               {/* ISEER Badge */}
               <div className="flex items-center gap-2 md:gap-3">
@@ -444,8 +450,19 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* AC Image - positioned relative to section, not content container */}
-      <div className="absolute bottom-[120px] md:bottom-[0px] left-0 right-0 z-20">
+      {/* AC Image - Mobile: positioned at 85vh (bottom of blue gradient) with half overlapping into black */}
+      {/* Desktop: positioned at bottom */}
+      <div 
+        className="absolute left-0 right-0 z-20"
+        style={{
+          // Mobile: AC center is at 85vh (bottom edge of blue gradient), so half is in blue, half in black
+          // Blue section is 70vh tall, centered (15vh to 85vh)
+          // Desktop: positioned at bottom
+          top: isMobile ? '70vh' : undefined,
+          bottom: isMobile ? undefined : '0px',
+          transform: isMobile ? 'translateY(-50%)' : undefined,
+        }}
+      >
         <HeroACImage isMobile={isMobile} />
       </div>
     </section>

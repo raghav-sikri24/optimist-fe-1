@@ -6,17 +6,19 @@ export default function HeroBlueGradient1({ progress, isMobile }: { progress: nu
   const currentScale = isMobile ? 1 : 1.2 - (progress * 0.45); // Static scale on mobile, shrinks from 1.2 to 0.75 on desktop
 
   if (isMobile) {
-    // Mobile: Static rectangular bars centered in middle of screen with rounded bottom corners
+    // Mobile: Blue gradient is 70vh tall, vertically centered (15vh from top)
     return (
       <div
-        className="w-full h-[500px] overflow-hidden absolute left-0 top-[15%]"
+        className="w-full overflow-hidden absolute left-0"
         style={{
+          height: '60vh',
+          top: '8vh', // (100vh - 70vh) / 2 = 15vh to center vertically
           borderBottomLeftRadius: '24px',
           borderBottomRightRadius: '24px',
         }}
       >
         <div
-          className="w-[1360px] h-[622px] absolute left-1/2 top-0"
+          className="w-[1360px] h-full absolute left-1/2 top-0"
           style={{
             transform: 'translateX(-50%)',
           }}

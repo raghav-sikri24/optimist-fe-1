@@ -106,11 +106,12 @@ export function CTASection() {
               </div>
               <button
                 onClick={openModal}
-                className="hidden md:inline-flex items-center justify-center px-8 py-3 rounded-full text-white font-semibold text-base"
-                style={{ background: "#3478F6" }}
+                className="btn-buy-now text-optimist-cream hidden md:inline-flex items-center justify-center px-8 py-3 rounded-full font-semibold"
               >
                 Join the Waitlist
               </button>
+              
+      
             </div>
           </div>
         </div>

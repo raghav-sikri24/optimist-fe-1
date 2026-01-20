@@ -84,7 +84,7 @@ export function Navigation() {
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-12">
           <div className="flex items-center justify-between h-14 md:h-16">
             {/* Left Navigation - Desktop */}
-            <div ref={linksRef} className="hidden md:flex items-center gap-8">
+            {/* <div ref={linksRef} className="hidden md:flex items-center gap-8">
               {navLinks.map((link, index) => {
                 const isActive = pathname === link.href;
                 return (
@@ -104,7 +104,7 @@ export function Navigation() {
                   </Link>
                 );
               })}
-            </div>
+            </div> */}
 
             {/* Left Logo - Mobile */}
             <div className="md:hidden flex items-center">
@@ -136,8 +136,8 @@ export function Navigation() {
             </div>
 
             {/* Right Actions */}
-            <div ref={actionsRef} className="flex items-center gap-3 md:gap-4">
-              {/* User Menu - Desktop when authenticated */}
+            {/* <div ref={actionsRef} className="flex items-center gap-3 md:gap-4">
+
               {isAuthenticated && (
                 <div className="relative hidden md:block">
                   <button
@@ -155,7 +155,7 @@ export function Navigation() {
                     />
                   </button>
 
-                  {/* Dropdown Menu */}
+        
                   {isUserMenuOpen && (
                     <>
                       <div
@@ -212,7 +212,7 @@ export function Navigation() {
                 </div>
               )}
 
-              {/* Cart Button - Desktop */}
+
               <button
                 onClick={toggleCart}
                 className="relative hidden md:flex items-center gap-2 text-[#FFFCDC]-muted hover:text-[#FFFCDC] transition-colors"
@@ -228,7 +228,7 @@ export function Navigation() {
                 </div>
               </button>
 
-              {/* Login Button - Desktop (when not authenticated) */}
+            
               {!isAuthenticated && !isAuthLoading && (
                 <Link
                   href="/login"
@@ -239,7 +239,7 @@ export function Navigation() {
                 </Link>
               )}
 
-              {/* Mobile Menu Button */}
+     
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="md:hidden flex items-center gap-2 px-4 py-2 rounded-full border border-[#FFFCDC]/20 text-[#FFFCDC] hover:bg-[#FFFCDC]/5 transition-all"
@@ -251,7 +251,7 @@ export function Navigation() {
                   <Menu className="w-4 h-4" />
                 )}
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 

@@ -34,6 +34,15 @@ function XIcon() {
   );
 }
 
+// YouTube icon component
+function YouTubeIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25.4653 6.8C25.2133 5.84 24.4533 5.08 23.4933 4.82667C21.48 4.33333 13 4.33333 13 4.33333C13 4.33333 4.52 4.33333 2.50667 4.82667C1.54667 5.08 0.786667 5.84 0.534667 6.8C0.0413333 8.81333 0.0413333 13 0.0413333 13C0.0413333 13 0.0413333 17.1867 0.534667 19.2C0.786667 20.16 1.54667 20.92 2.50667 21.1733C4.52 21.6667 13 21.6667 13 21.6667C13 21.6667 21.48 21.6667 23.4933 21.1733C24.4533 20.92 25.2133 20.16 25.4653 19.2C25.9587 17.1867 25.9587 13 25.9587 13C25.9587 13 25.9587 8.81333 25.4653 6.8ZM10.4 17.0667V8.93333L17.1333 13L10.4 17.0667Z" fill="#FFFCDC"/>
+    </svg>
+  );
+}
+
 const navLinksCol1 = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About us" },
@@ -47,9 +56,9 @@ const navLinksCol2 = [
 ];
 
 const socialLinks = [
-  { href: "#", icon: LinkedInIcon, label: "LinkedIn" },
-  { href: "#", icon: InstagramIcon, label: "Instagram" },
-  { href: "#", icon: XIcon, label: "X" },
+  { href: "https://x.com/optimist_AC", icon: XIcon, label: "X" },
+  { href: "https://www.instagram.com/optimist.ac?igsh=ajZtaG1xN3ZhZ3Jl&utm_source=qr", icon: InstagramIcon, label: "Instagram" },
+  { href: "http://www.youtube.com/@optimistAC", icon: YouTubeIcon, label: "YouTube" },
 ];
 
 // Phone validation helper
@@ -130,7 +139,8 @@ export function Footer() {
         {/* Top Section - Links & Newsletter */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12 mb-0 md:mb-4">
           {/* Column 1 - Nav Links */}
-          <nav className="flex flex-col gap-4">
+          <div/>
+          {/* <nav className="flex flex-col gap-4">
             {navLinksCol1.map((link) => (
               <Link
                 key={link.href}
@@ -140,10 +150,11 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
-          </nav>
+          </nav> */}
 
           {/* Column 2 - Nav Links */}
-          <nav className="flex flex-col gap-4">
+          <div/>
+          {/* <nav className="flex flex-col gap-4">
             {navLinksCol2.map((link) => (
               <Link
                 key={link.href}
@@ -153,7 +164,7 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
-          </nav>
+          </nav> */}
 
           {/* Column 3 - Social Links */}
           <div className="col-span-2 md:col-span-1">
@@ -163,6 +174,8 @@ export function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
                   className="flex items-center justify-center text-[#FFFCDC] hover:opacity-80 transition-all"
                 >

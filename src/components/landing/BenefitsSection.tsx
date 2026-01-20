@@ -58,7 +58,7 @@ export function BenefitsSection() {
         // Simple fade-in animation for mobile
         const headerTrigger = gsap.fromTo(
           headerRef.current,
-          { opacity: 0, y: 40 },
+          { opacity: 0.2, y: 20},
           {
             opacity: 1,
             y: 0,
@@ -190,12 +190,12 @@ export function BenefitsSection() {
                   <img
                     src={benefit.image}
                     alt={benefit.badge}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover brightness-[0.9]"
                   />
 
                   {/* Bottom Gradient Overlay - 20% height */}
                   <div
-                    className="absolute bottom-0 left-0 right-0 h-[20%]"
+                    className="absolute bottom-0 left-0 right-0 h-[30%]"
                     style={{
                       background:
                         "linear-gradient(180deg, rgba(33, 33, 33, 0) 0%, #212121 100%)",

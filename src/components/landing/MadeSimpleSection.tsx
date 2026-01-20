@@ -129,7 +129,7 @@ export function MadeSimpleSection() {
             {/* Desktop Image */}
             <div className="hidden md:block relative w-full aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[450px]">
               <Image
-                src="/BrownBgRemoteDesktop.png"
+                src="/BrownBgRemote.png"
                 alt="Optimist Remote Control with features labeled: Fan Speed, Turbo, Power ON/OFF, Temperature, Turbo+"
                 fill
                 className="object-cover"
@@ -141,7 +141,7 @@ export function MadeSimpleSection() {
             {/* Mobile Image */}
             <div className="md:hidden relative w-full aspect-[4/3]">
               <Image
-                src="/BrownBgRemoteMobile.png"
+                src="/BrownBgRemote.png"
                 alt="Optimist Remote Control with features labeled"
                 fill
                 className="object-cover"
