@@ -285,7 +285,7 @@ export function FeaturesShowcaseSection() {
         trigger: section,
         start: "top bottom", // Start as soon as section enters viewport
         end: "bottom bottom",
-        scrub: 0.3,
+        scrub: 0.1,
         onUpdate: (self) => {
           // Update video time based on scroll progress
           if (Number.isFinite(video.duration)) {
@@ -301,7 +301,7 @@ export function FeaturesShowcaseSection() {
         trigger: section,
         start: "top top", // Start when section reaches top (sticky position)
         end: "bottom bottom",
-        scrub: 0.3,
+        scrub: 0.1,
         onUpdate: (self) => {
           const progress = self.progress;
           
@@ -334,8 +334,8 @@ export function FeaturesShowcaseSection() {
         ref={mobileSectionRef}
         className="lg:hidden block w-full relative"
         style={{ 
-          height: `${features.length * 100}vh`,
-          backgroundColor: '#E3E3E3',
+          height: `${features.length * 70}vh`,
+          backgroundColor: '#e6e6e6',
         }}
       >
         {/* Sticky container - stays fixed while parent scrolls */}
@@ -348,7 +348,7 @@ export function FeaturesShowcaseSection() {
             height: '100vh',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#E3E3E3',
+            backgroundColor: '#e6e6e6',
             overflow: 'hidden',
           }}
         >
@@ -358,7 +358,7 @@ export function FeaturesShowcaseSection() {
               height: '55%', 
               width: '100%',
               overflow: 'hidden',
-              backgroundColor: '#E3E3E3',
+              backgroundColor: '#e6e6e6',
               position: 'relative',
               flexShrink: 0,
             }}
@@ -395,7 +395,7 @@ export function FeaturesShowcaseSection() {
             style={{ 
               height: '45%', 
               width: '100%',
-              backgroundColor: '#E3E3E3',
+              backgroundColor: '#e6e6e6',
               position: 'relative',
               flexShrink: 0,
             }}

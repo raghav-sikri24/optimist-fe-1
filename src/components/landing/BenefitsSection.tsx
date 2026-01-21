@@ -7,23 +7,23 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 const benefits = [
   {
     id: 1,
-    badge: "Super Energy Efficiency",
-    headline: "Tired of surprise bills?",
-    description: "Live Energy Meter, Track consumption as it happens.",
+    badge: "Worried about AC bill shocks?",
+    headline: "India's Most Energy-Efficient AC.",
+    description: "Lowest electricity consumption every single day.",
     image: "/b1.png",
   },
   {
     id: 2,
-    badge: "Cools at High Temperatures",
-    headline: "AC gives up in peak summer?",
-    description: "Effortless cooling. Even in brutal heat.",
+    badge: "Cooling fails in peak summer?",
+    headline: "Tested to cool at 50°C.",
+    description: "No performance drop when others derate.",
     image: "/b2.png",
   },
   {
     id: 3,
-    badge: "Turbo Plus Mode",
-    headline: "Takes forever to cool down",
-    description: "Turbo Plus Mode. Added 0.5 ton, on demand.",
+    badge: "Cooling taking forever?",
+    headline: "2 Tons of Cooling in 1.5 Tons.",
+    description: "Exclusive Turbo+ Mode for instant cooling.",
     image: "/b3.png",
   },
 ];
