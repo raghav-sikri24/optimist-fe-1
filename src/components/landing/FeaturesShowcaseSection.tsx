@@ -336,7 +336,7 @@ export function FeaturesShowcaseSection() {
         className="lg:hidden block w-full relative"
         style={{ 
           height: `${features.length * 70}vh`,
-          backgroundColor: '#e6e6e6',
+          backgroundColor: '#e3e3e3',
         }}
       >
         {/* Sticky container - stays fixed while parent scrolls */}
@@ -349,7 +349,7 @@ export function FeaturesShowcaseSection() {
             height: '100vh',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#e6e6e6',
+            backgroundColor: '#e3e3e3',
             overflow: 'hidden',
           }}
         >
@@ -359,7 +359,7 @@ export function FeaturesShowcaseSection() {
               height: '55%', 
               width: '100%',
               overflow: 'hidden',
-              backgroundColor: '#e6e6e6',
+              backgroundColor: '#e3e3e3',
               position: 'relative',
               flexShrink: 0,
             }}
@@ -396,7 +396,7 @@ export function FeaturesShowcaseSection() {
             style={{ 
               height: '45%', 
               width: '100%',
-              backgroundColor: '#e6e6e6',
+              backgroundColor: '#e3e3e3',
               position: 'relative',
               flexShrink: 0,
             }}
