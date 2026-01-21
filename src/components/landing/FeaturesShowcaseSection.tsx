@@ -348,7 +348,7 @@ export function FeaturesShowcaseSection() {
             height: '100vh',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#E7E7E7',
+            backgroundColor: '#E3E3E3',
             overflow: 'hidden',
           }}
         >
@@ -358,7 +358,7 @@ export function FeaturesShowcaseSection() {
               height: '55%', 
               width: '100%',
               overflow: 'hidden',
-              backgroundColor: '#E7E7E7',
+              backgroundColor: '#E3E3E3',
               position: 'relative',
               flexShrink: 0,
             }}
@@ -395,7 +395,7 @@ export function FeaturesShowcaseSection() {
             style={{ 
               height: '45%', 
               width: '100%',
-              backgroundColor: '#E7E7E7',
+              backgroundColor: '#E3E3E3',
               position: 'relative',
               flexShrink: 0,
             }}

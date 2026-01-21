@@ -494,13 +494,13 @@ export function OptimistAppSection() {
         </div>
 
         {/* ============ MOBILE LAYOUT ============ */}
-        <div className="lg:hidden relative overflow-hidden" style={{ minHeight: "750px" }}>
+        <div className="lg:hidden relative bg-white overflow-hidden" style={{ minHeight: "750px" }}>
           {/* Background Ellipses - Mobile */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {/* Outer Ellipse */}
             <div 
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: "196px", width: "150%", maxWidth: "1258px" }}
+              style={{ top: "200px", width: "150%", maxWidth: "1258px" }}
             >
               <Image
                 src="/Ellipse 6512.png"
@@ -517,7 +517,7 @@ export function OptimistAppSection() {
             {/* Inner Ellipse */}
             <div 
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: "350px", width: "100%", maxWidth: "753px" }}
+              style={{ top: "360px", width: "100%", maxWidth: "753px" }}
             >
               <Image
                 src="/Ellipse 6513.png"
@@ -534,7 +534,7 @@ export function OptimistAppSection() {
           </div>
 
           {/* Header - Mobile */}
-          <div ref={headerRef} className="relative z-10 text-center pt-[43px] px-4">
+          <div ref={headerRef} className="relative bg-white z-10 text-center pt-[43px] px-4">
             <h2 className="font-display text-[32px] font-bold text-black leading-none mb-3">
               Optimist App
             </h2>
@@ -575,7 +575,7 @@ export function OptimistAppSection() {
           {/* Horizontal Scrollable Carousel - positioned at bottom */}
           <div
             ref={mobileCarouselRef}
-            className="absolute bottom-0 left-0 right-0 z-30 flex gap-3 overflow-x-auto pb-6 px-4 scrollbar-hide"
+            className="absolute bottom-0 bg-white pt-4 left-0 right-0 z-30 flex gap-3 overflow-x-auto pb-6 px-4 scrollbar-hide"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {FEATURES.map((feature) => (
