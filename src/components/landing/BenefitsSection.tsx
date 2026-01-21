@@ -153,7 +153,7 @@ export function BenefitsSection() {
   );
 
   return (
-    <section ref={sectionRef} className="relative bg-[#FFFFFF] overflow-x-hidden">
+    <section id="benefits" ref={sectionRef} className="relative bg-[#FFFFFF] overflow-x-hidden">
       {/* Trigger wrapper for pinning - only on desktop */}
       <div
         ref={triggerRef}

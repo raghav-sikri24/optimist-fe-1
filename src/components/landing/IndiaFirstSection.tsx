@@ -2,7 +2,6 @@
 
 import { useRef, useLayoutEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { useWaitlist } from "@/contexts/WaitlistContext";
@@ -137,12 +136,14 @@ export function IndiaFirstSection() {
                 >
                   Join the Waitlist
                 </button>
-                <Link
-                  href="#why-optimist"
+                <button
+                  onClick={() => {
+                    document.getElementById('benefits')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="btn-why-optimist w-[160px] hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
                 >
                   Why Optimist ?
-                </Link>
+                </button>
               </div>
             </div>
 

@@ -12,7 +12,6 @@ import {
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import Image from "next/image";
-import Link from "next/link";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import HeroBlueGradient1 from "./HeroBlueGradient1";
@@ -20,6 +19,19 @@ import { motion } from "framer-motion";
 import { HeroBlueGradient } from "./HeroBlueGradient";
 import { useWaitlist } from "@/contexts/WaitlistContext";
 const MODEL_PATH = "/HomePageAnimation02.glb";
+
+// Smooth scroll to element using GSAP
+const scrollToSection = (elementId: string) => {
+  const element = document.getElementById(elementId);
+  if (element) {
+    const targetPosition = element.getBoundingClientRect().top + window.scrollY;
+    gsap.to(window, {
+      scrollTo: { y: targetPosition, autoKill: false },
+      duration: 0.1,
+      ease: "power2.inOut",
+    });
+  }
+};
 
 // Helper function to check if mobile view
 const isMobileView = (width: number) => width < 768;
@@ -414,12 +426,12 @@ export function HeroSection() {
               ref={mobileButtonsRef}
               className="flex items-center gap-3 mt-8 lg:hidden"
             >
-              <Link
-                href="#why-optimist"
+              <button
+                onClick={() => scrollToSection('benefits')}
                 className="btn-why-optimist hero-btn-mobile flex-1 text-optimist-cream flex items-center justify-center"
               >
                 Why Optimist ?
-              </Link>
+              </button>
               <button
                 onClick={openModal}
                 className="btn-buy-now hero-btn-mobile flex-1 text-optimist-cream flex items-center justify-center"
@@ -434,12 +446,12 @@ export function HeroSection() {
             ref={buttonsRef}
             className="hidden lg:flex items-center gap-4 lg:mt-6 xl:mt-8"
           >
-            <Link
-              href="#why-optimist"
+            <button
+              onClick={() => scrollToSection('benefits')}
               className="btn-why-optimist hero-btn-desktop text-optimist-cream flex items-center justify-center"
             >
               Why Optimist ?
-            </Link>
+            </button>
             <button
               onClick={openModal}
               className="btn-buy-now hero-btn-desktop text-optimist-cream flex items-center justify-center"

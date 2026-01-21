@@ -2,17 +2,18 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   
   // Configure ScrollTrigger for optimal performance
   ScrollTrigger.config({
     // Limit calculations per scroll event
     limitCallbacks: true,
-    // Reduce frequency of scroll position checks
-    syncInterval: 150, // Check every 150ms instead of every frame
+    // More frequent scroll position checks for smoother animations
+    syncInterval: 40,
     // Prevent redundant refreshes
     autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
   });

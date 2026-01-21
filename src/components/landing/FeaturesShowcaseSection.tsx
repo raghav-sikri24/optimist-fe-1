@@ -335,7 +335,7 @@ export function FeaturesShowcaseSection() {
         className="lg:hidden block w-full relative"
         style={{ 
           height: `${features.length * 100}vh`,
-          backgroundColor: '#E7E7E7',
+          backgroundColor: '#E3E3E3',
         }}
       >
         {/* Sticky container - stays fixed while parent scrolls */}

@@ -73,7 +73,7 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Gas level indicator.png",
     desktopLeft: 966,
     desktopTop: 160,
-    handOffsetX: -4,
+    handOffsetX: -20,
     handOffsetY: 0,
   },
   {
@@ -95,7 +95,7 @@ const FEATURES: FeatureCardData[] = [
     handImage: "/hands/Scheduling.png",
     desktopLeft: 1000,
     desktopTop: 560,
-    handOffsetX: 0,
+    handOffsetX: -16,
     handOffsetY: 0,
   },
 ];
@@ -304,23 +304,22 @@ export function OptimistAppSection() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
-          end: "top 25%",
-          toggleActions: "play none none none",
-          once: true,
+          start: "top 85%",
+          end: "top 30%",
+          scrub: 0.8, // Smooth scroll-linked animation with slight lag
         },
       });
 
       tl.to(
         headerRef.current,
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true },
+        { opacity: 1, y: 0, duration: 1, ease: "power2.out", force3D: true },
         0
       );
 
       tl.to(
         phoneRef.current,
-        { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out", force3D: true },
-        0.2
+        { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power2.out", force3D: true },
+        0.15
       );
 
       const cards = featuresRef.current?.querySelectorAll(".feature-card");
@@ -331,12 +330,12 @@ export function OptimistAppSection() {
             opacity: 1,
             scale: 1,
             y: 0,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power3.out",
+            stagger: 0.08,
+            duration: 1,
+            ease: "power2.out",
             force3D: true,
           },
-          0.4
+          0.3
         );
       }
     },
@@ -501,7 +500,7 @@ export function OptimistAppSection() {
             {/* Outer Ellipse */}
             <div 
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: "120px", width: "150%", maxWidth: "1258px" }}
+              style={{ top: "196px", width: "150%", maxWidth: "1258px" }}
             >
               <Image
                 src="/Ellipse 6512.png"
@@ -518,7 +517,7 @@ export function OptimistAppSection() {
             {/* Inner Ellipse */}
             <div 
               className="absolute left-1/2 -translate-x-1/2"
-              style={{ top: "280px", width: "100%", maxWidth: "753px" }}
+              style={{ top: "350px", width: "100%", maxWidth: "753px" }}
             >
               <Image
                 src="/Ellipse 6513.png"
@@ -570,15 +569,13 @@ export function OptimistAppSection() {
           {/* White Gradient at bottom */}
           <div 
             className="absolute left-0 right-0 bottom-0 h-[180px] pointer-events-none z-20"
-            style={{
-              background: "linear-gradient(178deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)",
-            }}
+          
           />
 
           {/* Horizontal Scrollable Carousel - positioned at bottom */}
           <div
             ref={mobileCarouselRef}
-            className="absolute bottom-0 left-0 right-0 z-30 flex gap-3 overflow-x-auto pb-6 pt-4 px-4 scrollbar-hide"
+            className="absolute bottom-0 left-0 right-0 z-30 flex gap-3 overflow-x-auto pb-6 px-4 scrollbar-hide"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {FEATURES.map((feature) => (
