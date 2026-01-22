@@ -377,8 +377,29 @@ export function EngineeredSection() {
       if (card) observer.observe(card);
     });
 
+    // Handle scroll end detection for the last card
+    // When scrolled to the end, the last card can't move into the left half,
+    // so we need to detect this case and select it manually
+    const handleScroll = () => {
+      const scrollLeft = carousel.scrollLeft;
+      const scrollWidth = carousel.scrollWidth;
+      const clientWidth = carousel.clientWidth;
+      
+      // Check if scrolled to the end (with a small threshold for tolerance)
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
+      
+      if (isAtEnd) {
+        // Select the last feature
+        const lastFeatureId = features[features.length - 1].id;
+        setActiveFeature(lastFeatureId);
+      }
+    };
+
+    carousel.addEventListener("scroll", handleScroll);
+
     return () => {
       observer.disconnect();
+      carousel.removeEventListener("scroll", handleScroll);
     };
   }, []);
 

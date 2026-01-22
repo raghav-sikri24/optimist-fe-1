@@ -450,7 +450,7 @@ export function HeroSection() {
           >
             {/* Layer 1: Blue radial gradient base */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 brightness-[0.7]"
               style={{
                 background: 'radial-gradient(ellipse 70% 50% at 50% 50%, #6B9FFF 0%, #3B7BF7 30%, #1E40AF 50%, #0a1628 80%, #000 100%)',
               }}
@@ -463,7 +463,7 @@ export function HeroSection() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                mixBlendMode: 'darken',
+                 mixBlendMode: "overlay",
               }}
             />
             {/* Layer 3: Shadow overlay with multiply blend mode */}
@@ -491,8 +491,8 @@ export function HeroSection() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                mixBlendMode: 'screen',
-                opacity: 0.08,
+               
+                opacity: 0.06,
               }}
             />
           </div>
@@ -607,8 +607,8 @@ export function HeroSection() {
             style={{
               objectFit: 'cover',
               objectPosition: 'left top',
-              mixBlendMode: 'screen',
-              opacity: 0.08,
+             
+              opacity: 0.06,
             }}
           />
         </>
@@ -627,7 +627,7 @@ export function HeroSection() {
           >
             {/* Layer 1: Blue radial gradient base */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 brightness-[0.7]"
               style={{
                 background: 'radial-gradient(ellipse 70% 50% at 50% 50%, #6B9FFF 0%, #3B7BF7 30%, #1E40AF 50%, #0a1628 80%, #000 100%)',
               }}
@@ -640,7 +640,7 @@ export function HeroSection() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                mixBlendMode: 'darken',
+                 mixBlendMode:"overlay",
               }}
             />
             {/* Layer 3: Leaves video overlay with screen blend mode */}
@@ -658,8 +658,8 @@ export function HeroSection() {
                 height: '120%',
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                mixBlendMode: 'screen',
-                opacity: 0.08,
+               
+                opacity: 0.06,
               }}
             />
             {/* Layer 4: Shadow overlay from top-left with multiply blend mode */}
@@ -798,8 +798,8 @@ export function HeroSection() {
               height: '120%',
               objectFit: 'cover',
               objectPosition: 'left top',
-              mixBlendMode: 'screen',
-              opacity: 0.08,
+              mixBlendMode: "overlay",
+              opacity: 0.06,
             }}
           />
         </div>

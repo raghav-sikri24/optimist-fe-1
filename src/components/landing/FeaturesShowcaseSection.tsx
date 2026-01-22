@@ -445,14 +445,14 @@ export function FeaturesShowcaseSection() {
         className="relative bg-[#E7E7E7] hidden lg:block"
       >
         {/* Background Leaf Pattern */}
-        <div className="absolute top-0 left-0 sticky w-full max-w-[800px] opacity-10 pointer-events-none z-0">
-          <Image
-            src={ASSETS.leafSwaying}
-            alt=""
-            width={800}
-            height={1600}
-            className="object-contain"
-            unoptimized
+        <div className="absolute top-0 left-0 sticky w-full md:w-1/2 max-w-[800px] opacity-10 pointer-events-none z-0">
+          <video
+            src={ASSETS.videos.heroLeafVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-auto object-contain"
           />
         </div>
 
