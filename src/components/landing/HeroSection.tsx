@@ -481,19 +481,18 @@ export function HeroSection() {
                 mixBlendMode: 'multiply',
               }}
             /> */}
-             <img
-              src={ASSETS.leafSwaying}
-              alt=""
-              className="absolute pointer-events-none"
+             <video
+              src={ASSETS.videos.heroLeafVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full pointer-events-none"
               style={{
-                top: 0,
-                left: 0,
-                width: '120%',
-                height: '120%',
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                mixBlendMode: 'darken',
-                opacity: 0.25,
+                mixBlendMode: 'screen',
+                opacity: 0.08,
               }}
             />
           </div>
@@ -597,20 +596,19 @@ export function HeroSection() {
             <HeroACImage isMobile={isMobile} />
           </div>
 
-          {/* Leaf swaying gif overlay - above AC image */}
-          <img
-            src={ASSETS.leafSwaying}
-            alt=""
-            className="absolute pointer-events-none z-30"
+          {/* Leaves video overlay - above AC image */}
+          <video
+            src={ASSETS.videos.heroLeafVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full pointer-events-none z-30"
             style={{
-              top: 0,
-              left: 0,
-              width: '120%',
-              height: '120%',
               objectFit: 'cover',
               objectPosition: 'left top',
-              mixBlendMode: 'darken',
-              opacity: 0.25,
+              mixBlendMode: 'screen',
+              opacity: 0.08,
             }}
           />
         </>
@@ -645,10 +643,13 @@ export function HeroSection() {
                 mixBlendMode: 'darken',
               }}
             />
-            {/* Layer 3: Leaf swaying gif overlay with darken blend mode */}
-            <img
-              src={ASSETS.leafSwaying}
-              alt=""
+            {/* Layer 3: Leaves video overlay with screen blend mode */}
+            <video
+              src={ASSETS.videos.heroLeafVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
               className="absolute pointer-events-none"
               style={{
                 top: 0,
@@ -657,8 +658,8 @@ export function HeroSection() {
                 height: '120%',
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                mixBlendMode: 'darken',
-                opacity: 0.25,
+                mixBlendMode: 'screen',
+                opacity: 0.08,
               }}
             />
             {/* Layer 4: Shadow overlay from top-left with multiply blend mode */}
@@ -782,10 +783,13 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Leaf swaying gif overlay - above AC image */}
-          <img
-            src={ASSETS.leafSwaying}
-            alt=""
+          {/* Leaves video overlay - above AC image */}
+          <video
+            src={ASSETS.videos.heroLeafVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
             className="absolute pointer-events-none z-30"
             style={{
               top: 0,
@@ -794,8 +798,8 @@ export function HeroSection() {
               height: '120%',
               objectFit: 'cover',
               objectPosition: 'left top',
-              mixBlendMode: 'darken',
-              opacity: 0.25,
+              mixBlendMode: 'screen',
+              opacity: 0.08,
             }}
           />
         </div>
