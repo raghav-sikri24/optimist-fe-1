@@ -2,6 +2,7 @@
  * S3 Assets Configuration
  * All static assets are stored in the S3 bucket configured via environment variable
  */
+import favicon from "../../public/Favicon_Optimist_32px X 32px.png"
 
 const S3_BUCKET_URL = "https://optimist-fe-assets.s3.amazonaws.com";
 
@@ -36,6 +37,7 @@ export const ASSETS = {
   marketAcCompare: getAssetUrl("market-ac-compare.png"),
   comparisonShadowBg: getAssetUrl("comparison-shadow-bg.png"),
   comparisonTopGradient: getAssetUrl("comparison-top-gradient.png"),
+  acComparison: getAssetUrl("acComparison.png"),
 
   // India Story Section
   indiaStoryDesert: getAssetUrl("india-story-desert.png"),
@@ -49,6 +51,8 @@ export const ASSETS = {
   // Recognition Section
   recognitionEllipse: "/recognition-ellipse.svg",
   recognitionStripes: "/recognition-stripes.svg",
+  recognitionBgDesktop: getAssetUrl("/recognition-bg-desktop.png"),
+  recognitionBgMobile: getAssetUrl("/recognition-bg-mobile.png"),
   laurelLeft: "/laurel-left.svg",
   laurelRight: "/laurel-right.svg",
   shieldSlash: "/shield-slash.svg",
@@ -89,7 +93,7 @@ export const ASSETS = {
 
   // Logo & Branding
   logo: getAssetUrl("logo (2).png"),
-  favicon: getAssetUrl("Favicon_Optimist_32px X 32px.png"),
+  favicon: favicon,
 
   // Badges & Features
   image24225: getAssetUrl("image 24225.png"),

@@ -1,7 +1,9 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useRef, useLayoutEffect } from "react";
 import Image from "next/image";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 import { ASSETS } from "@/lib/assets";
 
 // =============================================================================
@@ -96,61 +98,28 @@ const FeatureCard = memo(function FeatureCard({ feature }: { feature: Recognitio
 });
 
 // =============================================================================
-// Background Component - Matches Figma structure exactly
+// Background Component - Uses image backgrounds
 // =============================================================================
 
 const GradientBackground = memo(function GradientBackground() {
   return (
     <>
-      {/* Layer 1: Base gradient - Figma exact gradient */}
-      <div 
-        className="absolute inset-0 rounded-[24px] md:rounded-[44px]"
-        style={{
-          background: "linear-gradient(165.16deg, rgba(18, 101, 255, 1) 25.27%, rgba(105, 205, 235, 1) 87.59%, rgba(70, 245, 160, 1) 120.92%)",
-        }}
+      {/* Desktop Background Image */}
+      <Image
+        src={ASSETS.recognitionBgDesktop}
+        alt=""
+        fill
+        className="hidden md:block object-cover rounded-[44px]"
+        priority
       />
       
-      {/* Layer 2: Overlay container with mix-blend-multiply - at bottom portion */}
-      <div className="absolute bottom-0 left-0 right-0 h-[70%] md:h-[473px] rounded-b-[24px] md:rounded-b-[44px] overflow-hidden mix-blend-multiply">
-        {/* Dark ellipse - large radial gradient positioned to create dark area at top of card */}
-        <div 
-          className="absolute w-[200%] h-[200%] left-1/2 -translate-x-1/2 -top-[100%]"
-          style={{
-            background: "radial-gradient(ellipse at center bottom, transparent 30%, rgba(0, 0, 0, 0.95) 70%)",
-          }}
-        />
-        
-        {/* Stripes rectangle - creates vertical light beams from blue to white */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={ASSETS.recognitionStripes}
-            alt=""
-            className="absolute w-full bottom-0 left-0"
-            style={{ height: "200%", objectFit: "cover", objectPosition: "bottom" }}
-          />
-        </div>
-        
-        {/* 11 Vertical stripe divs with backdrop-blur and mix-blend-overlay */}
-        <div className="absolute inset-0 flex">
-          {Array.from({ length: 11 }).map((_, i) => (
-            <div
-              key={i}
-              className="flex-1 h-full min-h-px min-w-px backdrop-blur-[85px] mix-blend-overlay"
-              style={{
-                backgroundImage: "linear-gradient(-90deg, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.2) 76.04%, rgba(255, 255, 255, 0.01) 100%)",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-      
-      {/* Layer 3: Dark overlay at top of card to create the dark header area */}
-      <div 
-        className="absolute inset-0 rounded-[24px] md:rounded-[44px] pointer-events-none"
-        style={{
-          background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 25%, rgba(0, 0, 0, 0.3) 40%, transparent 55%)",
-        }}
+      {/* Mobile Background Image */}
+      <Image
+        src={ASSETS.recognitionBgMobile}
+        alt=""
+        fill
+        className="block md:hidden object-cover rounded-[24px]"
+        priority
       />
     </>
   );
@@ -161,21 +130,98 @@ const GradientBackground = memo(function GradientBackground() {
 // =============================================================================
 
 export const RecognitionSection = memo(function RecognitionSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states to prevent flash
+  useLayoutEffect(() => {
+    if (cardRef.current) {
+      gsap.set(cardRef.current, { opacity: 0, scale: 0.95 });
+    }
+    if (headerRef.current) {
+      gsap.set(headerRef.current, { opacity: 0, y: 40 });
+    }
+    if (featuresRef.current) {
+      gsap.set(featuresRef.current, { opacity: 0, y: 30 });
+    }
+    if (mobileRef.current) {
+      gsap.set(mobileRef.current, { opacity: 0, y: 30 });
+    }
+  }, []);
+
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "top 25%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      // Card scale animation
+      tl.to(
+        cardRef.current,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+          force3D: true,
+        },
+        0
+      );
+
+      // Header animation
+      tl.to(
+        headerRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          force3D: true,
+        },
+        0.2
+      );
+
+      // Features animation
+      tl.to(
+        [featuresRef.current, mobileRef.current],
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          force3D: true,
+        },
+        0.4
+      );
+    },
+    { scope: sectionRef }
+  );
+
   return (
     <section 
-      className="w-full py-8 md:py-12 lg:py-16 bg-white" 
+      ref={sectionRef}
+      className="w-full bg-white" 
       aria-labelledby="recognition-heading"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-10">
         {/* Card Container */}
-        <div className="relative w-full min-h-[500px] md:min-h-[669px] overflow-hidden rounded-[24px] md:rounded-[44px]">
+        <div ref={cardRef} className="relative w-full min-h-[500px] md:min-h-[669px] overflow-hidden rounded-[24px] md:rounded-[44px] will-change-[transform,opacity]">
           {/* Background */}
           <GradientBackground />
           
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center justify-center gap-10 md:gap-[60px] py-16 md:py-24 lg:py-32 px-4 md:px-8">
             {/* Header Section */}
-            <div className="flex flex-col items-center gap-1">
+            <div ref={headerRef} className="flex flex-col items-center gap-1 will-change-[transform,opacity]">
               {/* Title with Laurel Icons */}
               <div className="flex items-center gap-2 md:gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -207,7 +253,7 @@ export const RecognitionSection = memo(function RecognitionSection() {
 
             {/* Features Section - Desktop: horizontal with dividers, Mobile: vertical */}
             {/* Desktop Layout */}
-            <div className="hidden md:flex items-center justify-center gap-[84px] w-full">
+            <div ref={featuresRef} className="hidden md:flex items-center justify-center gap-[84px] w-full will-change-[transform,opacity]">
               <FeatureCard feature={RECOGNITION_FEATURES[0]} />
               <VerticalDivider />
               <FeatureCard feature={RECOGNITION_FEATURES[1]} />
@@ -216,7 +262,7 @@ export const RecognitionSection = memo(function RecognitionSection() {
             </div>
             
             {/* Mobile Layout */}
-            <div className="flex md:hidden flex-col items-center gap-7 w-full">
+            <div ref={mobileRef} className="flex md:hidden flex-col items-center gap-7 w-full will-change-[transform,opacity]">
               <FeatureCard feature={RECOGNITION_FEATURES[0]} />
               <HorizontalDivider />
               <FeatureCard feature={RECOGNITION_FEATURES[1]} />

@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback } from "react";
+import { RadioFilledIcon, RadioEmptyIcon } from "@/components/icons/ProductIcons";
 
 // =============================================================================
 // Types
@@ -39,26 +40,48 @@ export const VariantCard = memo(function VariantCard({
       role="radio"
       aria-checked={isSelected}
       aria-label={`${variant.name} - ${variant.subtitle}`}
-      className={`relative flex-shrink-0 w-[90px] md:w-[130px] lg:w-[140px] p-2.5 md:p-4 rounded-xl border transition-all text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+      className={`relative flex-shrink-0 w-auto md:w-[157px] md:h-[94px] p-2.5 md:p-[10px] rounded-[8px] border transition-all text-left focus:outline-none flex flex-col justify-center ${
         isSelected
-          ? "border-blue-500 bg-blue-50/50"
-          : "border-gray-200 hover:border-gray-300 bg-white"
+          ? "border-[#3478F6] bg-[rgba(52,120,246,0.06)]"
+          : "border-[rgba(0,0,0,0.2)] bg-[rgba(0,0,0,0.04)] hover:border-[rgba(0,0,0,0.3)]"
       }`}
       type="button"
     >
-      {/* Radio Circle */}
-      <div 
-        className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center mb-2 ${
-          isSelected ? "border-blue-500 bg-blue-500" : "border-gray-300"
-        }`}
-        aria-hidden="true"
-      >
-        {isSelected && <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white" />}
+      {/* Desktop Layout: Horizontal with radio on left */}
+      <div className="hidden md:flex gap-3 items-start w-full">
+        {/* Radio Icon */}
+        <div className="flex-shrink-0">
+          {isSelected ? (
+            <RadioFilledIcon className="w-5 h-5" />
+          ) : (
+            <RadioEmptyIcon className="w-5 h-5" />
+          )}
+        </div>
+        
+        {/* Variant Info */}
+        <div className="flex flex-col gap-3 flex-1 min-w-0">
+          <p className="font-semibold text-gray-900 text-sm">{variant.name}</p>
+          <p className="text-xs text-[#6c6a6a]">{variant.subtitle}</p>
+        </div>
       </div>
-      
-      {/* Variant Info */}
-      <p className="font-semibold text-gray-900 text-[11px] md:text-sm lg:text-base">{variant.name}</p>
-      <p className="text-[9px] md:text-xs lg:text-sm text-gray-500 mt-0.5">{variant.subtitle}</p>
+
+      {/* Mobile Layout: Vertical with radio on top */}
+      <div className="flex md:hidden flex-col gap-3">
+        {/* Radio Icon */}
+        <div className="flex-shrink-0">
+          {isSelected ? (
+            <RadioFilledIcon className="w-5 h-5" />
+          ) : (
+            <RadioEmptyIcon className="w-5 h-5" />
+          )}
+        </div>
+        
+        {/* Variant Info */}
+        <div className="flex flex-col gap-1">
+          <p className="font-semibold text-gray-900 text-sm">{variant.name}</p>
+          <p className="text-xs text-[#6c6a6a]">{variant.subtitle}</p>
+        </div>
+      </div>
     </button>
   );
 });

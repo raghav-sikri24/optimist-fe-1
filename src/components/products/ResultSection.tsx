@@ -1,6 +1,8 @@
 "use client";
 
-import { memo, type ReactNode } from "react";
+import { memo, useRef, useLayoutEffect, type ReactNode } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 import {
   SnowflakeIcon,
   PiggyBankIcon,
@@ -73,25 +75,89 @@ const FeatureCard = memo(function FeatureCard({ feature }: FeatureCardProps) {
 // =============================================================================
 
 export const ResultSection = memo(function ResultSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states to prevent flash
+  useLayoutEffect(() => {
+    if (titleRef.current) {
+      gsap.set(titleRef.current, { opacity: 0, y: 40 });
+    }
+    if (cardsRef.current) {
+      const cards = cardsRef.current.querySelectorAll(".result-card");
+      gsap.set(cards, { opacity: 0, y: 40 });
+    }
+  }, []);
+
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "top 25%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      // Title animation
+      tl.to(
+        titleRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          force3D: true,
+        },
+        0
+      );
+
+      // Cards stagger animation
+      const cards = cardsRef.current?.querySelectorAll(".result-card");
+      if (cards) {
+        tl.to(
+          cards,
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power3.out",
+            force3D: true,
+          },
+          0.2
+        );
+      }
+    },
+    { scope: sectionRef }
+  );
+
   return (
     <section 
+      ref={sectionRef}
       className="w-full py-12 md:py-16 lg:py-20 bg-white"
       aria-labelledby="result-heading"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-12">
         {/* Title */}
         <h2 
+          ref={titleRef}
           id="result-heading"
-          className="font-display text-[32px] md:text-[40px] font-semibold text-black text-center mb-7 md:mb-10"
+          className="font-display text-[32px] md:text-[40px] font-semibold text-black text-center mb-7 md:mb-10 will-change-[transform,opacity]"
         >
           Result
         </h2>
         
         {/* Feature Cards Container */}
         {/* Mobile: Vertical stack, Desktop: Horizontal row */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-[26px] items-center justify-center">
+        <div ref={cardsRef} className="flex flex-col md:flex-row gap-4 md:gap-[26px] items-center justify-center">
           {RESULT_FEATURES.map((feature, index) => (
-            <FeatureCard key={index} feature={feature} />
+            <div key={index} className="result-card will-change-[transform,opacity]">
+              <FeatureCard feature={feature} />
+            </div>
           ))}
         </div>
       </div>

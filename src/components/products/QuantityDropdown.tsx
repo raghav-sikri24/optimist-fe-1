@@ -102,10 +102,10 @@ export const QuantityDropdown = memo(function QuantityDropdown({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={`Quantity: ${quantity}. Click to change.`}
-        className="w-full flex items-center justify-between px-4 py-3 border border-gray-200 rounded-xl bg-white hover:border-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full h-11 flex items-center justify-between px-3 py-2.5 bg-[rgba(0,0,0,0.04)] rounded-[8px] hover:bg-[rgba(0,0,0,0.06)] transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         type="button"
       >
-        <span className="text-gray-900 font-medium text-sm md:text-base">Quantity: {quantity}</span>
+        <span className="text-gray-900 font-normal text-sm md:text-base">Quantity: {quantity}</span>
         <ChevronDown 
           className={`w-5 h-5 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`} 
           aria-hidden="true"
@@ -117,7 +117,7 @@ export const QuantityDropdown = memo(function QuantityDropdown({
           ref={listboxRef}
           role="listbox"
           aria-label="Select quantity"
-          className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-20 max-h-48 overflow-y-auto"
+          className="absolute bottom-full left-0 right-0 mb-1 bg-white border border-gray-200 rounded-xl shadow-lg z-[100] max-h-48 overflow-y-auto scrollbar-hide"
         >
           {options.map((qty, index) => (
             <button
@@ -126,8 +126,8 @@ export const QuantityDropdown = memo(function QuantityDropdown({
               onKeyDown={(e) => handleOptionKeyDown(e, qty, index)}
               role="option"
               aria-selected={quantity === qty}
-              className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors text-sm md:text-base focus:outline-none focus:bg-gray-100 ${
-                quantity === qty ? "bg-blue-50 text-blue-600" : "text-gray-900"
+              className={`w-full px-4 py-2.5 text-left hover:bg-gray-100 transition-colors text-sm md:text-base focus:outline-none focus:bg-gray-100 border-b border-gray-100 last:border-b-0 ${
+                quantity === qty ? "bg-blue-50 text-blue-600 font-medium" : "text-gray-900"
               }`}
               type="button"
             >

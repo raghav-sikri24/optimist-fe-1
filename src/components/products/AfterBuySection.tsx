@@ -1,6 +1,8 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useRef, useLayoutEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 import {
   OrderConfirmIcon,
   UserCircleCheckIcon,
@@ -53,7 +55,7 @@ const StepCard = memo(function StepCard({ step }: { step: Step }) {
   const IconComponent = step.icon;
   
   return (
-    <div className="relative bg-[rgba(0,0,0,0.04)] border border-[rgba(0,0,0,0.12)] rounded-xl md:rounded-2xl overflow-hidden flex-1 min-w-0 p-2 md:p-6 h-[120px] md:h-[340px] flex flex-col">
+    <div className="relative bg-[rgba(0,0,0,0.04)] border border-[rgba(0,0,0,0.12)] rounded-xl md:rounded-2xl overflow-hidden p-2 md:p-6 h-[120px] md:h-[340px] flex flex-col">
       {/* Large Step Number */}
       <p className="font-display font-extrabold text-[20px] md:text-[94px] text-[rgba(0,0,0,0.08)] leading-none shrink-0">
         {step.number}
@@ -192,11 +194,90 @@ const MobileConnectingLine = memo(function MobileConnectingLine() {
 // =============================================================================
 
 export const AfterBuySection = memo(function AfterBuySection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const linesRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  // Set initial states to prevent flash
+  useLayoutEffect(() => {
+    if (headerRef.current) {
+      gsap.set(headerRef.current, { opacity: 0, y: 40 });
+    }
+    if (linesRef.current) {
+      gsap.set(linesRef.current.querySelectorAll("svg"), { opacity: 0, scale: 0.95 });
+    }
+    if (cardsRef.current) {
+      const cards = cardsRef.current.querySelectorAll(".step-card-wrapper");
+      gsap.set(cards, { opacity: 0, y: 40 });
+    }
+  }, []);
+
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "top 25%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      // Header animation
+      tl.to(
+        headerRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          force3D: true,
+        },
+        0
+      );
+
+      // Lines animation
+      if (linesRef.current) {
+        tl.to(
+          linesRef.current.querySelectorAll("svg"),
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            force3D: true,
+          },
+          0.2
+        );
+      }
+
+      // Cards stagger animation
+      const cards = cardsRef.current?.querySelectorAll(".step-card-wrapper");
+      if (cards) {
+        tl.to(
+          cards,
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.12,
+            duration: 0.8,
+            ease: "power3.out",
+            force3D: true,
+          },
+          0.3
+        );
+      }
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section className="w-full py-12 md:py-20 lg:py-24 bg-white" aria-labelledby="after-buy-heading">
+    <section ref={sectionRef} className="w-full bg-white" aria-labelledby="after-buy-heading">
       <div className="w-full max-w-[1440px] mx-auto px-4 md:px-6 lg:px-10">
         {/* Header */}
-        <div className="text-center md:text-left mb-6 md:mb-8">
+        <div ref={headerRef} className="text-center md:text-left mb-6 md:mb-8 will-change-[transform,opacity]">
           {/* Subtitle */}
           <p className="text-[#3478F6] text-[16px] md:text-[20px] font-normal mb-2 md:mb-2.5">
             What Happens After You Buy
@@ -213,20 +294,25 @@ export const AfterBuySection = memo(function AfterBuySection() {
           </h2>
         </div>
 
-        {/* Connecting Line - Desktop */}
-        <div className="hidden md:block w-full max-w-[1027px] mx-auto mb-0 -mt-4">
-          <ConnectingLine />
-        </div>
+        {/* Connecting Lines Container */}
+        <div ref={linesRef}>
+          {/* Connecting Line - Desktop */}
+          <div className="hidden md:block w-full max-w-[1027px] mx-auto mb-0 -mt-4 will-change-[transform,opacity]">
+            <ConnectingLine />
+          </div>
 
-        {/* Connecting Line - Mobile */}
-        <div className="block md:hidden w-full max-w-[300px] mx-auto mb-2">
-          <MobileConnectingLine />
+          {/* Connecting Line - Mobile */}
+          <div className="block md:hidden w-full max-w-[300px] mx-auto mb-2 will-change-[transform,opacity]">
+            <MobileConnectingLine />
+          </div>
         </div>
 
         {/* Step Cards */}
-        <div className="flex gap-1 md:gap-4 lg:gap-[17px]">
+        <div ref={cardsRef} className="flex gap-1 md:gap-4 lg:gap-[17px]">
           {STEPS.map((step) => (
-            <StepCard key={step.number} step={step} />
+            <div key={step.number} className="step-card-wrapper flex-1 min-w-0 will-change-[transform,opacity]">
+              <StepCard step={step} />
+            </div>
           ))}
         </div>
       </div>
