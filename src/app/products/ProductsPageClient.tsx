@@ -19,6 +19,7 @@ import { IndiaStorySection } from "@/components/products/IndiaStorySection";
 import { AfterBuySection } from "@/components/products/AfterBuySection";
 import { WarrantySection } from "@/components/products/WarrantySection";
 import { RecognitionSection } from "@/components/products/RecognitionSection";
+import { BuiltForSection } from "@/components/products/BuiltForSection";
 
 // =============================================================================
 // Types
@@ -307,6 +308,8 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
       {/* Result Section */}
       <ResultSection />
 
+ 
+
       {/* User Experience Section */}
       <UserExperienceSection />
 
@@ -321,6 +324,9 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
 
       {/* Recognition Section */}
       <RecognitionSection />
+
+           {/* Built For Section */}
+           <BuiltForSection />
     </div>
   );
 }

@@ -450,12 +450,12 @@ export function HeroSection() {
           >
             {/* Layer 1: Blue radial gradient base */}
             <div
-              className="absolute inset-0 brightness-[0.7]"
+              className="absolute inset-0"
               style={{
-                background: 'radial-gradient(ellipse 70% 50% at 50% 50%, #6B9FFF 0%, #3B7BF7 30%, #1E40AF 50%, #0a1628 80%, #000 100%)',
+                background: 'radial-gradient(ellipse 70% 50% at 50% 50%, #2563EB 0%, #1E40AF 25%, #1E3A8A 45%, #0a1628 75%, #000 100%)',
               }}
             />
-            {/* Layer 2: Light rays image with darken blend mode */}
+            {/* Layer 2: Light rays image with overlay blend mode */}
             <img
               src="/Rectangle 34625200.png"
               alt=""
@@ -463,7 +463,7 @@ export function HeroSection() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                 mixBlendMode: "overlay",
+                mixBlendMode: "overlay",
               }}
             />
             {/* Layer 3: Shadow overlay with multiply blend mode */}
@@ -627,12 +627,12 @@ export function HeroSection() {
           >
             {/* Layer 1: Blue radial gradient base */}
             <div
-              className="absolute inset-0 brightness-[0.7]"
+              className="absolute inset-0"
               style={{
-                background: 'radial-gradient(ellipse 70% 50% at 50% 50%, #6B9FFF 0%, #3B7BF7 30%, #1E40AF 50%, #0a1628 80%, #000 100%)',
+                background: 'radial-gradient(ellipse 70% 50% at 50% 50%, #2563EB 0%, #1E40AF 25%, #1E3A8A 45%, #0a1628 75%, #000 100%)',
               }}
             />
-            {/* Layer 2: Light rays image with darken blend mode */}
+            {/* Layer 2: Light rays image with overlay blend mode */}
             <img
               src="/Rectangle 34625200.png"
               alt=""
@@ -640,7 +640,7 @@ export function HeroSection() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'left top',
-                 mixBlendMode:"overlay",
+                mixBlendMode: "overlay",
               }}
             />
             {/* Layer 3: Leaves video overlay with screen blend mode */}

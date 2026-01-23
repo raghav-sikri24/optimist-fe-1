@@ -28,6 +28,8 @@ export const ASSETS = {
   ac3: getAssetUrl("AC3.png"),
   heroAc: getAssetUrl("hero_ac.png"),
   mainAcMobile: getAssetUrl("MainACMobile.png"),
+  builtForAcDesktop: getAssetUrl("/ACTiltDesktop.png"),
+  builtForAcMobile: getAssetUrl("/ACTiltMobile.png"),
   desktop: getAssetUrl("desktop.png"),
   mobile: getAssetUrl("mobile.png"),
   optimistAcCompare: getAssetUrl("optimist-ac-compare.png"),
@@ -41,8 +43,8 @@ export const ASSETS = {
   indiaStoryValidated: getAssetUrl("india-story-validated.png"),
 
   // Warranty Section
-  warrantyCard: "/warranty-card.png",
-  warrantyCheck: "/warranty-check.png",
+  warrantyCard: getAssetUrl("/warranty-card.png"),
+  warrantyCheck: getAssetUrl("/warranty-check.png"),
 
   // Recognition Section
   recognitionEllipse: "/recognition-ellipse.svg",

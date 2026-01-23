@@ -10,3 +10,4 @@ export { IndiaStorySection } from "./IndiaStorySection";
 export { AfterBuySection } from "./AfterBuySection";
 export { WarrantySection } from "./WarrantySection";
 export { RecognitionSection } from "./RecognitionSection";
+export { BuiltForSection } from "./BuiltForSection";
