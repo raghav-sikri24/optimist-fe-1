@@ -234,7 +234,7 @@ export function BuiltForSection() {
           {/* Buy Now Button */}
           <Link
             href="/products"
-            className="btn-buy-now flex items-center justify-center gap-2.5 px-8 md:px-[120px] py-4 h-14 md:h-16 rounded-full text-[#FFFCDC] font-semibold text-base md:text-xl whitespace-nowrap"
+            className="btn-buy-now flex hidden md:flex items-center w-[200px] justify-center gap-2.5 px-8 md:px-[120px] py-4 h-14 md:h-16 rounded-full text-[#FFFCDC] font-semibold text-base md:text-xl whitespace-nowrap"
           >
             <span>Buy Now</span>
             <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6" />

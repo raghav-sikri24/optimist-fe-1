@@ -303,7 +303,7 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
               </div>
 
               {/* Action Buttons */}
-              <div className="animate-in flex gap-5">
+              <div className="animate-in hidden md:flex flex gap-5">
                 <button
                   onClick={handleAddToCart}
                   disabled={isCartLoading}
