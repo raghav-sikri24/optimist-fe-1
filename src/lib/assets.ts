@@ -131,6 +131,20 @@ export const ASSETS = {
     treeCool: getAssetUrl("TreeCool.mp4"),
     heroLeafVideo:getAssetUrl("small-vecteezy_summer-concept-the-motion-of-leaves-sunlight-natural-shadow_9167357_small.mp4")
   },
+
+  // About Page Assets
+  aboutHero: getAssetUrl("about-hero.jpg"),
+  futureTeam: getAssetUrl("future-team.png"),
+  missionImage: getAssetUrl("mission-image.jpg"),
+  teamFounderBg: getAssetUrl("team-founder-bg.png"),
+  teamFounder: getAssetUrl("team-founder.png"),
+  teamMember: getAssetUrl("team-member.png"),
+  timelineImage: getAssetUrl("timeline-image.jpg"),
+  urbanLadderLogo: getAssetUrl("urban-ladder-logo.png"),
+  
+  // Landing Page Assets
+  rectangleBg: getAssetUrl("Rectangle 34625200.png"),
+  shadowBg: getAssetUrl("Shadow #0011.png"),
 } as const;
 
 export default ASSETS;

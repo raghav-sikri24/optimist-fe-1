@@ -457,7 +457,7 @@ export function HeroSection() {
             />
             {/* Layer 2: Light rays image with overlay blend mode */}
             <img
-              src="/Rectangle 34625200.png"
+              src={ASSETS.rectangleBg}
               alt=""
               className="absolute w-full h-full pointer-events-none"
               style={{
@@ -634,7 +634,7 @@ export function HeroSection() {
             />
             {/* Layer 2: Light rays image with overlay blend mode */}
             <img
-              src="/Rectangle 34625200.png"
+              src={ASSETS.rectangleBg}
               alt=""
               className="absolute w-full h-full pointer-events-none"
               style={{
