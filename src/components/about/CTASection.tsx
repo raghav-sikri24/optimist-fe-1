@@ -65,16 +65,16 @@ export function CTASection() {
             ref={textRef}
             className="flex flex-col font-display text-center lg:text-left will-change-[transform,opacity] lg:max-w-[809px]"
           >
-            {/* Line 1: Nothing extra. */}
+            {/* Line 1: Everything you need. */}
             <p className="font-semibold text-[32px] sm:text-[40px] md:text-[56px] lg:text-[64px] xl:text-[80px] text-black leading-[1.2] lg:leading-normal">
-              Nothing{" "}
-              <span className="text-[#3478F6]">extra.</span>
+              Everything you{" "}
+              <span className="text-[#3478F6]">need.</span>
             </p>
 
-            {/* Line 2: Nothing unnecessary */}
+            {/* Line 2: Nothing you don't. */}
             <p className="font-semibold text-[32px] sm:text-[40px] md:text-[56px] lg:text-[64px] xl:text-[80px] text-black leading-[1.2] lg:leading-normal">
-              Nothing{" "}
-              <span className="text-[#3478F6]">unnecessary</span>
+              Nothing you{" "}
+              <span className="text-[#3478F6]">don&apos;t.</span>
             </p>
           </div>
 

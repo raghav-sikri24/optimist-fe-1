@@ -23,17 +23,17 @@ interface StoryCard {
 const STORY_CARDS: StoryCard[] = [
   {
     image: ASSETS.indiaStoryDesert,
-    caption: "Tested for operation up to 50°C",
+    caption: "Operates consistently at 50°C.",
     alt: "Desert landscape with intense sun showing extreme heat testing conditions",
   },
   {
     image: ASSETS.indiaStorySleeping,
-    caption: "Designed for long, continuous usage",
+    caption: "Tested for months, not hours.",
     alt: "Person sleeping comfortably with AC running continuously",
   },
   {
     image: ASSETS.indiaStoryValidated,
-    caption: "Validated beyond short demo cycles",
+    caption: "Ready for continuous use.",
     alt: "AC unit with BTU performance chart showing sustained performance",
   },
 ];
@@ -180,19 +180,19 @@ export const IndiaStorySection = memo(function IndiaStorySection() {
           {/* Left: Label + Title */}
           <div className="flex flex-col gap-2 md:gap-2.5 max-w-full lg:max-w-[634px]">
             <p className="text-[#3478F6] text-sm md:text-base lg:text-xl font-normal">
-              India Story – Testing Lab
+              Made in India
             </p>
             <h2 
               id="india-story-heading"
               className="font-display text-2xl md:text-[32px] lg:text-[40px] font-semibold text-black leading-tight"
             >
-              Built and tested for Indian summers
+              Engineered for extremes.
             </h2>
           </div>
           
           {/* Right: Description */}
           <p className="text-black text-sm md:text-base lg:text-xl font-normal max-w-full lg:max-w-[430px]">
-            The focus is sustained performance during long summers, not peak numbers for marketing
+            Endurance over specs. Reality over claims.
           </p>
         </div>
 

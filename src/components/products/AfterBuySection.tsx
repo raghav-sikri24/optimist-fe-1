@@ -28,22 +28,22 @@ const STEPS: Step[] = [
   {
     number: 1,
     icon: OrderConfirmIcon,
-    title: "Order confirmation",
+    title: "Order confirmed. You're all set.",
   },
   {
     number: 2,
     icon: UserCircleCheckIcon,
-    title: "Installation scheduled by trained professionals",
+    title: "Professionally installed. By trained technicians.",
   },
   {
     number: 3,
     icon: ScrollDocIcon,
-    title: "Proper setup and first-use guidance",
+    title: "Expertly configured. Ready to perform.",
   },
   {
     number: 4,
     icon: ToolboxIcon,
-    title: "Ongoing service support when required",
+    title: "Supported throughout. Whenever you need us.",
   },
 ];
 
@@ -280,7 +280,7 @@ export const AfterBuySection = memo(function AfterBuySection() {
         <div ref={headerRef} className="text-center md:text-left mb-6 md:mb-8 will-change-[transform,opacity]">
           {/* Subtitle */}
           <p className="text-[#3478F6] text-[16px] md:text-[20px] font-normal mb-2 md:mb-2.5">
-            What Happens After You Buy
+            What happens after you buy
           </p>
           
           {/* Title */}
@@ -288,9 +288,8 @@ export const AfterBuySection = memo(function AfterBuySection() {
             id="after-buy-heading"
             className="font-display font-semibold text-[24px] md:text-[40px] flex flex-wrap justify-center md:justify-start gap-x-2 md:gap-x-6"
           >
-            <span className="text-black">Simple.</span>
-            <span className="text-black">Predictable.</span>
-            <span className="text-[#3478F6]">No coordination issues.</span>
+            <span className="text-black">Four steps.</span>
+            <span className="text-[#3478F6]">Zero hassle.</span>
           </h2>
         </div>
 

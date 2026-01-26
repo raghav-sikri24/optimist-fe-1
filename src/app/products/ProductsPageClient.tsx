@@ -10,7 +10,6 @@ import { ASSETS } from "@/lib/assets";
 import { ImageGallery } from "@/components/products/ImageGallery";
 import { PackageIcon, ShoppingBagIcon, CartIcon } from "@/components/icons/ProductIcons";
 import { QuantityDropdown } from "@/components/products/QuantityDropdown";
-import { ProductDetailRow } from "@/components/products/ProductDetailRow";
 import { ComparisonSection } from "@/components/products/ComparisonSection";
 import { ResultSection } from "@/components/products/ResultSection";
 import { VariantCard } from "@/components/products/VariantCard";
@@ -33,10 +32,6 @@ export interface DisplayVariant {
   available: boolean;
 }
 
-export interface ProductDetail {
-  icon: "trophy" | "warranty" | "installation";
-  label: string;
-}
 
 // =============================================================================
 // Constants
@@ -46,28 +41,24 @@ const MAX_DISPLAY_IMAGES = 6;
 const QUANTITY_OPTIONS = [1, 2, 3, 4, 5] as const;
 
 const MOCK_VARIANTS: DisplayVariant[] = [
-  { id: "1ton", name: "1 TON", subtitle: "For compact rooms", price: 40000, available: true },
-  { id: "1.5ton", name: "1.5 TON", subtitle: "For compact rooms", price: 45000, available: true },
-  { id: "2ton", name: "2 TON", subtitle: "For compact rooms", price: 52000, available: true },
+  { id: "1ton", name: "1 Ton", subtitle: "For compact rooms", price: 40000, available: true },
+  { id: "1.5ton", name: "1.5 Ton", subtitle: "For medium-sized rooms", price: 45000, available: true },
+  { id: "2ton", name: "2 Ton", subtitle: "For large rooms", price: 52000, available: true },
 ];
 
-const PRODUCT_DETAILS: ProductDetail[][] = [
-  [
-    { icon: "trophy", label: "Top Rated" },
-    { icon: "warranty", label: "1-Year Warranty" },
-    { icon: "installation", label: "Paid Installation" },
-  ],
-  [
-    { icon: "trophy", label: "Top Rated" },
-    { icon: "warranty", label: "1-Year Warranty" },
-    { icon: "installation", label: "Paid Installation" },
-  ],
-  [
-    { icon: "trophy", label: "Top Rated" },
-    { icon: "warranty", label: "1-Year Warranty" },
-    { icon: "installation", label: "Paid Installation" },
-  ],
-];
+// What's Included features
+const WHATS_INCLUDED = [
+  "4.8 rated",
+  "Cooling in 45°C+",
+  "Highest ISEER",
+  "True tonnage",
+  "Micro-channel core",
+  "Automotive alloy",
+  "Corrosion tested",
+  "Gas level indicator",
+  "Lower lifetime cost",
+] as const;
+
 
 const MOCK_IMAGES = [
   ASSETS.ac1,
@@ -226,31 +217,31 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
             {/* Right Column - Product Info */}
             <div ref={productInfoRef} className="w-full space-y-3 md:space-y-6">
               {/* Badge */}
-              <div className="animate-in">
-                <span className="relative inline-flex items-center justify-center px-2 py-2 md:px-4 md:py-2 bg-[rgba(52,120,246,0.12)] text-[#3478F6] text-xs md:text-sm font-normal rounded-[45px] w-[112px]">
-                  #BESTSELLER
-                  <span className="absolute inset-0 rounded-[inherit] shadow-[inset_0px_-2px_4px_0px_#ccdeff] pointer-events-none" />
+              <div className="animate-in flex items-center gap-2">
+                <span className="relative inline-flex items-center justify-center px-3 py-1.5 md:px-4 md:py-2 bg-[#3478F6] text-white text-xs md:text-sm font-medium rounded-full">
+                  Blue Pill
                 </span>
+                <span className="text-[#6c6a6a] text-xs md:text-sm">Customer favourite</span>
               </div>
 
               {/* Title & Delivery */}
               <div className="animate-in">
                 <h1 className="text-[28px] md:text-[40px] font-semibold text-black mb-2 leading-tight">
-                  Optimist AC 1.5 Ton
+                  Optimist AC · 1.5 Ton
                 </h1>
                 <div className="flex items-center gap-2 text-[#6c6a6a]">
                   <PackageIcon className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                  <span className="text-xs md:text-sm">Delivery in 3 weeks</span>
+                  <span className="text-xs md:text-sm">Delivery in ~3 weeks</span>
                 </div>
               </div>
 
               {/* Description */}
               <div className="animate-in flex flex-col gap-3">
-                <h3 className="text-xs md:text-base font-medium text-black">
-                  DESCRIPTION
+                <h3 className="text-sm md:text-lg font-semibold text-black">
+                  Engineered for Indian reality.
                 </h3>
                 <p className="text-[#6c6a6a] text-sm md:text-base font-light leading-relaxed">
-                  Njut av den behagliga värmen från en komplett och lyxig badtunna från Nordiska Tunnan. Här kan du se allt som ingår i ditt köp. Njut av den behagliga värmen från en komplett och lyxig badtunna från Nordiska Tunnan. Här kan du se allt som ingår i ditt köp.
+                  Consistent cooling at 45°C. Bills that stay predictable. Performance that doesn&apos;t fade when you need it most.
                 </p>
               </div>
 
@@ -258,9 +249,9 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
               <div className="animate-in h-px bg-gray-200 w-full" />
 
               {/* Variants */}
-              <div className="animate-in flex flex-col gap-6">
-                <h3 className="text-base font-medium text-black">
-                  VARIANTS
+              <div className="animate-in flex flex-col gap-4">
+                <h3 className="text-sm md:text-base font-medium text-black">
+                  Variants
                 </h3>
                 <div className="w-full overflow-hidden" role="radiogroup" aria-label="Product variants">
                   <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
@@ -276,20 +267,45 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
                 </div>
               </div>
 
-              {/* Total */}
-              <div className="animate-in flex flex-col gap-3 md:gap-5">
-                <div className="flex flex-col gap-3">
-                  <h3 className="text-base font-medium text-black">
-                    TOTAL
+              {/* Price */}
+              <div className="animate-in flex flex-col gap-3 md:gap-4">
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-sm md:text-base font-medium text-black">
+                    Price
                   </h3>
-                  <div className="flex flex-wrap items-baseline gap-2">
-                    <span className="text-2xl md:text-2xl font-medium text-black">
-                      Rs {formatPrice(selectedVariant.price)}.00
-                    </span>
-                    <span className="text-[#6c6a6a] text-sm md:text-base font-light">(inclusive of all the taxes)</span>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="text-2xl md:text-3xl font-semibold text-black">
+                        ₹{formatPrice(selectedVariant.price)}
+                      </span>
+                      <span className="text-[#6c6a6a] text-sm md:text-base font-light">(Inclusive of all taxes)</span>
+                    </div>
+                    <p className="text-[#3478F6] text-xs md:text-sm font-medium">
+                      Designed for lower long-term costs
+                    </p>
                   </div>
                 </div>
               </div>
+
+              {/* What's Included */}
+              <div className="animate-in flex flex-col gap-4">
+                <h3 className="text-sm md:text-base font-medium text-black">
+                  What&apos;s Included
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {WHATS_INCLUDED.map((feature, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-3 py-1.5 bg-[rgba(0,0,0,0.04)] border border-[rgba(0,0,0,0.08)] rounded-full text-xs md:text-sm text-black font-medium"
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="animate-in h-px bg-gray-200 w-full" />
 
               {/* Quantity */}
               <div className="animate-in">
@@ -319,23 +335,6 @@ export default function ProductsPageClient({ product }: ProductsPageClientProps)
                 </button>
               </div>
 
-              {/* Divider */}
-              <div className="animate-in h-px bg-gray-200 w-full" />
-
-              {/* Details */}
-              <div className="animate-in flex flex-col gap-5">
-                <h3 className="text-base font-medium text-black">
-                  DETAILS
-                </h3>
-                <div className="flex flex-col gap-4 md:gap-6 md:w-[495px]">
-                  {PRODUCT_DETAILS.map((row, index) => (
-                    <ProductDetailRow key={index} details={row} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Final Divider */}
-              <div className="animate-in h-px bg-gray-200 w-full" />
             </div>
           </div>
         </div>

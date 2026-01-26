@@ -26,18 +26,18 @@ interface ResultFeature {
 const RESULT_FEATURES: ResultFeature[] = [
   {
     icon: <SnowflakeIcon className="w-6 h-6 text-[#3478F6]" />,
-    title: "Consistent Cooling",
-    description: "Steady temperature throughout the day, even in peak summer",
+    title: "Consistent cooling",
+    description: "No peaks. No drops.",
   },
   {
     icon: <PiggyBankIcon className="w-6 h-6 text-[#3478F6]" />,
-    title: "Lower Running Cost Over Time",
-    description: "Energy-efficient design that saves on electricity bills",
+    title: "Lower running cost",
+    description: "Efficiency that holds.",
   },
   {
     icon: <PersonWalkIcon className="w-6 h-6 text-[#3478F6]" />,
-    title: "Less Effort To Manage",
-    description: "Smart controls that adapt to your comfort automatically",
+    title: "Less to manage",
+    description: "It just works.",
   },
 ];
 
@@ -148,7 +148,7 @@ export const ResultSection = memo(function ResultSection() {
           id="result-heading"
           className="font-display text-[32px] md:text-[40px] font-semibold text-black text-center mb-7 md:mb-10 will-change-[transform,opacity]"
         >
-          Result
+          The Result.
         </h2>
         
         {/* Feature Cards Container */}

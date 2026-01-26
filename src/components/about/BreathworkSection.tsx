@@ -5,13 +5,21 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
 // =============================================================================
-// Breathwork Section - "The art and science of breathwork"
-// Kore.ai-inspired ripple effect with concentric circles
+// Animated Lines Section - Cooling reimagined for Indian reality
+// Kore.ai-inspired ripple effect with animated text lines
 // =============================================================================
+
+// Animated lines content
+const animatedLines = [
+  "Cooling reimagined for Indian reality.",
+  "Performance sustained through extreme heat.",
+  "Comfort without the compromise.",
+];
 
 export function BreathworkSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const linesRef = useRef<HTMLDivElement>(null);
   const ripplesRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -35,10 +43,26 @@ export function BreathworkSection() {
           duration: 1,
           ease: "power3.out",
         },
-        0
+        0,
       );
+
+      // Stagger animation for each line
+      if (linesRef.current) {
+        const lines = linesRef.current.querySelectorAll(".animated-line");
+        tl.from(
+          lines,
+          {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.2,
+          },
+          0.3,
+        );
+      }
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   // Ripple configuration - each ring has its own timing and style
@@ -112,7 +136,8 @@ export function BreathworkSection() {
       {/* Keyframe styles */}
       <style jsx>{`
         @keyframes ripplePulse {
-          0%, 100% {
+          0%,
+          100% {
             transform: scale(1);
             opacity: 1;
           }
@@ -139,23 +164,34 @@ export function BreathworkSection() {
         ref={contentRef}
         className="relative z-10 max-w-[1440px] mx-auto px-4 will-change-[transform,opacity]"
       >
-        {/* Desktop text */}
-        <div className="hidden md:flex items-center justify-center h-[360px] lg:h-[400px]">
-          <p className="font-light text-[32px] lg:text-[40px] text-center leading-[1.4]">
-            <span className="text-black">The art and science</span>
-            <br />
-            <span className="text-black">of </span>
-            <span className="text-[#3478F6]">breathwork</span>
-          </p>
-        </div>
-
-        {/* Mobile text */}
-        <div className="md:hidden flex items-center justify-center h-[240px]">
-          <p className="font-light text-[24px] text-center leading-[1.4] px-4">
-            <span className="text-black">The art and science of</span>
-            <br />
-            <span className="text-[#3478F6]">breathwork</span>
-          </p>
+        {/* Animated lines */}
+        <div
+          ref={linesRef}
+          className="flex flex-col items-center justify-center gap-3 md:gap-4 lg:gap-5 min-h-[300px] md:min-h-[360px] lg:min-h-[400px]"
+        >
+          {animatedLines.map((line, index) => (
+            <p
+              key={index}
+              className="animated-line font-light text-[20px] md:text-[28px] lg:text-[36px] text-center leading-[1.4]"
+            >
+              {index === 0 ? (
+                <>
+                  <span className="text-black">Cooling reimagined for </span>
+                  <span className="text-[#3478F6]">Indian reality.</span>
+                </>
+              ) : index === 1 ? (
+                <>
+                  <span className="text-black">Performance sustained through </span>
+                  <span className="text-[#3478F6]">extreme heat.</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-black">Comfort without the </span>
+                  <span className="text-[#3478F6]">compromise.</span>
+                </>
+              )}
+            </p>
+          ))}
         </div>
       </div>
     </section>

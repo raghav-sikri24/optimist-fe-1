@@ -101,43 +101,43 @@ const ValueCard = memo(function ValueCard({
   );
 });
 
-// Values data
+// CHASES Values data
 const VALUES_DATA: ValueCardProps[] = [
   {
     title: "Curiosity & Ingenuity",
     subtitle: "Challenge convention. Engineer better.",
     description:
-      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers",
+      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers.",
   },
   {
-    title: "Curiosity & Ingenuity",
-    subtitle: "Challenge convention. Engineer better.",
+    title: "Customer Obsession",
+    subtitle: "Earn trust. Keep it.",
     description:
-      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers",
+      "Every decision measured against one question: Would we recommend this to our own families? Long-term value over short-term sales. Always.",
   },
   {
-    title: "Curiosity & Ingenuity",
-    subtitle: "Challenge convention. Engineer better.",
+    title: "Honesty & Transparency",
+    subtitle: "Clarity builds trust.",
     description:
-      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers",
+      "Open communication about performance, limitations, and costs. When we fall short, we acknowledge it and make it right. No fine print. No complications.",
   },
   {
-    title: "Curiosity & Ingenuity",
-    subtitle: "Challenge convention. Engineer better.",
+    title: "Action Orientation",
+    subtitle: "Do. Measure. Improve.",
     description:
-      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers",
+      "Progress comes from building, testing, and learning. We move decisively, validate rigorously, and iterate continuously.",
   },
   {
-    title: "Curiosity & Ingenuity",
-    subtitle: "Challenge convention. Engineer better.",
+    title: "Stepping Up",
+    subtitle: "Own it completely.",
     description:
-      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers",
+      "Challenges require people who lean in, not away. We take responsibility beyond our roles and push ourselves to find solutions, not excuses.",
   },
   {
-    title: "Curiosity & Ingenuity",
-    subtitle: "Challenge convention. Engineer better.",
+    title: "Excellence & Pace",
+    subtitle: "High standards. High velocity.",
     description:
-      "We question what's accepted and design what should exist. Progress comes from asking why things work the way they do and refusing to accept inadequate answers",
+      "Quality and speed aren't trade-offs. They're both requirements. We set ambitious benchmarks and move with urgency to meet them.",
   },
 ];
 

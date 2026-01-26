@@ -7,41 +7,121 @@ import { gsap } from "@/lib/gsap";
 import { ASSETS } from "@/lib/assets";
 
 // =============================================================================
-// Timeline Section - "Building Since 2019" with horizontal scrolling cards
+// Timeline Section - "Engineering a new standard."
 // =============================================================================
 
-// Timeline data
+// Timeline data - 14 milestones
 const timelineData = [
   {
     id: 1,
     label: "How it started",
-    year: "2019",
+    year: "Sept–Dec 2023",
     description:
-      "Instead of panicking, our founder set out on the mission to make delicious, mouthwateringly juicy meat a better way for the planet: from plants. And that is exactly what happened.",
+      "A question, not a company. Ashish researched India's climate challenges: heat, energy stress, urban vulnerability. The goal wasn't to build. It was to understand what truly mattered.",
     image: ASSETS.timelineImage,
   },
   {
     id: 2,
-    label: "Early days",
-    year: "2021",
+    label: "Finding focus",
+    year: "Jan 2024",
     description:
-      "Instead of panicking, our founder set out on the mission to make delicious, mouthwateringly juicy meat a better way for the planet: from plants. And that is exactly what happened.",
+      "At a climate forum, one question crystallized everything: Where does India need innovation most urgently? The answer was immediate. Heat stress, the country's most pressing yet under-addressed risk.",
     image: ASSETS.timelineImage,
   },
   {
     id: 3,
-    label: "Growing fast",
-    year: "2023",
+    label: "The commitment",
+    year: "15 Feb 2024",
     description:
-      "Instead of panicking, our founder set out on the mission to make delicious, mouthwateringly juicy meat a better way for the planet: from plants. And that is exactly what happened.",
+      "Heat stress became the mission. Solve climate adaptation through technology, starting with thermal comfort. This was the point of no return.",
     image: ASSETS.timelineImage,
   },
   {
     id: 4,
-    label: "Today",
-    year: "2025",
+    label: "Testing reality",
+    year: "Feb–Mar 2024",
     description:
-      "Instead of panicking, our founder set out on the mission to make delicious, mouthwateringly juicy meat a better way for the planet: from plants. And that is exactly what happened.",
+      "45 days of stress-testing feasibility across engineering, energy economics, and manufacturing. Ashish partnered with Pranav Chopra (CTO) and Manjunath V., aligning on first-principles cooling.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 5,
+    label: "Building begins",
+    year: "1 Apr 2024",
+    description:
+      "Real R&D started. Not slides. Not specs. Real systems, real constraints, real India.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 6,
+    label: "Optimist is born",
+    year: "Aug 2024",
+    description:
+      "Formally incorporated with one belief: Cooling for India must be designed for India.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 7,
+    label: "Early backing",
+    year: "2024",
+    description:
+      "USD 4M pre-seed from Accel and Sparrow Capital. Capital follows conviction in climate-first engineering.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 8,
+    label: "Academic rigor",
+    year: "Late 2024",
+    description:
+      "Mentorship from Prof. Anurag Goyal (IIT Delhi) strengthened scientific and systems thinking foundations.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 9,
+    label: "The lab",
+    year: "Nov 2024–Apr 2025",
+    description:
+      "Nalanda-1 R&D Lab commissioned. A dedicated space to test, fail, iterate, and validate under extreme conditions. Core R&D team built in parallel.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 10,
+    label: "Manufacturing readiness",
+    year: "Jan 2025",
+    description:
+      "Dedicated workshop came online. Innovations needed to be not just efficient but buildable at scale.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 11,
+    label: "The breakthrough",
+    year: "Apr–Jul 2025",
+    description:
+      "Multiple technology breakthroughs converged. One direction emerged clearly: super-efficient air conditioners built for Indian heat, grids, and homes.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 12,
+    label: "Global validation",
+    year: "Aug 2025",
+    description:
+      "Selected for the Third Derivative climate incubator. Optimist is validated among leading global climate-tech companies.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 13,
+    label: "Scaling up",
+    year: "Dec 2025",
+    description:
+      "USD 8M additional funding led by Accel. Fuel for scaling R&D, manufacturing, and market readiness.",
+    image: ASSETS.timelineImage,
+  },
+  {
+    id: 14,
+    label: "Ready for India",
+    year: "Jan 2026",
+    description:
+      "After two years of research, engineering, and validation, Optimist's first product enters the market. Not as another AC. As a new standard for cooling in a warming India.",
     image: ASSETS.timelineImage,
   },
 ];
@@ -225,13 +305,13 @@ export function TimelineSection() {
       className="bg-white py-12 md:py-16 lg:py-20 overflow-hidden"
     >
       <div className="max-w-[1440px] mx-auto">
-        {/* Title - Building Since 2019 */}
+        {/* Title - Engineering a new standard */}
         <h2
           ref={titleRef}
           className="font-display font-semibold text-[28px] md:text-[36px] lg:text-[40px] text-center mb-8 md:mb-12 lg:mb-16 px-4 will-change-[transform,opacity]"
         >
-          <span className="text-black">Building </span>
-          <span className="text-[#3478F6]">Since 2019</span>
+          <span className="text-black">Engineering a </span>
+          <span className="text-[#3478F6]">new standard.</span>
         </h2>
 
         {/* Horizontal Scroll Container */}

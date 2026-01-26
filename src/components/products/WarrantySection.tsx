@@ -27,24 +27,24 @@ const WARRANTY_FEATURES: WarrantyFeature[] = [
   {
     id: 1,
     text: {
-      bold: "5-year comprehensive",
-      regular: "warranty",
+      bold: "Comprehensive 5-year warranty",
+      regular: " on all critical components.",
       position: "start",
     },
   },
   {
     id: 2,
     text: {
-      regular: "Coverage designed for",
-      bold: "long-term usage",
+      regular: "Built for continuous operation, ",
+      bold: "warranted like it.",
       position: "end",
     },
   },
   {
     id: 3,
     text: {
-      bold: "Support built around prevention",
-      regular: ", not breakdowns",
+      bold: "Proactive support",
+      regular: " focused on prevention, not just repair.",
       position: "start",
     },
   },
@@ -161,7 +161,7 @@ export const WarrantySection = memo(function WarrantySection() {
             id="warranty-heading"
             className="font-display font-semibold text-2xl md:text-[40px] text-black leading-tight"
           >
-            Ownership without worry.
+            Five years of certainty.
           </h2>
         </div>
 
@@ -193,7 +193,7 @@ export const WarrantySection = memo(function WarrantySection() {
                 className="font-display font-semibold text-xl md:text-[40px] leading-tight bg-gradient-to-r from-[#3478F6] to-[#1E4690] bg-clip-text"
                 style={{ WebkitTextFillColor: "transparent" }}
               >
-                Optimist is built to stay reliable over years of use.
+                Quality isn&apos;t claimed. It&apos;s covered for five years.
               </p>
             </div>
           </div>

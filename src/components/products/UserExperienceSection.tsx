@@ -29,7 +29,7 @@ const userExperiences: UserExperience[] = [
     id: 1,
     name: "Rahul Sharma",
     date: "Mar 20, 2025",
-    quote: "Cooling remains steady during extreme heat",
+    quote: "Cooling stays steady, even during extreme heat.",
     rating: 4.8,
     image: ASSETS.rohanMehta,
   },
@@ -37,7 +37,7 @@ const userExperiences: UserExperience[] = [
     id: 2,
     name: "Ananya Rao",
     date: "Apr 15, 2025",
-    quote: "At an extreme 48°C outdoor temperature, the AC still delivered unwavering cooling.",
+    quote: "Once it cools the room, it doesn't struggle to maintain it.",
     rating: 4.8,
     image: ASSETS.ananyaRao,
   },
@@ -45,7 +45,7 @@ const userExperiences: UserExperience[] = [
     id: 3,
     name: "Kunal Shah",
     date: "May 10, 2025",
-    quote: "The airflow stayed smooth and stable without any power dips.",
+    quote: "The temperature feels consistent throughout the day.",
     rating: 4.8,
     image: ASSETS.kunalShah,
   },
@@ -166,8 +166,9 @@ export function UserExperienceSection() {
           ref={headerRef}
           className="text-center mb-8 md:mb-12 will-change-[transform,opacity]"
         >
+          <p className="text-[#3478F6] text-sm md:text-base mb-2">Testimonials</p>
           <h2 className="font-display text-2xl md:text-4xl lg:text-[40px] font-bold text-gray-900">
-            What users experience in real homes
+            What you&apos;ll notice at home.
           </h2>
         </div>
 
@@ -285,8 +286,8 @@ export function UserExperienceSection() {
           ref={footerRef}
           className="text-center mt-8 md:mt-12 text-base md:text-lg lg:text-xl font-medium text-gray-900 will-change-[transform,opacity]"
         >
-          These outcomes are noticed during everyday use,{" "}
-          <span className="text-[#3478F6]">not just on day one</span>
+          Built for everyday living.{" "}
+          <span className="text-[#3478F6]">Not just ideal conditions.</span>
         </p>
       </div>
     </section>

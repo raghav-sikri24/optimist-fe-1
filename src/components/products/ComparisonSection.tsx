@@ -12,25 +12,27 @@ import { CheckCircleIcon, XCircleIcon } from "@/components/icons/ProductIcons";
 // =============================================================================
 
 const OPTIMIST_BENEFITS = [
-  "Remains efficient during long usage",
-  "Cooling stays stable through the day",
-  "Designed for extreme Indian heat",
-  "Tested for steady performance",
-  "Smooth and controlled",
-  "More predictable month to month",
-  "Sustained, daily usage",
-  "Less adjustment needed",
+  "Stable beyond 45°C",
+  "Rated = delivered capacity",
+  "Real cooling gain with Turbo",
+  "Stable energy consumption",
+  "1000-hr salt spray tested",
+  "5-year heat exchanger warranty",
+  "Gas indicator included",
+  "You decide on service",
+  "Lower and predictable costs",
 ] as const;
 
 const MARKET_DRAWBACKS = [
-  "Efficiency drops as load increases",
-  "Cooling fluctuates with heat",
-  "Struggles during peak temperatures",
-  "Often compensates by overworking",
-  "Sudden wattage spikes",
-  "Varies due to spikes and inefficiency",
-  "Short-cycle performance",
-  "Frequent mode and temperature changes",
+  "Drops in peak heat",
+  "Rated ≠ delivered capacity",
+  "Only fan speed boost",
+  "Variable energy usage",
+  "~72-hr salt spray testing",
+  "~1 year warranty only",
+  "No gas visibility",
+  "Technician-led decisions",
+  "Uncertain long-term costs",
 ] as const;
 
 // =============================================================================
@@ -147,10 +149,13 @@ export const ComparisonSection = memo(function ComparisonSection() {
           </div>
         </div>
 
-        {/* Visually hidden heading for accessibility */}
-        <h2 id="comparison-heading" className="sr-only">
-          Compare Optimist AC with Market AC
-        </h2>
+        {/* Section Headline */}
+        <div className="text-center mb-8 md:mb-12">
+          <p className="text-white/60 text-sm md:text-base mb-2">Comparison</p>
+          <h2 id="comparison-heading" className="font-display text-2xl md:text-4xl lg:text-5xl font-semibold text-white">
+            Designed for real use
+          </h2>
+        </div>
 
         {/* Content */}
         <div className="relative z-[10] w-full max-w-[1440px] mx-auto pt-10 md:pt-[53px] pb-[90px] md:pb-[175px]">

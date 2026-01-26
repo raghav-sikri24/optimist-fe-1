@@ -10,26 +10,27 @@ import { ASSETS } from "@/lib/assets";
 // Future Section - "The Future We See" with team image and vision statement
 // =============================================================================
 
+// Four pillars of the future
 const features = [
   {
     icon: "/shield-slash.svg",
     title: "Energy-efficient design",
-    description: "Lorem ipsum text is a dummy text",
-  },
-  {
-    icon: "/shield-slash.svg",
-    title: "Energy-efficient design",
-    description: "Lorem ipsum text is a dummy text",
+    description: "World-class efficiency that reduces consumption from day one.",
   },
   {
     icon: "/leaf.svg",
-    title: "Stable cooling performance",
-    description: "Lorem ipsum text is a dummy text",
+    title: "Sustained performance",
+    description: "Consistent cooling at extreme temperatures, year after year.",
   },
   {
     icon: "/hourglass.svg",
-    title: "Focus on long-term value",
-    description: "Lorem ipsum text is a dummy text",
+    title: "Complete transparency",
+    description: "Real-time visibility into energy use, gas levels, and system health.",
+  },
+  {
+    icon: "/hourglass.svg",
+    title: "Long-term value",
+    description: "Built to perform for years. Designed to cost less over time.",
   },
 ];
 
@@ -116,7 +117,7 @@ export function FutureSection() {
           ref={titleRef}
           className="font-display font-semibold text-[28px] md:text-[36px] lg:text-[40px] text-black text-center tracking-[1.6px] mb-8 md:mb-12 lg:mb-16 will-change-[transform,opacity]"
         >
-          The Future We See
+          What&apos;s <span className="text-[#3478F6]">Ahead</span>
         </h2>
 
         {/* Container for overlapping image and card */}
@@ -148,9 +149,8 @@ export function FutureSection() {
             {/* Extra padding at top to account for the overlapping image */}
             <div className="px-6 md:px-12 lg:px-16 pt-[60px] md:pt-[80px] lg:pt-[114px] pb-12 md:pb-16 lg:pb-[114px]">
               {/* Vision Statement */}
-              <p className="font-medium text-[24px] md:text-[30px] lg:text-[36px] text-white text-center leading-[1.4] max-w-[864px] mx-auto italic mb-12 md:mb-16 lg:mb-[50px]">
-                We see a future where cooling becomes a true partner to energy
-                saving.
+              <p className="font-medium text-[24px] md:text-[30px] lg:text-[36px] text-white text-center leading-[1.4] max-w-[900px] mx-auto mb-12 md:mb-16 lg:mb-[50px]">
+                We see a future where cooling becomes a true partner to energy saving.
               </p>
 
               {/* Features Grid */}

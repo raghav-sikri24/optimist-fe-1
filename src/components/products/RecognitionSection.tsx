@@ -27,22 +27,22 @@ const RECOGNITION_FEATURES: RecognitionFeature[] = [
     id: "energy-efficient",
     iconSrc: ASSETS.shieldSlash,
     iconAlt: "Energy efficiency icon",
-    title: "Energy-efficient design",
-    description: "Lorem ipsum text is a dummy text",
+    title: "Energy-saving design",
+    description: "Highest efficiency. Independently certified.",
   },
   {
     id: "stable-cooling",
     iconSrc: ASSETS.leafIcon,
     iconAlt: "Leaf icon",
     title: "Stable cooling performance",
-    description: "Lorem ipsum text is a dummy text",
+    description: "50°C capable. Externally verified.",
   },
   {
     id: "long-term-value",
     iconSrc: ASSETS.hourglass,
     iconAlt: "Hourglass icon",
     title: "Focus on long-term value",
-    description: "Lorem ipsum text is a dummy text",
+    description: "Built to endure. Covered suitably.",
   },
 ];
 
@@ -234,7 +234,7 @@ export const RecognitionSection = memo(function RecognitionSection() {
                   id="recognition-heading"
                   className="font-display font-semibold text-xl md:text-4xl lg:text-5xl text-white text-center leading-tight"
                 >
-                  Recognized for performance &amp; efficiency
+                  Recognition based on performance, not promises.
                 </h2>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
@@ -247,7 +247,7 @@ export const RecognitionSection = memo(function RecognitionSection() {
               
               {/* Subtitle */}
               <p className="text-xs md:text-xl text-white/60 text-center">
-                External validation that reflects real-world use.
+                Recognition
               </p>
             </div>
 

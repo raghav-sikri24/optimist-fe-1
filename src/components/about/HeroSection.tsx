@@ -7,7 +7,7 @@ import { gsap } from "@/lib/gsap";
 import { ASSETS } from "@/lib/assets";
 
 // =============================================================================
-// About Hero Section - "Brand You Can Trust"
+// About Hero Section - "Cooling, built for a warming world."
 // =============================================================================
 
 export function AboutHeroSection() {
@@ -60,16 +60,16 @@ export function AboutHeroSection() {
       className="bg-white pt-16 md:pt-16 lg:pt-16 pb-12 md:pb-16 lg:pb-20 overflow-hidden"
     >
       <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-12">
-        {/* Title - Brand You Can Trust */}
+        {/* Title - Cooling, built for a warming world. */}
         <h1
           ref={titleRef}
           className="font-display text-[32px] md:text-[48px] lg:text-[64px] font-bold text-center mb-6 md:mb-8 lg:mb-10 will-change-[transform,opacity]"
         >
-          <span className="text-black">Brand You Can </span>
-          <span className="text-[#3478F6]">Trust.</span>
+          <span className="text-black">Cooling, built for a </span>
+          <span className="text-[#3478F6]">warming world.</span>
         </h1>
 
-        {/* Hero Card with Background Image */}
+        {/* Hero Card with Background Video/Image */}
         <div
           ref={cardRef}
           className="relative w-full max-w-[1344px] mx-auto rounded-[32px] overflow-hidden will-change-[transform,opacity]"
@@ -78,19 +78,18 @@ export function AboutHeroSection() {
           <div className="hidden md:block relative w-full h-[450px] lg:h-[556px]">
             <Image
               src={ASSETS.aboutHero}
-              alt="Woman enjoying fresh air with arms raised"
+              alt="Indian summers and cooling innovation"
               fill
               className="object-cover object-[center_bottom]"
               sizes="(max-width: 768px) 100vw, 1344px"
               priority
             />
+            {/* Gradient overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
             {/* Text overlay */}
-            <div className="absolute left-[48px] bottom-[48px] lg:bottom-[64px] w-[638px]">
-              <p className="font-light text-[20px] lg:text-[24px] leading-[1.4] text-white">
-                You probably already know about the effects animal agriculture
-                has had on the environment for decades. Back in 2011, those
-                effects were the urgent call to action that led us to start
-                Impossible Foods.
+            <div className="absolute left-[48px] bottom-[48px] lg:bottom-[64px] max-w-[700px]">
+              <p className="font-light text-[20px] lg:text-[24px] leading-[1.5] text-white">
+                Indian summers demand more than ACs were delivering. Consistent cooling at 45°C. Predictable costs. Transparent service. In 2023, we set out to build what should have already existed. An AC engineered for reality, not spec sheets.
               </p>
             </div>
           </div>
@@ -99,21 +98,18 @@ export function AboutHeroSection() {
           <div className="md:hidden relative w-full h-[402px]">
             <Image
               src={ASSETS.aboutHero}
-              alt="Woman enjoying fresh air with arms raised"
+              alt="Indian summers and cooling innovation"
               fill
               className="object-cover object-[70%_bottom]"
               sizes="100vw"
               priority
             />
             {/* Gradient overlay for text readability */}
-            <div className="absolute bottom-0 left-0 right-0 h-[180px] bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[220px] bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
             {/* Text overlay */}
             <div className="absolute left-[16px] right-[16px] bottom-[24px]">
-              <p className="font-light text-[16px] leading-[1.5] text-white">
-                You probably already know about the effects animal agriculture
-                has had on the environment for decades. Back in 2011, those
-                effects were the urgent call to action that led us to start
-                Impossible Foods.
+              <p className="font-light text-[15px] leading-[1.5] text-white">
+                Indian summers demand more than ACs were delivering. Consistent cooling at 45°C. Predictable costs. Transparent service. In 2023, we set out to build what should have already existed.
               </p>
             </div>
           </div>

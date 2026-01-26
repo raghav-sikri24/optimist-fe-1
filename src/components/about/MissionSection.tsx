@@ -7,7 +7,7 @@ import { gsap } from "@/lib/gsap";
 import { ASSETS } from "@/lib/assets";
 
 // =============================================================================
-// Mission Section - "Our Mission" with image and efficiency stats
+// Mission Section - "To redefine what comfort means for India."
 // =============================================================================
 
 export function MissionSection() {
@@ -69,7 +69,7 @@ export function MissionSection() {
           {/* Left - Text Content */}
           <div
             ref={textRef}
-            className="flex flex-col gap-8 w-full lg:w-[575px] shrink-0 will-change-[transform,opacity]"
+            className="flex flex-col gap-8 w-full lg:w-[620px] shrink-0 will-change-[transform,opacity]"
           >
             {/* Label */}
             <p className="font-normal text-[16px] lg:text-[24px] text-[#3478F6] leading-normal">
@@ -78,14 +78,11 @@ export function MissionSection() {
 
             {/* Title and Description */}
             <div className="flex flex-col gap-6 text-black">
-              <h2 className="font-display font-semibold text-[24px] lg:text-[48px] leading-normal lg:w-[545px]">
-                A Breakthrough in Smart, Reliable Cooling.
+              <h2 className="font-display font-semibold text-[24px] lg:text-[48px] leading-[1.2] lg:leading-normal">
+                To redefine what comfort means for India.
               </h2>
-              <p className="font-light text-[16px] lg:text-[24px] leading-[1.4]">
-                You probably already know about the effects animal agriculture
-                has had on the environment for decades. Back in 2011, those
-                effects were the urgent call to action that led us to start
-                Impossible Foods.
+              <p className="font-light text-[16px] lg:text-[20px] leading-[1.6]">
+                Reliable performance at extreme temperatures. Honest efficiency over years of use. Transparent operations you can verify. We&apos;re building air conditioning that respects both the climate we face and the intelligence of those who use it. No compromises. No shortcuts. Just engineering that works.
               </p>
             </div>
           </div>
@@ -99,7 +96,7 @@ export function MissionSection() {
             <div className="relative w-full lg:w-[396px] h-[356px] lg:h-[480px] rounded-[24px] overflow-hidden will-change-[transform,opacity]">
               <Image
                 src={ASSETS.missionImage}
-                alt="Woman enjoying a peaceful moment with a warm drink"
+                alt="Comfort redefined for India"
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 1024px) 100vw, 396px"
@@ -114,15 +111,35 @@ export function MissionSection() {
               />
             </div>
 
-            {/* Stats Card */}
-            <div className="bg-[#AEFFD8] w-full lg:w-[301px] h-[265px] lg:h-[480px] rounded-[20px] overflow-hidden p-6 will-change-[transform,opacity]">
-              <div className="flex flex-col justify-between h-full text-black">
-                <p className="font-medium text-[36px] leading-none">
-                  efficiency
-                </p>
-                <p className="font-bold text-[96px] lg:text-[80px] leading-none">
-                  99.9%
-                </p>
+            {/* ISEER Rating Card */}
+            <div className="bg-gradient-to-br from-[#3478F6] to-[#1E4690] w-full lg:w-[301px] h-[265px] lg:h-[480px] rounded-[20px] overflow-hidden p-6 will-change-[transform,opacity]">
+              <div className="flex flex-col justify-between h-full text-white">
+                <div className="flex flex-col gap-2">
+                  <p className="font-medium text-[18px] lg:text-[20px] leading-none opacity-90">
+                    India&apos;s Highest
+                  </p>
+                  <p className="font-bold text-[32px] lg:text-[40px] leading-none">
+                    ISEER Rating
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {/* Star rating visual */}
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className="w-8 h-8 lg:w-10 lg:h-10 text-[#FFD700]"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="font-bold text-[72px] lg:text-[80px] leading-none">
+                    5.35
+                  </p>
+                </div>
               </div>
             </div>
           </div>

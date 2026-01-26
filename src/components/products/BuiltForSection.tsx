@@ -81,12 +81,15 @@ export function BuiltForSection() {
     >
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
         {/* Title */}
-        <h2
-          ref={titleRef}
-          className="font-display text-2xl md:text-4xl lg:text-[40px] font-semibold text-black text-center mb-8 md:mb-11 will-change-[transform,opacity]"
-        >
-          Optimist is built for
-        </h2>
+        <div className="text-center mb-8 md:mb-11">
+          <p className="text-[#3478F6] text-sm md:text-base mb-2">Product Callout</p>
+          <h2
+            ref={titleRef}
+            className="font-display text-2xl md:text-4xl lg:text-[40px] font-semibold text-black will-change-[transform,opacity]"
+          >
+            Your Optimist
+          </h2>
+        </div>
 
         {/* Desktop Layout - AC Image with Absolute Positioned Callouts */}
         <div
@@ -116,42 +119,42 @@ export function BuiltForSection() {
               />
             </div>
 
-            {/* Callout: Consistent cooling - Top Left */}
+            {/* Callout: Cools consistently - Top Left */}
             <div
               className="absolute flex flex-col items-start"
               style={{ left: "0", top: "0" }}
             >
-              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                Consistent cooling
-              </p>
               <p className="font-semibold text-[32px] leading-normal text-black">
-                during peak summer
+                Cools consistently
+              </p>
+              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
+                at 45°C
               </p>
             </div>
 
-            {/* Callout: Lower & Predictable - Top Right */}
+            {/* Callout: Tracks energy - Top Right (blue) */}
             <div
               className="absolute flex flex-col items-start"
               style={{ left: "905px", top: "142px", width: "324px" }}
             >
               <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                Lower &amp; Predictable
+                Tracks energy
               </p>
-              <p className="font-semibold text-[32px] leading-normal text-black">
-                electricity bills
+              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
+                in real-time
               </p>
             </div>
 
-            {/* Callout: Daily Long-hour Usage - Bottom Left */}
+            {/* Callout: Shows exact gas levels - Bottom Left */}
             <div
               className="absolute flex flex-col items-start"
               style={{ left: "208px", top: "510px", width: "324px" }}
             >
               <p className="font-semibold text-[32px] leading-normal text-black">
-                Daily
+                Shows exact
               </p>
               <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                Long-hour Usage
+                gas levels
               </p>
             </div>
           </div>
@@ -161,23 +164,23 @@ export function BuiltForSection() {
         <div className="md:hidden relative w-full mb-8 will-change-[transform,opacity]">
           {/* Container with relative positioning */}
           <div className="relative" style={{ minHeight: "400px" }}>
-            {/* Callout: Lower & Predictable - Top Left */}
+            {/* Callout: Cools consistently - Top Left */}
             <div className="absolute flex flex-col items-start" style={{ left: "0", top: "0" }}>
-              <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                Lower &amp; Predictable
-              </p>
               <p className="font-semibold text-base leading-normal text-black">
-                electricity bills
+                Cools consistently
+              </p>
+              <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                at 45°C
               </p>
             </div>
 
-            {/* Callout: Daily Long-hour Usage - Top Right */}
+            {/* Callout: Tracks energy - Top Right (blue) */}
             <div className="absolute flex flex-col items-end text-right" style={{ right: "0", top: "0" }}>
-              <p className="font-semibold text-base leading-normal text-black">
-                Daily
+              <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                Tracks energy
               </p>
               <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                Long-hour Usage
+                in real-time
               </p>
             </div>
 
@@ -199,42 +202,40 @@ export function BuiltForSection() {
               />
             </div>
 
-            {/* Callout: Consistent cooling - Bottom Left */}
+            {/* Callout: Shows exact gas levels - Bottom Left */}
             <div
               className="absolute flex flex-col items-start"
               style={{ left: "0", bottom: "0" }}
             >
-              <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                Consistent cooling
-              </p>
               <p className="font-semibold text-base leading-normal text-black">
-                during peak summer
+                Shows exact
+              </p>
+              <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                gas levels
               </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Section - Tagline and CTA */}
+        {/* Bottom Section - Outcome and CTA */}
         <div
           ref={bottomRef}
-          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-8 will-change-[transform,opacity]"
+          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 will-change-[transform,opacity]"
         >
-          {/* Tagline */}
-          <div className="font-display">
-            <p className="text-4xl md:text-5xl lg:text-6xl xl:text-[80px] font-semibold leading-none">
-              <span className="text-black">Nothing </span>
-              <span className="text-[#3478F6]">extra.</span>
+          {/* Outcome */}
+          <div className="font-display text-center md:text-left">
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight">
+              <span className="text-black">Everything you need to stay cool.</span>
             </p>
-            <p className="text-4xl md:text-5xl lg:text-6xl xl:text-[80px] font-semibold leading-none mt-1 md:mt-2">
-              <span className="text-black">Nothing </span>
-              <span className="text-[#3478F6]">unnecessary</span>
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight mt-1">
+              <span className="text-[#3478F6]">Nothing that gets in the way.</span>
             </p>
           </div>
 
           {/* Buy Now Button */}
           <Link
             href="/products"
-            className="btn-buy-now flex hidden md:flex items-center w-[200px] justify-center gap-2.5 px-8 md:px-[120px] py-4 h-14 md:h-16 rounded-full text-[#FFFCDC] font-semibold text-base md:text-xl whitespace-nowrap"
+            className="btn-buy-now flex items-center justify-center gap-2.5 px-8 md:px-12 py-4 h-14 md:h-16 rounded-full text-[#FFFCDC] font-semibold text-base md:text-xl whitespace-nowrap"
           >
             <span>Buy Now</span>
             <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6" />
