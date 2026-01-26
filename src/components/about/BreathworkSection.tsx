@@ -1,20 +1,22 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
 // =============================================================================
 // Breathwork Section - "The art and science of breathwork"
+// Kore.ai-inspired ripple effect with concentric circles
 // =============================================================================
 
 export function BreathworkSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const ripplesRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
+      // Content fade-in animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -39,140 +41,98 @@ export function BreathworkSection() {
     { scope: sectionRef }
   );
 
-  // Arc configurations - outer arcs are more filled, inner are outlines
-  const arcConfig = [
-    { offset: 0, opacity: 0.15, strokeWidth: 8 },      // Outermost - thicker/filled look
-    { offset: 25, opacity: 0.10, strokeWidth: 5 },
-    { offset: 48, opacity: 0.25, strokeWidth: 1.5 },   // Outline
-    { offset: 68, opacity: 0.18, strokeWidth: 1 },     // Innermost - thin outline
+  // Ripple configuration - each ring has its own timing and style
+  const rippleConfig = [
+    { size: 100, delay: 0, duration: 4, opacity: 0.4, strokeWidth: 2 },
+    { size: 200, delay: 0.5, duration: 4, opacity: 0.35, strokeWidth: 1.5 },
+    { size: 320, delay: 1, duration: 4, opacity: 0.3, strokeWidth: 1.5 },
+    { size: 460, delay: 1.5, duration: 4, opacity: 0.25, strokeWidth: 1 },
+    { size: 620, delay: 2, duration: 4, opacity: 0.2, strokeWidth: 1 },
+    { size: 800, delay: 2.5, duration: 4, opacity: 0.15, strokeWidth: 0.75 },
+    { size: 1000, delay: 3, duration: 4, opacity: 0.1, strokeWidth: 0.5 },
   ];
 
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-16 md:py-24 lg:py-32 overflow-hidden relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white py-16 md:py-24 lg:py-32 overflow-hidden relative min-h-[400px] md:min-h-[500px]"
     >
-      {/* Desktop Arcs - positioned at viewport edges */}
-      <div className="hidden md:block absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Left side arcs - curves facing inward toward center */}
-        {arcConfig.map((arc, i) => (
+      {/* Ripple Effect Container */}
+      <div
+        ref={ripplesRef}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+      >
+        {/* Ripple circles */}
+        {rippleConfig.map((ripple, index) => (
           <div
-            key={`left-${i}`}
-            className="absolute transition-all duration-700 ease-out"
+            key={index}
+            className="absolute rounded-full"
             style={{
-              width: "1000px",
-              height: "1200px",
-              top: "50%",
-              left: `${-500 + arc.offset}px`,
-              transform: `translateY(-50%) ${isHovered ? `translateX(${(4 - i) * 5}px)` : ""}`,
-              transitionDelay: `${i * 40}ms`,
+              width: `${ripple.size}px`,
+              height: `${ripple.size}px`,
+              animation: `ripplePulse ${ripple.duration}s ease-out infinite`,
+              animationDelay: `${ripple.delay}s`,
             }}
           >
-            <svg width="100%" height="100%" viewBox="0 0 1000 1200">
-              <ellipse
-                cx="980"
-                cy="600"
-                rx="480"
-                ry="580"
+            <svg
+              width="100%"
+              height="100%"
+              viewBox={`0 0 ${ripple.size} ${ripple.size}`}
+              className="absolute inset-0"
+            >
+              <circle
+                cx={ripple.size / 2}
+                cy={ripple.size / 2}
+                r={ripple.size / 2 - ripple.strokeWidth}
                 fill="none"
                 stroke="#3478F6"
-                strokeWidth={arc.strokeWidth}
-                opacity={arc.opacity}
+                strokeWidth={ripple.strokeWidth}
+                opacity={ripple.opacity}
               />
             </svg>
           </div>
         ))}
 
-        {/* Right side arcs - curves facing inward toward center */}
-        {arcConfig.map((arc, i) => (
+        {/* Additional expanding ripples for continuous effect */}
+        {[0, 1, 2].map((waveIndex) => (
           <div
-            key={`right-${i}`}
-            className="absolute transition-all duration-700 ease-out"
+            key={`wave-${waveIndex}`}
+            className="absolute rounded-full border border-[#3478F6]"
             style={{
-              width: "1000px",
-              height: "1200px",
-              top: "50%",
-              right: `${-500 + arc.offset}px`,
-              transform: `translateY(-50%) ${isHovered ? `translateX(-${(4 - i) * 5}px)` : ""}`,
-              transitionDelay: `${i * 40}ms`,
+              width: "80px",
+              height: "80px",
+              animation: `rippleExpand 6s ease-out infinite`,
+              animationDelay: `${waveIndex * 2}s`,
+              opacity: 0,
             }}
-          >
-            <svg width="100%" height="100%" viewBox="0 0 1000 1200">
-              <ellipse
-                cx="20"
-                cy="600"
-                rx="480"
-                ry="580"
-                fill="none"
-                stroke="#3478F6"
-                strokeWidth={arc.strokeWidth}
-                opacity={arc.opacity}
-              />
-            </svg>
-          </div>
+          />
         ))}
       </div>
 
-      {/* Mobile Arcs */}
-      <div className="md:hidden absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Left side arcs */}
-        {arcConfig.map((arc, i) => (
-          <div
-            key={`left-mobile-${i}`}
-            className="absolute"
-            style={{
-              width: "400px",
-              height: "500px",
-              top: "50%",
-              left: `${-200 + arc.offset * 0.5}px`,
-              transform: "translateY(-50%)",
-            }}
-          >
-            <svg width="100%" height="100%" viewBox="0 0 400 500">
-              <ellipse
-                cx="390"
-                cy="250"
-                rx="190"
-                ry="240"
-                fill="none"
-                stroke="#3478F6"
-                strokeWidth={arc.strokeWidth * 0.6}
-                opacity={arc.opacity}
-              />
-            </svg>
-          </div>
-        ))}
+      {/* Keyframe styles */}
+      <style jsx>{`
+        @keyframes ripplePulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.03);
+            opacity: 0.85;
+          }
+        }
 
-        {/* Right side arcs */}
-        {arcConfig.map((arc, i) => (
-          <div
-            key={`right-mobile-${i}`}
-            className="absolute"
-            style={{
-              width: "400px",
-              height: "500px",
-              top: "50%",
-              right: `${-200 + arc.offset * 0.5}px`,
-              transform: "translateY(-50%)",
-            }}
-          >
-            <svg width="100%" height="100%" viewBox="0 0 400 500">
-              <ellipse
-                cx="10"
-                cy="250"
-                rx="190"
-                ry="240"
-                fill="none"
-                stroke="#3478F6"
-                strokeWidth={arc.strokeWidth * 0.6}
-                opacity={arc.opacity}
-              />
-            </svg>
-          </div>
-        ))}
-      </div>
+        @keyframes rippleExpand {
+          0% {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+          100% {
+            transform: scale(15);
+            opacity: 0;
+          }
+        }
+      `}</style>
 
       {/* Center content */}
       <div
