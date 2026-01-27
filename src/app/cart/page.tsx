@@ -121,7 +121,7 @@ export default function CartPage() {
                       </div>
                       <div className="flex flex-col justify-center">
                         <Link
-                          href={`/products/${product.handle}`}
+                          href="/products"
                           className="font-medium text-optimist-cream hover:text-optimist-blue-light transition-colors"
                         >
                           {product.title}

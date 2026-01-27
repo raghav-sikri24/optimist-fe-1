@@ -50,7 +50,10 @@ export function HeroBlueGradient({ progress }: { progress: number }) {
 
     // Fast, smooth setters (avoid creating a tween per scroll tick).
     settersRef.current = {
-      full: gsap.quickTo(full, "opacity", { duration: 0.15, ease: "power2.out" }),
+      full: gsap.quickTo(full, "opacity", {
+        duration: 0.15,
+        ease: "power2.out",
+      }),
       middle: gsap.quickTo(middle, "opacity", {
         duration: 0.15,
         ease: "power2.out",
@@ -82,7 +85,7 @@ export function HeroBlueGradient({ progress }: { progress: number }) {
     gsap.set(full, { opacity: 1 });
     // Transform from center so it shrinks evenly
     gsap.set(frame, {
-      transformOrigin: "50% 50%"
+      transformOrigin: "50% 50%",
     });
   }, []);
 
@@ -137,7 +140,7 @@ export function HeroBlueGradient({ progress }: { progress: number }) {
     <div
       aria-hidden
       className="absolute inset-0 pointer-events-none overflow-hidden"
-      style={{ 
+      style={{
         transformStyle: "preserve-3d",
         WebkitTransformStyle: "preserve-3d",
       }}
@@ -145,12 +148,12 @@ export function HeroBlueGradient({ progress }: { progress: number }) {
       <div
         ref={frameRef}
         className="absolute top-0 overflow-hidden h-[95vh] w-[100vw]"
-        style={{ 
-          willChange: "transform, border-radius", 
-          borderBottomLeftRadius: '20px', 
-          borderBottomRightRadius: '20px',
-          WebkitBackfaceVisibility: 'hidden',
-          backfaceVisibility: 'hidden',
+        style={{
+          willChange: "transform, border-radius",
+          borderBottomLeftRadius: "20px",
+          borderBottomRightRadius: "20px",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
         }}
       >
         <div

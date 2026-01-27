@@ -46,17 +46,19 @@ const features = [
 ];
 
 // Feature content component for mobile with fade transitions
-function MobileFeatureContent({ 
-  feature, 
-  isActive, 
-}: { 
-  feature: typeof features[0]; 
-  isActive: boolean; 
+function MobileFeatureContent({
+  feature,
+  isActive,
+}: {
+  feature: (typeof features)[0];
+  isActive: boolean;
 }) {
   return (
-    <div 
+    <div
       className={`absolute inset-0 flex flex-col justify-center px-6 sm:px-8 transition-all duration-500 ease-out ${
-        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        isActive
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-4 pointer-events-none"
       }`}
     >
       {/* Badge */}
@@ -69,7 +71,7 @@ function MobileFeatureContent({
             className="object-contain"
           />
         </div>
-        {'badgeTitle' in feature ? (
+        {"badgeTitle" in feature ? (
           <div className="flex flex-col">
             <span className="text-[11px] leading-[14px] font-[700] text-[#212121]">
               {feature.badgeTitle}
@@ -86,10 +88,11 @@ function MobileFeatureContent({
       </div>
 
       {/* Headline */}
-      <h2 
+      <h2
         className="font-display text-3xl sm:text-4xl font-bold leading-tight mb-3"
         style={{
-          background: "linear-gradient(151.7deg, #1265FF 25.27%, #69CDEB 87.59%, #46F5A0 120.92%)",
+          background:
+            "linear-gradient(151.7deg, #1265FF 25.27%, #69CDEB 87.59%, #46F5A0 120.92%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -123,30 +126,36 @@ export function FeaturesShowcaseSection() {
     const checkScreenSize = () => {
       setIsLargeScreen(window.innerWidth >= 1024);
     };
-    
+
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   // Initialize video for iOS Safari - must happen on user interaction
-  const initializeVideo = useCallback(async (video: HTMLVideoElement | null, initializedRef: React.MutableRefObject<boolean>) => {
-    if (!video || initializedRef.current) return;
-    
-    try {
-      video.muted = true;
-      // Brief play to force iOS to load video data
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        await playPromise;
-        video.pause();
-        video.currentTime = 0;
-        initializedRef.current = true;
+  const initializeVideo = useCallback(
+    async (
+      video: HTMLVideoElement | null,
+      initializedRef: React.MutableRefObject<boolean>,
+    ) => {
+      if (!video || initializedRef.current) return;
+
+      try {
+        video.muted = true;
+        // Brief play to force iOS to load video data
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          video.pause();
+          video.currentTime = 0;
+          initializedRef.current = true;
+        }
+      } catch (e) {
+        // Autoplay prevented - this is expected on iOS without user interaction
       }
-    } catch (e) {
-      // Autoplay prevented - this is expected on iOS without user interaction
-    }
-  }, []);
+    },
+    [],
+  );
 
   // Touch handler to initialize video on first user interaction (crucial for iOS Safari)
   useEffect(() => {
@@ -157,11 +166,13 @@ export function FeaturesShowcaseSection() {
         initializeVideo(videoRef.current, videoInitializedRef);
       }
       // Remove listener after first touch
-      document.removeEventListener('touchstart', handleFirstTouch);
+      document.removeEventListener("touchstart", handleFirstTouch);
     };
 
-    document.addEventListener('touchstart', handleFirstTouch, { passive: true });
-    return () => document.removeEventListener('touchstart', handleFirstTouch);
+    document.addEventListener("touchstart", handleFirstTouch, {
+      passive: true,
+    });
+    return () => document.removeEventListener("touchstart", handleFirstTouch);
   }, [isLargeScreen, initializeVideo]);
 
   // Video load initialization
@@ -170,10 +181,12 @@ export function FeaturesShowcaseSection() {
     if (!video) return;
 
     video.load();
-    
+
     // Try to initialize immediately (works on non-iOS browsers)
     if (!isIOSSafari()) {
-      const initializedRef = isLargeScreen ? videoInitializedRef : mobileVideoInitializedRef;
+      const initializedRef = isLargeScreen
+        ? videoInitializedRef
+        : mobileVideoInitializedRef;
       initializeVideo(video, initializedRef);
     }
   }, [isLargeScreen, initializeVideo]);
@@ -199,12 +212,12 @@ export function FeaturesShowcaseSection() {
   useGSAP(
     () => {
       if (!isLargeScreen) return;
-      
+
       const video = videoRef.current;
       if (!video || !sectionRef.current) return;
 
       video.pause();
-      
+
       // Track target time for smoother seeking
       let targetTime = 0;
       let isSeekingAllowed = true;
@@ -212,11 +225,11 @@ export function FeaturesShowcaseSection() {
       // Use requestAnimationFrame for smoother video updates
       const updateVideoTime = () => {
         if (!isSeekingAllowed) return;
-        
+
         if (video.readyState >= 1 && Number.isFinite(video.duration)) {
           const diff = Math.abs(video.currentTime - targetTime);
           if (diff > 0.03) {
-            if ('fastSeek' in video && typeof video.fastSeek === 'function') {
+            if ("fastSeek" in video && typeof video.fastSeek === "function") {
               try {
                 video.fastSeek(targetTime);
               } catch {
@@ -239,7 +252,7 @@ export function FeaturesShowcaseSection() {
             targetTime = self.progress * video.duration;
             requestAnimationFrame(updateVideoTime);
           }
-        }
+        },
       });
 
       return () => {
@@ -249,20 +262,20 @@ export function FeaturesShowcaseSection() {
     {
       scope: sectionRef,
       dependencies: [isLargeScreen, videoReady],
-    }
+    },
   );
 
   // Mobile: Separate ScrollTriggers for video scrubbing and content transitions
   useGSAP(
     () => {
       if (isLargeScreen) return;
-      
+
       const video = mobileVideoRef.current;
       const section = mobileSectionRef.current;
       if (!video || !section) return;
 
       video.pause();
-      
+
       // Track target time for smoother seeking
       let targetTime = 0;
       let rafId: number | null = null;
@@ -305,12 +318,12 @@ export function FeaturesShowcaseSection() {
         scrub: 0.1,
         onUpdate: (self) => {
           const progress = self.progress;
-          
+
           // Update active feature based on scroll progress
           const featureCount = features.length;
           const newActiveFeature = Math.min(
             Math.floor(progress * featureCount),
-            featureCount - 1
+            featureCount - 1,
           );
           setActiveFeature(newActiveFeature);
         },
@@ -324,80 +337,80 @@ export function FeaturesShowcaseSection() {
     {
       scope: mobileSectionRef,
       dependencies: [isLargeScreen],
-    }
+    },
   );
 
   return (
     <>
       {/* Mobile Layout - Uses CSS sticky for reliable mobile behavior */}
       {/* Outer container creates scroll space (height = features * 100vh) */}
-      <div 
+      <div
         ref={mobileSectionRef}
         className="lg:hidden block w-full relative"
-        style={{ 
+        style={{
           height: `${features.length * 70}vh`,
-          backgroundColor: '#e3e3e3',
+          backgroundColor: "#e3e3e3",
         }}
       >
         {/* Sticky container - stays fixed while parent scrolls */}
-        <div 
+        <div
           style={{
-            position: 'sticky',
+            position: "sticky",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#e3e3e3',
-            overflow: 'hidden',
+            width: "100%",
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: "#e3e3e3",
+            overflow: "hidden",
           }}
         >
           {/* Video Section - Top 55% */}
-          <div 
-            style={{ 
-              height: '55%', 
-              width: '100%',
-              overflow: 'hidden',
-              backgroundColor: '#e3e3e3',
-              position: 'relative',
+          <div
+            style={{
+              height: "55%",
+              width: "100%",
+              overflow: "hidden",
+              backgroundColor: "#e3e3e3",
+              position: "relative",
               flexShrink: 0,
             }}
           >
-            <div 
+            <div
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 50,
                 left: 0,
                 right: 0,
                 bottom: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-                <video
-                  ref={mobileVideoRef}
-                  src={`${ASSETS.videos.pointersAnimation}#t=0.001`}
-                  className="h-[100%] w-auto max-w-none object-cover translate-x-[5%]"
-                  muted
-                  playsInline
-                  preload="auto"
-                  onLoadedMetadata={handleMobileVideoLoaded}
-                  onCanPlay={handleMobileVideoLoaded}
-                  onCanPlayThrough={handleMobileVideoLoaded}
-                  style={{ WebkitTransform: 'translateZ(0) translateX(25%)' }}
-                />
+              <video
+                ref={mobileVideoRef}
+                src={`${ASSETS.videos.pointersAnimation}#t=0.001`}
+                className="h-[100%] w-auto max-w-none object-cover translate-x-[5%]"
+                muted
+                playsInline
+                preload="auto"
+                onLoadedMetadata={handleMobileVideoLoaded}
+                onCanPlay={handleMobileVideoLoaded}
+                onCanPlayThrough={handleMobileVideoLoaded}
+                style={{ WebkitTransform: "translateZ(0) translateX(25%)" }}
+              />
             </div>
           </div>
 
           {/* Content Section - Bottom 45% */}
-          <div 
-            style={{ 
-              height: '45%', 
-              width: '100%',
-              backgroundColor: '#e3e3e3',
-              position: 'relative',
+          <div
+            style={{
+              height: "45%",
+              width: "100%",
+              backgroundColor: "#e3e3e3",
+              position: "relative",
               flexShrink: 0,
             }}
           >
@@ -411,28 +424,42 @@ export function FeaturesShowcaseSection() {
             ))}
 
             {/* Scroll hint for first feature */}
-            <div 
+            <div
               style={{
-                position: 'absolute',
-                bottom: '1rem',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.25rem',
-            
-                transition: 'opacity 300ms',
+                position: "absolute",
+                bottom: "1rem",
+                left: "50%",
+                transform: "translateX(-50%)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.25rem",
+
+                transition: "opacity 300ms",
               }}
             >
-              <span style={{ fontSize: '0.75rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Scroll</span>
-              <svg 
-                style={{ width: '1rem', height: '1rem', color: '#9CA3AF' }}
-                fill="none" 
-                viewBox="0 0 24 24" 
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#9CA3AF",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Scroll
+              </span>
+              <svg
+                style={{ width: "1rem", height: "1rem", color: "#9CA3AF" }}
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
               </svg>
             </div>
           </div>
@@ -476,7 +503,7 @@ export function FeaturesShowcaseSection() {
                           className="object-contain"
                         />
                       </div>
-                      {'badgeTitle' in feature ? (
+                      {"badgeTitle" in feature ? (
                         <div className="flex flex-col">
                           <span className="text-[14px] leading-[18px] font-[700] text-[#212121]">
                             {feature.badgeTitle}
@@ -494,10 +521,11 @@ export function FeaturesShowcaseSection() {
 
                     {/* Headline with arrow */}
                     <div className="flex items-center gap-6 mb-6">
-                      <h2 
+                      <h2
                         className="font-display text-[44px] xl:text-[52px] font-bold leading-[1.1]"
                         style={{
-                          background: "linear-gradient(151.7deg, #1265FF 25.27%, #69CDEB 87.59%, #46F5A0 120.92%)",
+                          background:
+                            "linear-gradient(151.7deg, #1265FF 25.27%, #69CDEB 87.59%, #46F5A0 120.92%)",
                           WebkitBackgroundClip: "text",
                           WebkitTextFillColor: "transparent",
                           backgroundClip: "text",
@@ -538,7 +566,7 @@ export function FeaturesShowcaseSection() {
                 onCanPlayThrough={handleVideoLoaded}
                 disablePictureInPicture
                 controlsList="nodownload nofullscreen noremoteplayback"
-                style={{ WebkitTransform: 'translateZ(0)' }}
+                style={{ WebkitTransform: "translateZ(0)" }}
               />
             </div>
           </div>

@@ -52,22 +52,22 @@ export function Navigation() {
       tl.fromTo(
         logoRef.current,
         { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.8 }
+        { opacity: 1, y: 0, duration: 0.8 },
       )
         .fromTo(
           linksRef.current?.children || [],
           { opacity: 0, y: -15 },
           { opacity: 1, y: 0, stagger: 0.08, duration: 0.5 },
-          "-=0.5"
+          "-=0.5",
         )
         .fromTo(
           actionsRef.current?.children || [],
           { opacity: 0, y: -15 },
           { opacity: 1, y: 0, stagger: 0.08, duration: 0.5 },
-          "-=0.3"
+          "-=0.3",
         );
     },
-    { scope: navRef }
+    { scope: navRef },
   );
 
   const handleLogout = async () => {
@@ -85,7 +85,7 @@ export function Navigation() {
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-12">
           <div className="flex items-center justify-between h-14 md:h-16">
             {/* Left Navigation - Desktop */}
-            {/* <div ref={linksRef} className="hidden md:flex items-center gap-8">
+            <div ref={linksRef} className="hidden md:flex items-center gap-8">
               {navLinks.map((link, index) => {
                 const isActive = pathname === link.href;
                 return (
@@ -105,7 +105,7 @@ export function Navigation() {
                   </Link>
                 );
               })}
-            </div> */}
+            </div>
 
             {/* Left Logo - Mobile */}
             <div className="md:hidden flex items-center">
@@ -137,8 +137,7 @@ export function Navigation() {
             </div>
 
             {/* Right Actions */}
-            {/* <div ref={actionsRef} className="flex items-center gap-3 md:gap-4">
-
+            <div ref={actionsRef} className="flex items-center gap-3 md:gap-4">
               {isAuthenticated && (
                 <div className="relative hidden md:block">
                   <button
@@ -156,7 +155,6 @@ export function Navigation() {
                     />
                   </button>
 
-        
                   {isUserMenuOpen && (
                     <>
                       <div
@@ -213,7 +211,6 @@ export function Navigation() {
                 </div>
               )}
 
-
               <button
                 onClick={toggleCart}
                 className="relative hidden md:flex items-center gap-2 text-[#FFFCDC]-muted hover:text-[#FFFCDC] transition-colors"
@@ -229,7 +226,6 @@ export function Navigation() {
                 </div>
               </button>
 
-            
               {!isAuthenticated && !isAuthLoading && (
                 <Link
                   href="/login"
@@ -240,7 +236,6 @@ export function Navigation() {
                 </Link>
               )}
 
-     
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="md:hidden flex items-center gap-2 px-4 py-2 rounded-full border border-[#FFFCDC]/20 text-[#FFFCDC] hover:bg-[#FFFCDC]/5 transition-all"
@@ -252,7 +247,7 @@ export function Navigation() {
                   <Menu className="w-4 h-4" />
                 )}
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
 

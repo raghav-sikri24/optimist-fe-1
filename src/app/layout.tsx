@@ -3,8 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { ViewCanvas } from "@/components/canvas/ViewCanvas";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
+import { LayoutContent } from "@/components/layout/LayoutContent";
 import { Providers } from "@/components/providers/Providers";
 
 // ABC Solar Display - For headlines
@@ -133,9 +132,7 @@ export default function RootLayout({
         <Providers>
           <SmoothScroll>
             {/* <ViewCanvas /> */}
-            <Navigation />
-            <main>{children}</main>
-            <Footer />
+            <LayoutContent>{children}</LayoutContent>
           </SmoothScroll>
         </Providers>
       </body>

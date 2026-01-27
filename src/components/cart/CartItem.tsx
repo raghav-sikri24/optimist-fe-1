@@ -60,7 +60,7 @@ export function CartItem({ item }: CartItemProps) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <Link
-          href={`/products/${product.handle}`}
+          href="/products"
           className="text-sm font-medium text-optimist-cream hover:text-optimist-blue-light transition-colors line-clamp-2"
         >
           {product.title}

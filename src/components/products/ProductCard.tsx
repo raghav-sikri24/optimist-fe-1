@@ -64,7 +64,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 
   return (
     <div ref={cardRef} className="group">
-      <Link href={`/products/${product.handle}`} className="block">
+      <Link href="/products" className="block">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden rounded-xl bg-optimist-dark mb-4">
           {image ? (
