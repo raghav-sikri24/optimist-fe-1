@@ -16,7 +16,11 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    general?: string;
+  }>({});
 
   const { login } = useAuth();
   const { showToast } = useToast();
@@ -41,7 +45,7 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -70,7 +74,10 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-optimist-cream mb-2">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-optimist-cream mb-2"
+        >
           Email Address
         </label>
         <input
@@ -80,7 +87,9 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           className={`w-full px-4 py-3 rounded-lg bg-optimist-dark border text-optimist-cream placeholder-optimist-cream-muted/50 focus:outline-none focus:ring-2 focus:ring-optimist-blue-light/50 transition-colors ${
-            errors.email ? "border-red-500" : "border-optimist-border hover:border-optimist-border-light"
+            errors.email
+              ? "border-red-500"
+              : "border-optimist-border hover:border-optimist-border-light"
           }`}
           disabled={isSubmitting}
         />
@@ -92,7 +101,10 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
       {/* Password */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label htmlFor="password" className="block text-sm font-medium text-optimist-cream">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-optimist-cream"
+          >
             Password
           </label>
           <Link
@@ -110,7 +122,9 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             className={`w-full px-4 py-3 pr-12 rounded-lg bg-optimist-dark border text-optimist-cream placeholder-optimist-cream-muted/50 focus:outline-none focus:ring-2 focus:ring-optimist-blue-light/50 transition-colors ${
-              errors.password ? "border-red-500" : "border-optimist-border hover:border-optimist-border-light"
+              errors.password
+                ? "border-red-500"
+                : "border-optimist-border hover:border-optimist-border-light"
             }`}
             disabled={isSubmitting}
           />
@@ -119,7 +133,11 @@ export function LoginForm({ redirectTo = "/account" }: LoginFormProps) {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-optimist-cream-muted hover:text-optimist-cream transition-colors"
           >
-            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            {showPassword ? (
+              <EyeOff className="w-5 h-5" />
+            ) : (
+              <Eye className="w-5 h-5" />
+            )}
           </button>
         </div>
         {errors.password && (

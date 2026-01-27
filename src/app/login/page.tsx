@@ -28,10 +28,10 @@ export default function LoginPage() {
       gsap.fromTo(
         elements,
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" },
       );
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   if (isLoading) {
