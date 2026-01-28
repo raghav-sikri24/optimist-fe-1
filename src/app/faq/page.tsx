@@ -15,10 +15,10 @@ export default function FAQPage() {
       gsap.fromTo(
         contentRef.current,
         { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
       );
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   return (
@@ -30,7 +30,7 @@ export default function FAQPage() {
         <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg">
           <HelpCircle className="w-10 h-10 text-white" />
         </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-zinc-900  mb-4">
           FAQ
         </h1>
         <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-md mx-auto mb-8">
@@ -44,4 +44,3 @@ export default function FAQPage() {
     </div>
   );
 }
-
