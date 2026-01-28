@@ -14,114 +14,58 @@ import { ASSETS } from "@/lib/assets";
 const timelineData = [
   {
     id: 1,
-    label: "How it started",
-    year: "Sept–Dec 2023",
+    label: "Mission Locked",
+    year: "Feb 2024",
     description:
-      "A question, not a company. Ashish researched India's climate challenges: heat, energy stress, urban vulnerability. The goal wasn't to build. It was to understand what truly mattered.",
+      "Heat stress chosen as the problem to solve. Optimist commits to climate adaptation through thermal comfort.",
     image: ASSETS.timelineImage,
   },
   {
     id: 2,
-    label: "Finding focus",
-    year: "Jan 2024",
+    label: "First-Principle Designing",
+    year: "Mar 2024",
     description:
-      "At a climate forum, one question crystallized everything: Where does India need innovation most urgently? The answer was immediate. Heat stress, the country's most pressing yet under-addressed risk.",
+      "Pranav Chopra joins. First-principles engineering begins. The problem shifts from 'what' to 'how'.",
     image: ASSETS.timelineImage,
   },
   {
     id: 3,
-    label: "The commitment",
-    year: "15 Feb 2024",
+    label: "Company Incorporated",
+    year: "Aug 2024",
     description:
-      "Heat stress became the mission. Solve climate adaptation through technology, starting with thermal comfort. This was the point of no return.",
+      "Optimist formally comes into existence. From research project to real company.",
     image: ASSETS.timelineImage,
   },
   {
     id: 4,
-    label: "Testing reality",
-    year: "Feb–Mar 2024",
+    label: "Lab + Manufacturing Live",
+    year: "Nov 2024–Apr 2025",
     description:
-      "45 days of stress-testing feasibility across engineering, energy economics, and manufacturing. Ashish partnered with Pranav Chopra (CTO) and Manjunath V., aligning on first-principles cooling.",
+      "Nalanda-1 R&D Lab and dedicated workshop commissioned. Ability to test, fail, iterate, and build at scale. Before: theory. After: execution engine.",
     image: ASSETS.timelineImage,
   },
   {
     id: 5,
-    label: "Building begins",
-    year: "1 Apr 2024",
+    label: "Technology Breakthrough",
+    year: "July 2025",
     description:
-      "Real R&D started. Not slides. Not specs. Real systems, real constraints, real India.",
+      "Super-efficient AC architecture validated for Indian conditions. Performance, efficiency, and buildability converge. Before: experiments. After: product direction locked.",
     image: ASSETS.timelineImage,
   },
   {
     id: 6,
-    label: "Optimist is born",
-    year: "Aug 2024",
+    label: "Conviction Backed",
+    year: "Dec 2025",
     description:
-      "Formally incorporated with one belief: Cooling for India must be designed for India.",
+      "USD 12M raised from Accel, Arkam Ventures & Sparrow Capital. External validation that climate-first engineering deserved scale.",
     image: ASSETS.timelineImage,
   },
   {
     id: 7,
-    label: "Early backing",
-    year: "2024",
-    description:
-      "USD 4M pre-seed from Accel and Sparrow Capital. Capital follows conviction in climate-first engineering.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 8,
-    label: "Academic rigor",
-    year: "Late 2024",
-    description:
-      "Mentorship from Prof. Anurag Goyal (IIT Delhi) strengthened scientific and systems thinking foundations.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 9,
-    label: "The lab",
-    year: "Nov 2024–Apr 2025",
-    description:
-      "Nalanda-1 R&D Lab commissioned. A dedicated space to test, fail, iterate, and validate under extreme conditions. Core R&D team built in parallel.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 10,
-    label: "Manufacturing readiness",
-    year: "Jan 2025",
-    description:
-      "Dedicated workshop came online. Innovations needed to be not just efficient but buildable at scale.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 11,
-    label: "The breakthrough",
-    year: "Apr–Jul 2025",
-    description:
-      "Multiple technology breakthroughs converged. One direction emerged clearly: super-efficient air conditioners built for Indian heat, grids, and homes.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 12,
-    label: "Global validation",
-    year: "Aug 2025",
-    description:
-      "Selected for the Third Derivative climate incubator. Optimist is validated among leading global climate-tech companies.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 13,
-    label: "Scaling up",
-    year: "Dec 2025",
-    description:
-      "USD 8M additional funding led by Accel. Fuel for scaling R&D, manufacturing, and market readiness.",
-    image: ASSETS.timelineImage,
-  },
-  {
-    id: 14,
-    label: "Ready for India",
+    label: "Market Entry",
     year: "Jan 2026",
     description:
-      "After two years of research, engineering, and validation, Optimist's first product enters the market. Not as another AC. As a new standard for cooling in a warming India.",
+      "Optimist's first product launches in India. A new cooling standard enters the market.",
     image: ASSETS.timelineImage,
   },
 ];

@@ -65,7 +65,7 @@ export function AboutHeroSection() {
           ref={titleRef}
           className="font-display text-[32px] md:text-[48px] lg:text-[64px] font-bold text-center mb-6 md:mb-8 lg:mb-10 will-change-[transform,opacity]"
         >
-          <span className="text-black">Cooling, built for a </span>
+          <span className="text-black">Real Cooling, built for a </span>
           <span className="text-[#3478F6]">warming world.</span>
         </h1>
 
@@ -89,7 +89,11 @@ export function AboutHeroSection() {
             {/* Text overlay */}
             <div className="absolute left-[48px] bottom-[48px] lg:bottom-[64px] max-w-[700px]">
               <p className="font-light text-[20px] lg:text-[24px] leading-[1.5] text-white">
-                Indian summers demand more than ACs were delivering. Consistent cooling at 45°C. Predictable costs. Transparent service. In 2023, we set out to build what should have already existed. An AC engineered for reality, not spec sheets.
+                Indian summers demand more than Normal ACs deliver. Real solid
+                cooling at 45°C and more. Lowest and predictable costs.
+                Transparent service. In 2024, we set out to build what should
+                have already existed. The Real AC, engineered for reality, not
+                marketing talk, nor spec sheets.
               </p>
             </div>
           </div>
@@ -109,7 +113,9 @@ export function AboutHeroSection() {
             {/* Text overlay */}
             <div className="absolute left-[16px] right-[16px] bottom-[24px]">
               <p className="font-light text-[15px] leading-[1.5] text-white">
-                Indian summers demand more than ACs were delivering. Consistent cooling at 45°C. Predictable costs. Transparent service. In 2023, we set out to build what should have already existed.
+                Indian summers demand more than ACs were delivering. Consistent
+                cooling at 45°C. Predictable costs. Transparent service. In
+                2023, we set out to build what should have already existed.
               </p>
             </div>
           </div>

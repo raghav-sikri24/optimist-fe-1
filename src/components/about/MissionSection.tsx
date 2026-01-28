@@ -79,10 +79,14 @@ export function MissionSection() {
             {/* Title and Description */}
             <div className="flex flex-col gap-6 text-black">
               <h2 className="font-display font-semibold text-[24px] lg:text-[48px] leading-[1.2] lg:leading-normal">
-                To redefine what comfort means for India.
+                Engineering real cooling for a warming India.
               </h2>
               <p className="font-light text-[16px] lg:text-[20px] leading-[1.6]">
-                Reliable performance at extreme temperatures. Honest efficiency over years of use. Transparent operations you can verify. We&apos;re building air conditioning that respects both the climate we face and the intelligence of those who use it. No compromises. No shortcuts. Just engineering that works.
+                Reliable performance at extreme temperatures. Honest efficiency
+                over years of use. Transparent operations, you can verify. We're
+                building air conditioning that respects the intelligence of
+                those who use it and the climate we face. No compromises. No
+                shortcuts. Just real engineering that works.
               </p>
             </div>
           </div>
