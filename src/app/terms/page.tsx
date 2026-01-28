@@ -25,7 +25,7 @@ export default function TermsPage() {
       <div ref={contentRef} className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-optimist-gold to-optimist-gold/70 flex items-center justify-center shadow-lg shadow-optimist-gold/20">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-optimist-blue-light to-optimist-blue-primary flex items-center justify-center shadow-lg shadow-optimist-blue-primary/20">
             <FileText className="w-10 h-10 text-white" />
           </div>
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4">
@@ -40,7 +40,7 @@ export default function TermsPage() {
         <div className="max-w-none">
           {/* Summary Box */}
           <div className="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-200">
-            <h2 className="text-xl font-bold text-optimist-gold mb-4">
+            <h2 className="text-xl font-bold text-optimist-blue-primary mb-4">
               Summary (For Convenience Only)
             </h2>
             <p className="text-gray-600 mb-4 leading-relaxed">

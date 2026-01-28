@@ -1,10 +1,8 @@
 "use client";
 
-import { useRef, useLayoutEffect } from "react";
-import Image from "next/image";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import { motion, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import ASSETS from "@/lib/assets";
 
@@ -14,65 +12,78 @@ import ASSETS from "@/lib/assets";
 
 export function BuiltForSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const imageContainerRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
 
-  // Animation states will be handled by GSAP ScrollTrigger
-  useLayoutEffect(() => {
-    // Elements start visible, animation will enhance on scroll
-  }, []);
+  const [videoEnded, setVideoEnded] = useState(false);
+  const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
 
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "top 25%",
-          toggleActions: "play none none none",
-          once: true,
-        },
-      });
+  // Use Framer Motion's useInView to detect when section is visible
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-      // Title animation
-      tl.from(
-        titleRef.current,
-        {
-          opacity: 0,
-          y: 40,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        0,
-      );
+  // Play video when section comes into view
+  useEffect(() => {
+    if (isInView && !hasStartedPlaying) {
+      setHasStartedPlaying(true);
 
-      // Image and callouts animation
-      tl.from(
-        imageContainerRef.current,
-        {
-          opacity: 0,
-          scale: 0.95,
-          duration: 1,
-          ease: "power3.out",
-        },
-        0.2,
-      );
+      // Play desktop video
+      if (videoRef.current) {
+        videoRef.current.play().catch((e) => {
+          console.log("Desktop video play failed", e);
+          setVideoEnded(true);
+        });
+      }
 
-      // Bottom section animation
-      tl.from(
-        bottomRef.current,
-        {
-          opacity: 0,
-          y: 40,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        0.6,
-      );
+      // Play mobile video
+      if (mobileVideoRef.current) {
+        mobileVideoRef.current.play().catch((e) => {
+          console.log("Mobile video play failed", e);
+          setVideoEnded(true);
+        });
+      }
+    }
+  }, [isInView, hasStartedPlaying]);
+
+  const handleVideoEnded = () => {
+    setVideoEnded(true);
+  };
+
+  // Animation variants for callouts
+  const calloutVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  // Container variants for staggered children
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
     },
-    { scope: sectionRef },
-  );
+  };
+
+  // Section entrance animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0, 0, 0.2, 1] as const },
+    },
+  };
+
+  const imageContainerVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8, ease: [0, 0, 0.2, 1] as const, delay: 0.2 },
+    },
+  };
 
   return (
     <section
@@ -81,153 +92,189 @@ export function BuiltForSection() {
     >
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
         {/* Title */}
-        <div className="text-center mb-8 md:mb-11">
+        <motion.div
+          className="text-center mb-8 md:mb-11"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
           <p className="text-[#3478F6] text-sm md:text-base mb-2">
             Product Callout
           </p>
-          <h2
-            ref={titleRef}
-            className="font-display text-2xl md:text-4xl lg:text-[40px] font-semibold text-black will-change-[transform,opacity]"
-          >
+          <h2 className="font-display text-2xl md:text-4xl lg:text-[40px] font-semibold text-black">
             Your Optimist
           </h2>
-        </div>
+        </motion.div>
 
-        {/* Desktop Layout - AC Image with Absolute Positioned Callouts */}
-        <div
-          ref={imageContainerRef}
-          className="hidden md:block relative w-full max-w-[1229px] mx-auto mb-12 md:mb-16 will-change-[transform,opacity]"
+        {/* Desktop Layout - AC Video with Absolute Positioned Callouts */}
+        <motion.div
+          className="hidden md:block relative w-full max-w-[1229px] mx-auto mb-12 md:mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={imageContainerVariants}
         >
           {/* Container with relative positioning for absolute children */}
-          <div className="relative" style={{ height: "662px" }}>
-            {/* AC Image - centered with offset */}
+          <div className="relative" style={{ height: "550px" }}>
+            {/* AC Video - plays on scroll, stops at last frame */}
             <div
-              className="absolute"
+              className="absolute left-1/2 bg-white top-1/2 -translate-x-1/2 -translate-y-1/2"
               style={{
-                left: "45px",
-                top: "0",
-                width: "1184px",
-                height: "662px",
+                width: "950px",
+                height: "550px",
               }}
             >
-              <Image
-                src={ASSETS.builtForAcDesktop}
-                alt="Optimist AC"
-                fill
-                className="object-contain"
-                sizes="1184px"
-                priority
+              <video
+                ref={videoRef}
+                src={ASSETS.videos.productCardAnimation}
+                className="w-full h-full bg-white object-contain"
+                muted
+                playsInline
+                onEnded={handleVideoEnded}
               />
             </div>
 
-            {/* Callout: Cools consistently - Top Left */}
-            <div
-              className="absolute flex flex-col items-start"
-              style={{ left: "0", top: "0" }}
+            {/* Callouts Container - animated after video ends */}
+            <motion.div
+              initial="hidden"
+              animate={videoEnded ? "visible" : "hidden"}
+              variants={containerVariants}
             >
-              <p className="font-semibold text-[32px] leading-normal text-black">
-                Cools consistently
-              </p>
-              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                at 45°C
-              </p>
-            </div>
+              {/* Callout: Cools consistently - Top Left */}
+              <motion.div
+                className="absolute flex flex-col items-start"
+                style={{ left: "0", top: "0" }}
+                variants={calloutVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <p className="font-semibold text-[32px] leading-normal text-black">
+                  Cools consistently
+                </p>
+                <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
+                  at 45°C
+                </p>
+              </motion.div>
 
-            {/* Callout: Tracks energy - Top Right (blue) */}
-            <div
-              className="absolute flex flex-col items-start"
-              style={{ left: "905px", top: "142px", width: "324px" }}
-            >
-              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                Tracks energy
-              </p>
-              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                in real-time
-              </p>
-            </div>
+              {/* Callout: Tracks energy - Top Right (blue) */}
+              <motion.div
+                className="absolute flex flex-col items-start"
+                style={{ right: "0px", top: "122px", width: "324px" }}
+                variants={calloutVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
+                  Tracks energy
+                </p>
+                <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
+                  in real-time
+                </p>
+              </motion.div>
 
-            {/* Callout: Shows exact gas levels - Bottom Left */}
-            <div
-              className="absolute flex flex-col items-start"
-              style={{ left: "208px", top: "510px", width: "324px" }}
-            >
-              <p className="font-semibold text-[32px] leading-normal text-black">
-                Shows exact
-              </p>
-              <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
-                gas levels
-              </p>
-            </div>
+              {/* Callout: Shows exact gas levels - Bottom Left */}
+              <motion.div
+                className="absolute flex flex-col items-start"
+                style={{ left: "208px", bottom: 0, width: "324px" }}
+                variants={calloutVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <p className="font-semibold text-[32px] leading-normal text-black">
+                  Shows exact
+                </p>
+                <p className="font-semibold text-[32px] leading-normal text-[#3478F6]">
+                  gas levels
+                </p>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Mobile Layout - AC Image with Absolute Positioned Callouts */}
-        <div className="md:hidden relative w-full mb-8 will-change-[transform,opacity]">
+        {/* Mobile Layout - AC Video with Absolute Positioned Callouts */}
+        <motion.div
+          className="md:hidden relative w-full mb-8"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={imageContainerVariants}
+        >
           {/* Container with relative positioning */}
           <div className="relative" style={{ minHeight: "400px" }}>
-            {/* Callout: Cools consistently - Top Left */}
-            <div
-              className="absolute flex flex-col items-start"
-              style={{ left: "0", top: "0" }}
-            >
-              <p className="font-semibold text-base leading-normal text-black">
-                Cools consistently
-              </p>
-              <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                at 45°C
-              </p>
-            </div>
-
-            {/* Callout: Tracks energy - Top Right (blue) */}
-            <div
-              className="absolute flex flex-col items-end text-right"
-              style={{ right: "0", top: "0" }}
-            >
-              <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                Tracks energy
-              </p>
-              <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                in real-time
-              </p>
-            </div>
-
-            {/* AC Image - Vertically & Horizontally Centered */}
+            {/* AC Video - plays on scroll, stops at last frame (Mobile) */}
             <div
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
               style={{
                 width: "340px",
-                height: "200px",
+                height: "350px",
               }}
             >
-              <Image
-                src={ASSETS.builtForAcMobile}
-                alt="Optimist AC"
-                fill
-                className="object-contain"
-                sizes="340px"
-                priority
+              <video
+                ref={mobileVideoRef}
+                src={ASSETS.videos.productCardAnimation}
+                className="w-full h-full object-contain"
+                muted
+                playsInline
+                onEnded={handleVideoEnded}
               />
             </div>
 
-            {/* Callout: Shows exact gas levels - Bottom Left */}
-            <div
-              className="absolute flex flex-col items-start"
-              style={{ left: "0", bottom: "0" }}
+            {/* Callouts - animated after video ends */}
+            <motion.div
+              initial="hidden"
+              animate={videoEnded ? "visible" : "hidden"}
+              variants={containerVariants}
             >
-              <p className="font-semibold text-base leading-normal text-black">
-                Shows exact
-              </p>
-              <p className="font-semibold text-base leading-normal text-[#3478F6]">
-                gas levels
-              </p>
-            </div>
+              {/* Callout: Cools consistently - Top Left */}
+              <motion.div
+                className="absolute flex flex-col items-start"
+                style={{ left: "0", top: "20px" }}
+                variants={calloutVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <p className="font-semibold text-base leading-normal text-black">
+                  Cools consistently
+                </p>
+                <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                  at 45°C
+                </p>
+              </motion.div>
+
+              {/* Callout: Tracks energy - Top Right (blue) */}
+              <motion.div
+                className="absolute flex flex-col items-end text-right"
+                style={{ right: "0", top: "20px" }}
+                variants={calloutVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                  Tracks energy
+                </p>
+                <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                  in real-time
+                </p>
+              </motion.div>
+
+              {/* Callout: Shows exact gas levels - Bottom Left */}
+              <motion.div
+                className="absolute flex flex-col items-start"
+                style={{ left: "0", bottom: "20px" }}
+                variants={calloutVariants}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <p className="font-semibold text-base leading-normal text-black">
+                  Shows exact
+                </p>
+                <p className="font-semibold text-base leading-normal text-[#3478F6]">
+                  gas levels
+                </p>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Section - Outcome and CTA */}
-        <div
-          ref={bottomRef}
-          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 will-change-[transform,opacity]"
+        <motion.div
+          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={sectionVariants}
+          transition={{ delay: 0.4 }}
         >
           {/* Outcome */}
           <div className="font-display text-center md:text-left">
@@ -251,7 +298,7 @@ export function BuiltForSection() {
             <span>Buy Now</span>
             <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
