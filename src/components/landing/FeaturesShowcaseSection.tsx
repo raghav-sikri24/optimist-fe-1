@@ -472,7 +472,7 @@ export function FeaturesShowcaseSection() {
         className="relative bg-[#E7E7E7] hidden lg:block"
       >
         {/* Background Leaf Pattern */}
-        <div className="absolute top-0 left-0 sticky w-full opacity-10 pointer-events-none z-20">
+        {/* <div className="absolute top-0 left-0 sticky w-full opacity-10 pointer-events-none z-20">
           <video
             src={ASSETS.videos.heroLeafVideo}
             autoPlay
@@ -481,7 +481,7 @@ export function FeaturesShowcaseSection() {
             playsInline
             className="w-full h-auto object-contain"
           />
-        </div>
+        </div> */}
 
         <div className="flex mt-[-800px] flex-row pb-4">
           {/* Left Scrollable Content */}
