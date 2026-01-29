@@ -269,22 +269,14 @@ body {
   color: var(--optimist-cream);
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
+/* Hide Scrollbar Globally */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--optimist-black);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--optimist-dark);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--optimist-cream-muted);
+*::-webkit-scrollbar {
+  display: none;
 }
 
 /* Hide scrollbar for carousels */
