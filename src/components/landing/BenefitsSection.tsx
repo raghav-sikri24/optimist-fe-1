@@ -59,28 +59,26 @@ export function BenefitsSection() {
       const triggers: ScrollTrigger[] = [];
 
       // Check window width directly as additional safeguard (handles SSR hydration timing)
-      const isCurrentlyMobile = typeof window !== "undefined" && window.innerWidth < 768;
+      const isCurrentlyMobile =
+        typeof window !== "undefined" && window.innerWidth < 768;
 
       // Skip horizontal scroll on mobile - use native scroll instead
       if (isMobile || isCurrentlyMobile) {
         // Simple fade-in animation for mobile - use 'to' since initial state is set
-        const headerTrigger = gsap.to(
-          headerRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            force3D: true,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 80%",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          }
-        ).scrollTrigger;
+        const headerTrigger = gsap.to(headerRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          force3D: true,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+            once: true,
+          },
+        }).scrollTrigger;
         if (headerTrigger) triggers.push(headerTrigger);
-        
+
         // Cleanup only our triggers
         return () => {
           triggers.forEach((trigger) => trigger.kill());
@@ -96,39 +94,45 @@ export function BenefitsSection() {
       const cardWidth = cards[0]?.getBoundingClientRect().width || 0;
       const gap = 24; // gap-6 = 24px
       const totalWidth = (cardWidth + gap) * cards.length - gap;
-      const viewportWidth = window.innerWidth;
-      const scrollDistance = totalWidth - viewportWidth + 100; // Extra padding
+
+      // Use the actual carousel container width instead of full viewport
+      const containerWidth =
+        carousel.parentElement?.getBoundingClientRect().width ||
+        window.innerWidth;
+
+      // Calculate scroll distance: scroll enough to show the last card fully visible
+      // Add small padding (15% of card width) for breathing room
+      const scrollDistance = Math.max(
+        totalWidth - containerWidth + cardWidth * 0.15,
+        0,
+      );
 
       // Header fade in animation - use 'to' since initial state is set
-      const headerTrigger = gsap.to(
-        headerRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          force3D: true,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            once: true,
-          },
-        }
-      ).scrollTrigger;
+      const headerTrigger = gsap.to(headerRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        force3D: true,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      }).scrollTrigger;
       if (headerTrigger) triggers.push(headerTrigger);
 
-      // Horizontal scroll animation on vertical scroll
-      // Pin when bottom of section reaches bottom of viewport (so full card is visible)
+      // Horizontal scroll animation - pins and scrolls cards horizontally
       const carouselTrigger = gsap.to(carousel, {
         x: -scrollDistance,
         ease: "none",
         force3D: true,
         scrollTrigger: {
           trigger: triggerRef.current,
-          start: "bottom bottom+=25",
+          start: "top top", // Pin when section reaches top of viewport
           end: () => `+=${scrollDistance}`,
           pin: true,
-          scrub: 1,
+          scrub: 0.5, // Smoother scrub for professional feel
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onRefresh: (self) => {
@@ -137,7 +141,13 @@ export function BenefitsSection() {
             const newCardWidth =
               newCards[0]?.getBoundingClientRect().width || 0;
             const newTotalWidth = (newCardWidth + gap) * newCards.length - gap;
-            const newScrollDistance = newTotalWidth - window.innerWidth + 100;
+            const newContainerWidth =
+              carousel.parentElement?.getBoundingClientRect().width ||
+              window.innerWidth;
+            const newScrollDistance = Math.max(
+              newTotalWidth - newContainerWidth + newCardWidth * 0.1,
+              0,
+            );
             self.vars.end = `+=${newScrollDistance}`;
             gsap.set(carousel, { x: -self.progress * newScrollDistance });
           },
@@ -150,19 +160,23 @@ export function BenefitsSection() {
         triggers.forEach((trigger) => trigger.kill());
       };
     },
-    { scope: sectionRef, dependencies: [isMobile] }
+    { scope: sectionRef, dependencies: [isMobile] },
   );
 
   return (
-    <section id="benefits" ref={sectionRef} className="relative bg-[#FFFFFF] overflow-x-hidden">
+    <section
+      id="benefits"
+      ref={sectionRef}
+      className="relative bg-[#FFFFFF] overflow-x-hidden"
+    >
       {/* Trigger wrapper for pinning - only on desktop */}
-      <div
-        ref={triggerRef}
-        className="py-2 md:py-6 lg:py-10"
-      >
+      <div ref={triggerRef} className="py-8 md:py-12 lg:py-16">
         <div className="mx-auto px-4 md:px-6 lg:px-8 max-w-[1400px] md:max-w-none">
           {/* Section Header */}
-          <div ref={headerRef} className="mb-8 md:mb-12 will-change-[transform,opacity]">
+          <div
+            ref={headerRef}
+            className="mb-8 md:mb-12 will-change-[transform,opacity]"
+          >
             <p className="text-sm md:text-base text-[#212121] italic mb-2">
               New Generation of AC
             </p>

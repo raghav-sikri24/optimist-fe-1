@@ -483,7 +483,7 @@ export function FeaturesShowcaseSection() {
           />
         </div> */}
 
-        <div className="flex mt-[-800px] flex-row pb-4">
+        <div className="flex flex-row pb-4">
           {/* Left Scrollable Content */}
           <div className="w-1/2 relative z-10">
             <div className="flex flex-col">

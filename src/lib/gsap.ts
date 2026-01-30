@@ -19,9 +19,8 @@ if (typeof window !== "undefined") {
   });
   
   // Set default ScrollTrigger properties for better performance
+  // Note: Don't set scrub default - let each animation control its own scrub value
   ScrollTrigger.defaults({
-    // Use less frequent updates
-    scrub: true,
     // Reduce sensitivity - start animations earlier
     start: "top 75%",
     // Simpler toggle behavior
