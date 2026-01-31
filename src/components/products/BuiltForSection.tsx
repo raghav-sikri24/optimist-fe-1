@@ -88,9 +88,9 @@ export function BuiltForSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-white py-12 pb-0 md:py-16 lg:py-20 overflow-hidden"
+      className="bg-[#E7E7E7] mt-8 mb-0 md:my-6 lg:my-8 py-6 md:py-8 lg:py-10 overflow-hidden"
     >
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
+      <div className="max-w-[1400px]  mx-auto px-4 md:px-6 lg:px-8">
         {/* Title */}
         <motion.div
           className="text-center mb-8 md:mb-11"
@@ -117,7 +117,7 @@ export function BuiltForSection() {
           <div className="relative" style={{ height: "550px" }}>
             {/* AC Video - plays on scroll, stops at last frame */}
             <div
-              className="absolute left-1/2 bg-white top-1/2 -translate-x-1/2 -translate-y-1/2"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
               style={{
                 width: "950px",
                 height: "550px",
@@ -125,8 +125,8 @@ export function BuiltForSection() {
             >
               <video
                 ref={videoRef}
-                src={ASSETS.videos.productCardAnimationWhite}
-                className="w-full h-full bg-white object-contain"
+                src={ASSETS.videos.productCardAnimationWhite2}
+                className="w-full h-full object-contain mix-blend-multiply"
                 muted
                 playsInline
                 onEnded={handleVideoEnded}
@@ -198,7 +198,7 @@ export function BuiltForSection() {
           <div className="relative" style={{ minHeight: "400px" }}>
             {/* AC Video - plays on scroll, stops at last frame (Mobile) */}
             <div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  "
               style={{
                 width: "340px",
                 height: "350px",
@@ -207,7 +207,7 @@ export function BuiltForSection() {
               <video
                 ref={mobileVideoRef}
                 src={ASSETS.videos.productCardAnimation}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain   mix-blend-multiply"
                 muted
                 playsInline
                 onEnded={handleVideoEnded}

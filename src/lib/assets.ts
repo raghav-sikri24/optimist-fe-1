@@ -126,7 +126,8 @@ export const ASSETS = {
   videos: {
     pointersAnimation: getAssetUrl("PointersAnimation.mp4"),
     productCardAnimation: getAssetUrl("ProductCardAnimation.mp4"),
-    productCardAnimationWhite: getAssetUrl("ProductCardAnimationWhite.mp4"),
+    productCardAnimationWhite: getAssetUrl("ProductCardAnimationWhite.webm"),
+    productCardAnimationWhite2: getAssetUrl("ProductCardAnimationWhite2.mp4"),
     treeCool: getAssetUrl("TreeCool.mp4"),
     heroLeafVideo: getAssetUrl(
       "small-vecteezy_summer-concept-the-motion-of-leaves-sunlight-natural-shadow_9167357_small.mp4",

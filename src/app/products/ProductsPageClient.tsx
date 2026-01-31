@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { type Product } from "@/lib/shopify";
+import { type Product, getProducts } from "@/lib/shopify";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/components/ui/Toast";
 import { ASSETS } from "@/lib/assets";
@@ -232,6 +232,19 @@ export default function ProductsPageClient({
   const [isQuantityOpen, setIsQuantityOpen] = useState(false);
   const { addToCart, isLoading: isCartLoading } = useCart();
   const { showToast } = useToast();
+
+  // Fetch products from Shopify and console log
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await getProducts();
+        console.log("Shopify Products:", products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Image navigation - memoized
   const images = product?.images.edges.map((e) => e.node.url) || MOCK_IMAGES;
