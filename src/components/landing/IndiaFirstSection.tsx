@@ -51,7 +51,7 @@ export function IndiaFirstSection() {
           ease: "power3.out",
           force3D: true,
         },
-        0
+        0,
       );
 
       // Flower image animation
@@ -64,7 +64,7 @@ export function IndiaFirstSection() {
           ease: "power3.out",
           force3D: true,
         },
-        0.1
+        0.1,
       );
 
       // Badges staggered animation
@@ -80,11 +80,11 @@ export function IndiaFirstSection() {
             ease: "power3.out",
             force3D: true,
           },
-          0.2
+          0.2,
         );
       }
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
@@ -100,26 +100,27 @@ export function IndiaFirstSection() {
             ref={leftCardRef}
             className="relative rounded-[24px] md:rounded-[32px] overflow-hidden min-h-[420px] md:min-h-[520px] lg:min-h-[620px] will-change-[transform,opacity]"
             style={{
-              background: 'linear-gradient(180deg, #000000 0%, #1a1a1a 40%, #666666 70%, #cccccc 90%, #f5f5f5 100%)',
+              background:
+                "linear-gradient(180deg, #000000 0%, #1a1a1a 40%, #666666 70%, #cccccc 90%, #f5f5f5 100%)",
             }}
           >
             {/* Background Image Layer */}
-            <div 
+            <div
               className="absolute inset-0 z-0"
               style={{
                 backgroundImage: `url("${ASSETS.ellipse1}")`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
                 opacity: 0.3,
               }}
             />
-            
+
             {/* Content */}
             <div className="relative z-10 p-6 md:p-10 lg:p-12">
               {/* Headline */}
               <h2 className="font-display text-[#AEFFD8] text-[32px] leading-[36px] md:text-[48px] md:leading-[52px] lg:text-[92px] lg:leading-[92px] font-[600] mb-4 md:mb-6">
-                <span >
+                <span>
                   Built-in gas level
                   <br />
                   indicator.
@@ -139,7 +140,9 @@ export function IndiaFirstSection() {
                 </button>
                 <button
                   onClick={() => {
-                    document.getElementById('benefits')?.scrollIntoView({ behavior: 'smooth' });
+                    document
+                      .getElementById("benefits")
+                      ?.scrollIntoView({ behavior: "smooth" });
                   }}
                   className="btn-why-optimist w-[160px] hero-btn-mobile md:hero-btn-desktop inline-flex items-center justify-center text-white"
                 >
@@ -160,7 +163,7 @@ export function IndiaFirstSection() {
                 loading="lazy"
               />
             </div>
-            
+
             {/* Desktop AC Image */}
             <div className="hidden md:block absolute bottom-0 right-[-3%] w-[80%] lg:w-[75%]">
               <Image
@@ -177,7 +180,7 @@ export function IndiaFirstSection() {
           {/* Right Column - Flower + Badge Cards */}
           <div className="flex flex-col gap-4 md:gap-6">
             {/* Flower Image */}
-            <div 
+            <div
               ref={flowerRef}
               className="relative bg-white border border-gray-200 rounded-[24px] md:rounded-[32px] overflow-hidden flex-1 min-h-[240px] md:min-h-[300px] lg:min-h-[340px] flex items-center justify-center will-change-[transform,opacity]"
             >
@@ -189,7 +192,7 @@ export function IndiaFirstSection() {
                   </clipPath>
                 </defs>
               </svg>
-              <div 
+              <div
                 className="relative w-[80%] aspect-[349/311]"
                 style={{ clipPath: "url(#starClip)" }}
               >
@@ -207,7 +210,8 @@ export function IndiaFirstSection() {
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: "radial-gradient(circle, rgba(52, 120, 246, 0.5) 0%, rgba(52, 120, 246, 0.3) 50%, transparent 70%)",
+                    background:
+                      "radial-gradient(circle, rgba(52, 120, 246, 0.5) 0%, rgba(52, 120, 246, 0.3) 50%, transparent 70%)",
                     transform: "translateZ(0)",
                   }}
                 />
@@ -215,7 +219,10 @@ export function IndiaFirstSection() {
             </div>
 
             {/* Badge Cards Container */}
-            <div ref={badgesRef} className="flex flex-col gap-3 md:gap-4 will-change-[transform,opacity]">
+            <div
+              ref={badgesRef}
+              className="flex flex-col gap-3 md:gap-4 will-change-[transform,opacity]"
+            >
               {/* India's 1st Badge Card */}
               <div
                 className="badge-card relative rounded-[20px] md:rounded-[24px] overflow-hidden px-5 py-4 md:px-6 md:py-5"
@@ -275,14 +282,19 @@ export function IndiaFirstSection() {
                   }}
                 />
                 <div className="relative z-10 flex items-center gap-3 md:gap-4">
-                  <Image
-                    src={ASSETS.goldenStar}
-                    alt="Star Rating"
-                    width={44}
-                    height={44}
-                    className="w-10 h-10 md:w-11 md:h-11"
-                    loading="lazy"
-                  />
+                  <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 21 21"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20.4588 9.26612L16.24 12.9064L17.5253 18.3505C17.5962 18.646 17.578 18.9559 17.4729 19.2411C17.3677 19.5263 17.1804 19.7739 16.9346 19.9526C16.6889 20.1314 16.3956 20.2333 16.0919 20.2455C15.7883 20.2577 15.4878 20.1796 15.2285 20.0211L10.4941 17.1074L5.7569 20.0211C5.49761 20.1787 5.19749 20.256 4.89434 20.2434C4.59118 20.2308 4.29854 20.1287 4.05327 19.9501C3.808 19.7715 3.62106 19.5243 3.51599 19.2396C3.41093 18.955 3.39243 18.6456 3.46283 18.3505L4.75283 12.9064L0.534082 9.26612C0.304674 9.06785 0.138762 8.80639 0.0570658 8.51438C-0.0246303 8.22238 -0.0184894 7.91278 0.0747213 7.62425C0.167932 7.33571 0.344082 7.08103 0.581172 6.89202C0.818262 6.703 1.10578 6.58802 1.40783 6.56143L6.93908 6.11518L9.07283 0.951432C9.18833 0.670011 9.3849 0.42929 9.63755 0.259874C9.89021 0.0904583 10.1875 0 10.4917 0C10.7959 0 11.0933 0.0904583 11.3459 0.259874C11.5986 0.42929 11.7951 0.670011 11.9106 0.951432L14.0435 6.11518L19.5747 6.56143C19.8774 6.58703 20.1657 6.70137 20.4037 6.89013C20.6416 7.07888 20.8186 7.33366 20.9124 7.62255C21.0062 7.91143 21.0126 8.22157 20.9309 8.5141C20.8492 8.80664 20.683 9.06856 20.4531 9.26706L20.4588 9.26612Z"
+                      fill="#F8D300"
+                    />
+                  </svg>
+
                   <div>
                     <p className="font-display text-[24px] md:text-[28px] lg:text-[32px] font-bold italic text-white leading-tight">
                       4.8 rated

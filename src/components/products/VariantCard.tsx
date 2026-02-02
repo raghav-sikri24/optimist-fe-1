@@ -38,7 +38,7 @@ export const VariantCard = memo(function VariantCard({
       role="radio"
       aria-checked={isSelected}
       aria-label={`${variant.name} - ${variant.subtitle}${isOutOfStock ? " (Out of Stock)" : ""}`}
-      className={`relative flex-shrink-0 w-auto md:w-[180px] p-2.5 md:p-[10px] rounded-[8px] border transition-all text-left focus:outline-none flex flex-col justify-center overflow-visible ${
+      className={`relative flex-shrink-0 w-auto md:w-[180px] py-4 px-3 md:py-4 md:px-3 rounded-[8px] border transition-all text-left focus:outline-none flex flex-col justify-center md:justify-start overflow-visible ${
         isSelected
           ? "border-[#3478F6] bg-[rgba(52,120,246,0.06)]"
           : isOutOfStock
@@ -54,44 +54,42 @@ export const VariantCard = memo(function VariantCard({
         </span>
       )}
 
-      {/* Desktop Layout: Horizontal with radio on left */}
-      <div className="hidden md:flex gap-3 items-start w-full">
-        {/* Radio Icon */}
-        <div className="flex-shrink-0">
-          {isSelected ? (
-            <RadioFilledIcon className="w-5 h-5" />
-          ) : (
-            <RadioEmptyIcon className="w-5 h-5" />
-          )}
-        </div>
-
-        {/* Variant Info */}
-        <div className="flex flex-col gap-3 flex-1 min-w-0">
+      {/* Desktop Layout */}
+      <div className="hidden md:flex flex-col gap-1.5 w-full">
+        {/* Radio + Title Row - aligned horizontally */}
+        <div className="flex gap-2 items-center">
+          <div className="flex-shrink-0">
+            {isSelected ? (
+              <RadioFilledIcon className="w-5 h-5" />
+            ) : (
+              <RadioEmptyIcon className="w-5 h-5" />
+            )}
+          </div>
           <p className={`font-semibold text-sm ${isOutOfStock ? "text-gray-500" : "text-gray-900"}`}>
             {variant.name}
           </p>
-          <p className="text-xs text-[#6c6a6a]">{variant.subtitle}</p>
         </div>
+        {/* Description below */}
+        <p className="text-xs text-[#6c6a6a] pl-7">{variant.subtitle}</p>
       </div>
 
-      {/* Mobile Layout: Vertical with radio on top */}
-      <div className="flex md:hidden flex-col gap-3">
-        {/* Radio Icon */}
-        <div className="flex-shrink-0">
-          {isSelected ? (
-            <RadioFilledIcon className="w-5 h-5" />
-          ) : (
-            <RadioEmptyIcon className="w-5 h-5" />
-          )}
-        </div>
-
-        {/* Variant Info */}
-        <div className="flex flex-col gap-1">
+      {/* Mobile Layout */}
+      <div className="flex md:hidden flex-col gap-1.5">
+        {/* Radio + Title Row - aligned horizontally */}
+        <div className="flex gap-2 items-center">
+          <div className="flex-shrink-0">
+            {isSelected ? (
+              <RadioFilledIcon className="w-5 h-5" />
+            ) : (
+              <RadioEmptyIcon className="w-5 h-5" />
+            )}
+          </div>
           <p className={`font-semibold text-sm ${isOutOfStock ? "text-gray-500" : "text-gray-900"}`}>
             {variant.name}
           </p>
-          <p className="text-xs text-[#6c6a6a]">{variant.subtitle}</p>
         </div>
+        {/* Description below */}
+        <p className="text-xs text-[#6c6a6a] pl-7">{variant.subtitle}</p>
       </div>
     </button>
   );

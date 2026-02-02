@@ -92,7 +92,7 @@ const ValueCard = memo(function ValueCard({
       <div className="flex items-center gap-2 lg:gap-3">
         <StarIcon className="w-6 h-6 lg:w-8 lg:h-8 shrink-0" />
         <h3 className="font-bold text-base lg:text-2xl text-black leading-[1.4]">
-          <span className="text-xl lg:text-3xl text-[#3478F6]">{firstLetter}</span>
+          <span className="text-xl lg:text-3xl">{firstLetter}</span>
           {restOfTitle}
         </h3>
       </div>

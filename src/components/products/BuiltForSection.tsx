@@ -88,7 +88,7 @@ export function BuiltForSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#E7E7E7] mt-8 mb-0 md:my-6 lg:my-8 py-6 md:py-8 lg:py-10 overflow-hidden"
+      className="bg-[#E7E7E7] mt-8 py-6 md:py-8 lg:py-10 overflow-hidden"
     >
       <div className="max-w-[1400px]  mx-auto px-4 md:px-6 lg:px-8">
         {/* Title */}

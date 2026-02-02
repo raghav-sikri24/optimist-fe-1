@@ -70,7 +70,6 @@ export function BreathworkSection() {
         <video
           ref={videoRef}
           autoPlay
-          loop
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"

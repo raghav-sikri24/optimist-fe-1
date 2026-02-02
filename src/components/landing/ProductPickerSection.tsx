@@ -291,7 +291,7 @@ export function ProductPickerSection() {
           className="flex items-center justify-center gap-4 md:gap-6 mb-10 md:mb-14 will-change-[transform,opacity]"
         >
           {/* Left line */}
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent to-gray-300" />
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent to-gray-400 md:to-gray-300" />
 
           {/* Headline */}
           <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 whitespace-nowrap">
@@ -299,7 +299,7 @@ export function ProductPickerSection() {
           </h2>
 
           {/* Right line */}
-          <div className="flex-1 h-px bg-gradient-to-l from-transparent to-gray-300" />
+          <div className="flex-1 h-px bg-gradient-to-l from-transparent to-gray-400 md:to-gray-300" />
         </div>
 
         {/* Main Card */}

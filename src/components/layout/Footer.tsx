@@ -348,7 +348,7 @@ export function Footer() {
           initial="hidden"
           animate={isImageInView ? "visible" : "hidden"}
           variants={imageVariants}
-          className="relative mb-10 md:mb-0"
+          className="relative mt-8 md:mt-4 mb-10 md:mb-0"
         >
           <motion.div
             className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden"

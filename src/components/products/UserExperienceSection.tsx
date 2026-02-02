@@ -166,9 +166,6 @@ export function UserExperienceSection() {
           ref={headerRef}
           className="text-center mb-8 md:mb-12 will-change-[transform,opacity]"
         >
-          <p className="text-[#3478F6] text-sm md:text-base mb-2">
-            Testimonials
-          </p>
           <h2 className="font-display text-2xl md:text-4xl lg:text-[40px] font-bold text-gray-900">
             What you&apos;ll notice at home.
           </h2>

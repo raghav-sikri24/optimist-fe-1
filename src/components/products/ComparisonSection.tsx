@@ -208,7 +208,7 @@ export const ComparisonSection = memo(function ComparisonSection() {
           </div>
 
           {/* Comparison Rows - Each row contains both benefit and drawback */}
-          <div ref={rowsRef} className="flex flex-col gap-2 sm:gap-3 md:gap-6">
+          <div ref={rowsRef} className="flex flex-col gap-3 md:gap-6">
             {COMPARISON_DATA.map((item, index) => (
               <div
                 key={index}
@@ -239,7 +239,7 @@ export const ComparisonSection = memo(function ComparisonSection() {
       </div>
 
       {/* White Background Section for bottom half of AC images */}
-      <div className="relative bg-white h-[90px] md:h-[175px]" />
+      <div className="relative bg-white h-[65px] md:h-[175px]" />
 
       {/* AC Product Images - Single merged image positioned to span both sections */}
       <div

@@ -6,7 +6,15 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ui/Toast";
-import { Loader2, Lock, Eye, EyeOff, ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowLeft,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 import ASSETS from "@/lib/assets";
 import { customerResetByUrl } from "@/lib/shopify";
 
@@ -195,7 +203,11 @@ function ResetPasswordContent() {
             >
               <motion.div
                 animate={{ y: [-5, 5, -5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 <Image
                   src={ASSETS.heroAc}
@@ -227,7 +239,10 @@ function ResetPasswordContent() {
                   height={55}
                   className="object-contain"
                 />
-                <div className="flex flex-col gap-[9px]" style={{ color: "#FFFFFF" }}>
+                <div
+                  className="flex flex-col gap-[9px]"
+                  style={{ color: "#FFFFFF" }}
+                >
                   <span className="font-display font-bold text-[25px] leading-none">
                     Highest ISEER
                   </span>
@@ -249,14 +264,23 @@ function ResetPasswordContent() {
                 whileHover={{ scale: 1.05 }}
                 className="flex items-center gap-[9px] backdrop-blur-[1.5px] rounded-[20px]"
               >
-                <Image
-                  src={ASSETS.goldenStar}
-                  alt="Star Rating"
-                  width={55}
-                  height={52}
-                  className="object-contain"
-                />
-                <div className="flex flex-col gap-[9px]" style={{ color: "#FFFFFF" }}>
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 21 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20.4588 9.26612L16.24 12.9064L17.5253 18.3505C17.5962 18.646 17.578 18.9559 17.4729 19.2411C17.3677 19.5263 17.1804 19.7739 16.9346 19.9526C16.6889 20.1314 16.3956 20.2333 16.0919 20.2455C15.7883 20.2577 15.4878 20.1796 15.2285 20.0211L10.4941 17.1074L5.7569 20.0211C5.49761 20.1787 5.19749 20.256 4.89434 20.2434C4.59118 20.2308 4.29854 20.1287 4.05327 19.9501C3.808 19.7715 3.62106 19.5243 3.51599 19.2396C3.41093 18.955 3.39243 18.6456 3.46283 18.3505L4.75283 12.9064L0.534082 9.26612C0.304674 9.06785 0.138762 8.80639 0.0570658 8.51438C-0.0246303 8.22238 -0.0184894 7.91278 0.0747213 7.62425C0.167932 7.33571 0.344082 7.08103 0.581172 6.89202C0.818262 6.703 1.10578 6.58802 1.40783 6.56143L6.93908 6.11518L9.07283 0.951432C9.18833 0.670011 9.3849 0.42929 9.63755 0.259874C9.89021 0.0904583 10.1875 0 10.4917 0C10.7959 0 11.0933 0.0904583 11.3459 0.259874C11.5986 0.42929 11.7951 0.670011 11.9106 0.951432L14.0435 6.11518L19.5747 6.56143C19.8774 6.58703 20.1657 6.70137 20.4037 6.89013C20.6416 7.07888 20.8186 7.33366 20.9124 7.62255C21.0062 7.91143 21.0126 8.22157 20.9309 8.5141C20.8492 8.80664 20.683 9.06856 20.4531 9.26706L20.4588 9.26612Z"
+                    fill="#F8D300"
+                  />
+                </svg>
+
+                <div
+                  className="flex flex-col gap-[9px]"
+                  style={{ color: "#FFFFFF" }}
+                >
                   <span className="font-display font-bold text-[25px] leading-none">
                     4.8 rated
                   </span>
@@ -549,13 +573,19 @@ function ResetPasswordContent() {
               whileHover={{ scale: 1.05 }}
               className="flex items-center gap-[9px] backdrop-blur-[1.5px] rounded-[20px]"
             >
-              <Image
-                src={ASSETS.goldenStar}
-                alt="Star Rating"
-                width={55}
-                height={52}
-                className="object-contain"
-              />
+              <svg
+                width="21"
+                height="21"
+                viewBox="0 0 21 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20.4588 9.26612L16.24 12.9064L17.5253 18.3505C17.5962 18.646 17.578 18.9559 17.4729 19.2411C17.3677 19.5263 17.1804 19.7739 16.9346 19.9526C16.6889 20.1314 16.3956 20.2333 16.0919 20.2455C15.7883 20.2577 15.4878 20.1796 15.2285 20.0211L10.4941 17.1074L5.7569 20.0211C5.49761 20.1787 5.19749 20.256 4.89434 20.2434C4.59118 20.2308 4.29854 20.1287 4.05327 19.9501C3.808 19.7715 3.62106 19.5243 3.51599 19.2396C3.41093 18.955 3.39243 18.6456 3.46283 18.3505L4.75283 12.9064L0.534082 9.26612C0.304674 9.06785 0.138762 8.80639 0.0570658 8.51438C-0.0246303 8.22238 -0.0184894 7.91278 0.0747213 7.62425C0.167932 7.33571 0.344082 7.08103 0.581172 6.89202C0.818262 6.703 1.10578 6.58802 1.40783 6.56143L6.93908 6.11518L9.07283 0.951432C9.18833 0.670011 9.3849 0.42929 9.63755 0.259874C9.89021 0.0904583 10.1875 0 10.4917 0C10.7959 0 11.0933 0.0904583 11.3459 0.259874C11.5986 0.42929 11.7951 0.670011 11.9106 0.951432L14.0435 6.11518L19.5747 6.56143C19.8774 6.58703 20.1657 6.70137 20.4037 6.89013C20.6416 7.07888 20.8186 7.33366 20.9124 7.62255C21.0062 7.91143 21.0126 8.22157 20.9309 8.5141C20.8492 8.80664 20.683 9.06856 20.4531 9.26706L20.4588 9.26612Z"
+                  fill="#F8D300"
+                />
+              </svg>
+
               <div
                 className="flex flex-col gap-[9px]"
                 style={{ color: "#FFFFFF" }}
@@ -728,7 +758,10 @@ function ResetPasswordContent() {
                   </AnimatePresence>
 
                   {/* New Password Input */}
-                  <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
+                  <motion.div
+                    variants={fadeInUp}
+                    transition={{ duration: 0.5 }}
+                  >
                     <label className="block text-[14px] text-[#525252] leading-[1.5] tracking-[0.28px] mb-1">
                       New Password
                     </label>
@@ -779,7 +812,10 @@ function ResetPasswordContent() {
                   </motion.div>
 
                   {/* Confirm Password Input */}
-                  <motion.div variants={fadeInUp} transition={{ duration: 0.5 }}>
+                  <motion.div
+                    variants={fadeInUp}
+                    transition={{ duration: 0.5 }}
+                  >
                     <label className="block text-[14px] text-[#525252] leading-[1.5] tracking-[0.28px] mb-1">
                       Confirm Password
                     </label>
@@ -803,7 +839,9 @@ function ResetPasswordContent() {
                       />
                       <motion.button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                         className="text-[#737373] hover:text-[#525252] transition-colors shrink-0"

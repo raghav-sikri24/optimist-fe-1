@@ -98,6 +98,7 @@ export const ASSETS = {
   // Badges & Features
   image24225: getAssetUrl("image 24225.png"),
   badge41d: getAssetUrl("41d29b9eba9f0cca3fb251cb6ffabdda00b8a903.png"),
+  piggy: getAssetUrl("piggy.png"),
 
   // Testimonials (if used)
   ananyaRao: getAssetUrl("AnanyaRao.png"),

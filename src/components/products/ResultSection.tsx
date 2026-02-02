@@ -153,9 +153,9 @@ export const ResultSection = memo(function ResultSection() {
         
         {/* Feature Cards Container */}
         {/* Mobile: Vertical stack, Desktop: Horizontal row */}
-        <div ref={cardsRef} className="flex flex-col md:flex-row gap-4 md:gap-[26px] items-center justify-center">
+        <div ref={cardsRef} className="flex flex-col md:flex-row gap-4 md:gap-[26px] items-center justify-center w-full">
           {RESULT_FEATURES.map((feature, index) => (
-            <div key={index} className="result-card will-change-[transform,opacity]">
+            <div key={index} className="result-card will-change-[transform,opacity] w-full md:w-auto">
               <FeatureCard feature={feature} />
             </div>
           ))}

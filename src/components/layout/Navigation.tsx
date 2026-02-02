@@ -138,7 +138,7 @@ export function Navigation() {
   };
 
   // White header for non-landing pages
-  if (!isLandingPage) {
+  if (!true) {
     return (
       <>
         <motion.nav

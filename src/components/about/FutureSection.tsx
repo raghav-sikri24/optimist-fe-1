@@ -231,11 +231,19 @@ export function FutureSection() {
                 </div>
 
                 {/* Desktop Row Layout */}
-                <div className="hidden md:flex md:flex-row items-center justify-between gap-0">
+                <div className="hidden md:grid md:grid-cols-4 md:px-6 lg:px-12 items-start">
                   {features.map((feature, index) => (
-                    <div key={index} className="flex items-center">
+                    <div
+                      key={index}
+                      className="relative flex items-start justify-center"
+                    >
+                      {/* Vertical Divider - positioned at the left edge of each item except first */}
+                      {index > 0 && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[1px] h-[80px] bg-white/30" />
+                      )}
+
                       {/* Feature Item */}
-                      <div className="feature-item flex flex-col items-center gap-4">
+                      <div className="feature-item flex flex-col items-center gap-4 px-4 lg:px-6">
                         {/* Icon */}
                         <div className="w-10 h-10 relative">
                           <Image
@@ -251,16 +259,11 @@ export function FutureSection() {
                           <p className="font-semibold text-[18px] lg:text-[20px] leading-normal">
                             {feature.title}
                           </p>
-                          <p className="font-normal text-[#FFFFFF99] text-[14px] lg:text-[16px] leading-normal w-[159px]">
+                          <p className="font-normal text-[#FFFFFF99] text-[14px] lg:text-[16px] leading-normal max-w-[180px]">
                             {feature.description}
                           </p>
                         </div>
                       </div>
-
-                      {/* Vertical Divider - shown between items */}
-                      {index < features.length - 1 && (
-                        <div className="w-[1px] h-[80px] bg-white/30 mx-6 lg:mx-8" />
-                      )}
                     </div>
                   ))}
                 </div>

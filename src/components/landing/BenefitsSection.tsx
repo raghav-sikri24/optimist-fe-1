@@ -162,7 +162,8 @@ export function BenefitsSection() {
               0,
             );
             const newBufferDistance = window.innerHeight * 0.4;
-            const newTotalScrollDistance = newBufferDistance + newScrollDistance;
+            const newTotalScrollDistance =
+              newBufferDistance + newScrollDistance;
             self.vars.end = `+=${newTotalScrollDistance}`;
           },
         },
@@ -204,7 +205,7 @@ export function BenefitsSection() {
           {/* Carousel - Desktop: horizontal scroll on vertical, Mobile: native horizontal scroll */}
           <div
             ref={carouselRef}
-            className="flex gap-4 md:gap-6 overflow-x-auto md:overflow-visible pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory md:snap-none"
+            className="flex gap-4 md:gap-6 overflow-x-auto md:overflow-visible pb-4 md:pb-0 scrollbar-hide mx-0 px-4 md:mx-0 md:px-0 snap-x snap-mandatory md:snap-none"
           >
             {benefits.map((benefit) => (
               <div
