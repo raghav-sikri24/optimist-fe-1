@@ -237,10 +237,10 @@ export function FeaturesShowcaseSection() {
           // Lerp towards target time for smoother transitions
           const diff = targetTime - currentTime;
           const isReverse = targetTime < lastTargetTime;
-          
+
           // Use faster lerp for reverse scrolling to improve responsiveness
           const lerpFactor = isReverse ? lerpFactorReverse : lerpFactorForward;
-          
+
           // For large jumps (like quick scroll direction change), snap faster
           if (Math.abs(diff) > video.duration * 0.15) {
             // Jump closer to target for large differences
@@ -257,7 +257,11 @@ export function FeaturesShowcaseSection() {
           if (Math.abs(video.currentTime - currentTime) > 0.02) {
             // Use regular currentTime for reverse seeking (more accurate than fastSeek)
             // fastSeek can be inaccurate when seeking backward
-            if (!isReverse && "fastSeek" in video && typeof video.fastSeek === "function") {
+            if (
+              !isReverse &&
+              "fastSeek" in video &&
+              typeof video.fastSeek === "function"
+            ) {
               try {
                 video.fastSeek(currentTime);
               } catch {
@@ -329,10 +333,10 @@ export function FeaturesShowcaseSection() {
           // Lerp towards target time for smoother transitions
           const diff = targetTime - currentTime;
           const isReverse = targetTime < lastTargetTime;
-          
+
           // Use faster lerp for reverse scrolling to improve responsiveness
           const lerpFactor = isReverse ? lerpFactorReverse : lerpFactorForward;
-          
+
           // For large jumps (like quick scroll direction change), snap faster
           if (Math.abs(diff) > video.duration * 0.15) {
             // Jump closer to target for large differences
@@ -366,7 +370,7 @@ export function FeaturesShowcaseSection() {
         trigger: section,
         start: "top bottom", // Start as soon as section enters viewport
         end: "bottom bottom",
-        scrub: 0.1,
+        scrub: 0.05,
         onUpdate: (self) => {
           // Update video time based on scroll progress
           if (Number.isFinite(video.duration)) {
@@ -380,7 +384,7 @@ export function FeaturesShowcaseSection() {
 
       // ScrollTrigger 2: CONTENT TRANSITIONS - starts when section is sticky
       // Custom breakpoints: 1st feature gets less time, faster transition to 2nd
-      const featureBreakpoints = [0, 0.15, 0.45, 1]; // 1st: 0-18%, 2nd: 18-50%, 3rd: 50-100%
+      const featureBreakpoints = [0, 0.1, 0.2, 1]; // 1st: 0-18%, 2nd: 18-50%, 3rd: 50-100%
 
       ScrollTrigger.create({
         trigger: section,
@@ -562,10 +566,12 @@ export function FeaturesShowcaseSection() {
           {/* Left Scrollable Content */}
           <div className="w-1/2 relative z-10">
             <div className="flex flex-col">
-              {features.map((feature) => (
+              {features.map((feature, index) => (
                 <div
                   key={feature.id}
-                  className="min-h-screen flex items-center justify-center px-12 lg:px-16 xl:px-24"
+                  className={`flex items-center justify-center px-12 lg:px-16 xl:px-24 ${
+                    index === 0 ? "min-h-[70vh]" : "min-h-screen"
+                  }`}
                 >
                   <div className="max-w-[500px]">
                     {/* Badge */}

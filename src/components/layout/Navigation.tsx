@@ -193,21 +193,17 @@ export function Navigation() {
                 variants={logoVariants}
                 className="md:hidden flex items-center"
               >
-                <Link
-                  href="/"
-                  className="flex items-center w-full h-full grow group"
-                >
+                <Link href="/" className="flex items-center group">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="relative w-[120px] h-6 flex-shrink-0" // h-6 = 24px matches native height
                   >
                     <Image
-                      src={ASSETS.logo} // might be higher res
+                      src={ASSETS.logo}
                       alt="Optimist"
-                      width={150}
-                      height={40}
-                      className="h-8 w-auto invert flex-shrink-0"
+                      width={120}
+                      height={32}
+                      className="h-6 w-auto invert"
                     />
                   </motion.div>
                 </Link>
@@ -658,11 +654,11 @@ export function Navigation() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Image
-                    src={ASSETS.logo}
+                    src={ASSETS.optimistMobile}
                     alt="Optimist"
-                    width={120}
+                    width={150}
                     height={32}
-                    className="h-6 w-auto"
+                    className="h-8 w-auto"
                   />
                 </motion.div>
               </Link>
