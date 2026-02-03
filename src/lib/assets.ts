@@ -76,6 +76,7 @@ export const ASSETS = {
   e4: getAssetUrl("e4.png"),
   lightningBlue: getAssetUrl("LightningBlue.png"),
   lightningWhite: getAssetUrl("LightningWhite.png"),
+  optimistMobile: getAssetUrl("optimistMobileLogo.png"),
 
   // Ellipses & Backgrounds
   ellipse1: getAssetUrl("Ellipse 1.png"),

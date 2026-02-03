@@ -114,48 +114,84 @@ interface FeatureCardProps {
   feature: FeatureCardData;
   onHover: (id: FeatureId) => void;
   onLeave: () => void;
+  containerWidth: number;
 }
 
-function DesktopFeatureCard({ feature, onHover, onLeave }: FeatureCardProps) {
+function DesktopFeatureCard({
+  feature,
+  onHover,
+  onLeave,
+  containerWidth,
+}: FeatureCardProps) {
+  // Scale positions based on container width (base design is 1360px)
+  const scale = Math.min(1, containerWidth / 1360);
+  const scaledLeft =
+    feature.desktopLeft !== undefined ? feature.desktopLeft * scale : undefined;
+  const scaledTop = feature.desktopTop * scale;
+
+  // Scale card size for smaller screens
+  const cardWidth = Math.max(240, 314 * scale);
+  const cardHeight = Math.max(110, 142 * scale);
+  const iconSize = Math.max(70, 106 * scale);
+  const iconHeight = Math.max(80, 116 * scale);
+
   return (
     <div
-      className="w-[314px] h-[142px] rounded-[20px] overflow-hidden absolute transition-all duration-300 hover:shadow-[0px_8px_40px_0px_rgba(0,0,0,0.18)] hover:-translate-y-1 cursor-pointer"
+      className="rounded-[16px] lg:rounded-[20px] overflow-hidden absolute transition-all duration-300 hover:shadow-[0px_8px_40px_0px_rgba(0,0,0,0.18)] hover:-translate-y-1 cursor-pointer"
       style={{
         background: "linear-gradient(180deg, #EAEAEA 0%, #FFFFFF 100%)",
         border: "3px solid rgba(0,0,0,0.03)",
         boxShadow: "0px 4px 30px 0px rgba(0,0,0,0.12)",
-        left:
-          feature.desktopLeft !== undefined
-            ? `${feature.desktopLeft}px`
-            : undefined,
-        top: `${feature.desktopTop}px`,
+        left: scaledLeft !== undefined ? `${scaledLeft}px` : undefined,
+        top: `${scaledTop}px`,
+        width: `${cardWidth}px`,
+        height: `${cardHeight}px`,
       }}
       onMouseEnter={() => onHover(feature.id)}
       onMouseLeave={onLeave}
     >
-      {/* Icon Container - positioned at left:12px, top:13px */}
+      {/* Icon Container */}
       <div
-        className="absolute w-[106px] h-[116px] bg-[#181818] rounded-[13px] overflow-hidden flex items-center justify-center"
-        style={{ left: "12px", top: "13px" }}
+        className="absolute bg-[#181818] rounded-[10px] lg:rounded-[13px] overflow-hidden flex items-center my-auto justify-center"
+        style={{
+          left: `${Math.max(8, 12 * scale)}px`,
+          top: `${Math.max(8, 10 * scale)}px`,
+          width: `${iconSize}px`,
+          height: `${iconHeight}px`,
+        }}
       >
         <Image
           src={feature.icon}
           alt={feature.title}
           width={48}
           height={48}
-          className="w-12 h-12 object-contain"
+          className="object-contain"
+          style={{
+            width: `${Math.max(32, 48 * scale)}px`,
+            height: `${Math.max(32, 48 * scale)}px`,
+          }}
         />
       </div>
 
-      {/* Text Content - positioned at left:134px, top:20px */}
+      {/* Text Content */}
       <div
-        className="absolute flex flex-col gap-[14px] w-[141px]"
-        style={{ left: "134px", top: "20px" }}
+        className="absolute flex flex-col gap-2 xl:gap-[14px]"
+        style={{
+          left: `${Math.max(90, 134 * scale)}px`,
+          top: `${Math.max(14, 20 * scale)}px`,
+          width: `${Math.max(100, 141 * scale)}px`,
+        }}
       >
-        <p className="font-display text-[16px] font-bold text-black leading-[1.14]">
+        <p
+          className="font-display font-bold text-black leading-[1.14]"
+          style={{ fontSize: `${Math.max(13, 16 * scale)}px` }}
+        >
           {feature.title}
         </p>
-        <p className="font-display text-[14px] text-black opacity-60 leading-normal">
+        <p
+          className="font-display text-black opacity-60 leading-normal"
+          style={{ fontSize: `${Math.max(11, 14 * scale)}px` }}
+        >
           {feature.description}
         </p>
       </div>
@@ -180,7 +216,10 @@ function MobileFeatureCard({
   return (
     <div
       className={`
-        flex-shrink-0 w-[280px] h-[120px] rounded-[16px] overflow-hidden
+        flex-shrink-0 
+        w-[220px] xs:w-[250px] sm:w-[280px] md:w-[300px]
+        h-[100px] xs:h-[110px] sm:h-[120px] md:h-[130px]
+        rounded-[14px] sm:rounded-[16px] overflow-hidden
         transition-all duration-300 cursor-pointer
         ${isActive ? "scale-[1.02] -translate-y-0.5" : ""}
       `}
@@ -196,27 +235,27 @@ function MobileFeatureCard({
       onClick={() => onTap(feature.id)}
     >
       {/* Horizontal layout matching desktop */}
-      <div className="flex h-full p-2.5 gap-3">
+      <div className="flex h-full p-2 sm:p-2.5 gap-2 sm:gap-3">
         {/* Icon Container - same style as desktop */}
-        <div className="flex-shrink-0 w-[90px] h-[98px] bg-[#181818] rounded-[10px] flex items-center justify-center">
+        <div className="flex-shrink-0 w-[70px] xs:w-[80px] sm:w-[90px] md:w-[100px] h-full bg-[#181818] rounded-[8px] sm:rounded-[10px] flex items-center justify-center">
           <Image
             src={feature.icon}
             alt={feature.title}
             width={40}
             height={40}
-            className="w-10 h-10 object-contain"
+            className="w-8 xs:w-9 sm:w-10 h-8 xs:h-9 sm:h-10 object-contain"
           />
         </div>
 
         {/* Text Content - horizontal layout like desktop */}
-        <div className="flex flex-col justify-center gap-2 flex-1 min-w-0">
+        <div className="flex flex-col justify-center gap-1 sm:gap-2 flex-1 min-w-0 pr-1">
           <p
-            className={`font-display text-[14px] font-bold leading-tight ${isActive ? "text-white" : "text-black"}`}
+            className={`font-display text-[12px] xs:text-[13px] sm:text-[14px] md:text-[15px] font-bold leading-tight ${isActive ? "text-white" : "text-black"}`}
           >
             {feature.title}
           </p>
           <p
-            className={`font-display text-[12px] leading-normal ${isActive ? "text-white/70" : "text-black/60"}`}
+            className={`font-display text-[10px] xs:text-[11px] sm:text-[12px] md:text-[13px] leading-normal ${isActive ? "text-white/70" : "text-black/60"}`}
           >
             {feature.description}
           </p>
@@ -241,6 +280,20 @@ export function OptimistAppSection() {
   const [hoveredFeature, setHoveredFeature] = useState<FeatureId>(null);
   // Default to first item (energy-meter) for mobile
   const [activeFeature, setActiveFeature] = useState<FeatureId>("energy-meter");
+  const [containerWidth, setContainerWidth] = useState(1360);
+
+  // Track container width for responsive scaling
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
 
   // Mouse parallax effect - push in opposite direction
   useEffect(() => {
@@ -444,29 +497,45 @@ export function OptimistAppSection() {
     setActiveFeature(id);
   };
 
+  // Calculate responsive values
+  const scale = Math.min(1, containerWidth / 1360);
+  const desktopHeight = Math.max(600, Math.min(800, 800 * scale));
+  const handImageWidth = Math.max(500, 800 * scale);
+  const handImageHeight = Math.max(450, 700 * scale);
+
   return (
-    <section ref={sectionRef} className="bg-white px-4 md:px-10">
-      {/* Main Container - 1360px x 917px from Figma */}
+    <section
+      ref={sectionRef}
+      className="bg-white px-3 sm:px-4 md:px-6 lg:px-10"
+    >
+      {/* Main Container - responsive max-width */}
       <div
         ref={containerRef}
-        className="relative max-w-[1360px] mx-auto rounded-[24px] lg:rounded-[44px] overflow-hidden"
+        className="relative w-full max-w-[1360px] mx-auto rounded-[20px] sm:rounded-[28px] md:rounded-[36px] lg:rounded-[44px] overflow-hidden"
         style={{
           background:
             "linear-gradient(90deg, rgba(236, 236, 236, 0.2) 0%, rgba(236, 236, 236, 0.2) 100%), linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%)",
           border: "1px solid rgba(33,33,33,0.12)",
         }}
       >
-        {/* ============ DESKTOP LAYOUT ============ */}
-        <div className="hidden lg:block relative h-[800px] overflow-hidden">
+        {/* ============ DESKTOP LAYOUT (lg and up) ============ */}
+        <div
+          className="hidden lg:block relative overflow-hidden"
+          style={{ height: `${desktopHeight}px` }}
+        >
           {/* Parallax content wrapper */}
           <div
             ref={contentRef}
             className="absolute inset-0 will-change-transform"
           >
-            {/* Background Ellipse - Outer (Group) */}
+            {/* Background Ellipse - Outer (Group) - responsive sizing */}
             <div
               className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
-              style={{ top: "120px", width: "1258px", height: "1258px" }}
+              style={{
+                top: `${120 * scale}px`,
+                width: `${Math.min(1258, containerWidth * 0.95)}px`,
+                height: `${Math.min(1258, containerWidth * 0.95)}px`,
+              }}
             >
               <Image
                 src={ASSETS.ellipse6512}
@@ -483,7 +552,11 @@ export function OptimistAppSection() {
             {/* Background Ellipse - Inner */}
             <div
               className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
-              style={{ top: "380px", width: "753px", height: "753px" }}
+              style={{
+                top: `${380 * scale}px`,
+                width: `${Math.min(753, containerWidth * 0.6)}px`,
+                height: `${Math.min(753, containerWidth * 0.6)}px`,
+              }}
             >
               <Image
                 src={ASSETS.ellipse6513}
@@ -497,24 +570,23 @@ export function OptimistAppSection() {
               />
             </div>
 
-            {/* Hand/Phone Image - Fixed position container */}
+            {/* Hand/Phone Image - Responsive position container */}
             <div
               ref={phoneRef}
               className="absolute z-20 pointer-events-none will-change-[transform,opacity]"
               style={{
                 left: "60%",
-                top: "140px",
+                top: `${140 * scale}px`,
                 transform: "translateX(-50%)",
-                width: "800px",
-                height: "700px",
+                width: `${handImageWidth}px`,
+                height: `${handImageHeight}px`,
                 overflow: "hidden",
               }}
             >
-              {/* All hand images stacked - using fixed pixel positioning for consistency */}
+              {/* All hand images stacked - using responsive positioning */}
               {FEATURES.map((feature) => {
-                // Calculate position - all images positioned at same fixed coordinates
-                const offsetX = feature.handOffsetX || 0;
-                const offsetY = feature.handOffsetY || 0;
+                const offsetX = (feature.handOffsetX || 0) * scale;
+                const offsetY = (feature.handOffsetY || 0) * scale;
 
                 return (
                   <div
@@ -527,8 +599,8 @@ export function OptimistAppSection() {
                     style={{
                       left: `${offsetX}px`,
                       top: `${offsetY}px`,
-                      width: "800px",
-                      height: "700px",
+                      width: `${handImageWidth}px`,
+                      height: `${handImageHeight}px`,
                     }}
                   >
                     <Image
@@ -552,18 +624,27 @@ export function OptimistAppSection() {
               })}
             </div>
 
-            {/* Header - centered, top: 43px */}
+            {/* Header - centered, responsive positioning */}
             <div
               ref={headerRef}
-              className="absolute left-1/2 -translate-x-1/2 text-center w-[444px] z-10 will-change-[transform,opacity]"
-              style={{ top: "43px" }}
+              className="absolute left-1/2 -translate-x-1/2 text-center z-10 will-change-[transform,opacity] px-4"
+              style={{
+                top: `${Math.max(30, 43 * scale)}px`,
+                width: `${Math.min(444, containerWidth * 0.4)}px`,
+              }}
             >
-              <h2 className="font-display text-[40px] font-bold text-black leading-none mb-[14px]">
+              <h2
+                className="font-display font-bold text-black leading-none mb-2 lg:mb-[14px]"
+                style={{ fontSize: `${Math.max(28, 40 * scale)}px` }}
+              >
                 Optimist App
               </h2>
               <p
-                className="font-display text-[20px] leading-normal"
-                style={{ color: "rgba(0,0,0,0.42)" }}
+                className="font-display leading-normal"
+                style={{
+                  color: "rgba(0,0,0,0.42)",
+                  fontSize: `${Math.max(16, 20 * scale)}px`,
+                }}
               >
                 Your full-control panel, right in your hand.
               </p>
@@ -577,6 +658,7 @@ export function OptimistAppSection() {
                     feature={feature}
                     onHover={handleCardHover}
                     onLeave={handleCardLeave}
+                    containerWidth={containerWidth}
                   />
                 </div>
               ))}
@@ -585,7 +667,7 @@ export function OptimistAppSection() {
 
           {/* Bottom Fade Gradient - outside parallax wrapper so it stays fixed */}
           <div
-            className="absolute left-0 w-full h-[120px] pointer-events-none z-30 bottom-0"
+            className="absolute left-0 w-full h-[80px] lg:h-[120px] pointer-events-none z-30 bottom-0"
             style={{
               background:
                 "linear-gradient(178deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 1) 100%)",
@@ -593,9 +675,112 @@ export function OptimistAppSection() {
           />
         </div>
 
-        {/* ============ MOBILE LAYOUT ============ */}
+        {/* ============ TABLET LAYOUT (md to lg) ============ */}
         <div
-          className="lg:hidden relative bg-white overflow-hidden"
+          className="hidden md:block lg:hidden relative bg-white overflow-hidden"
+          style={{ minHeight: "650px" }}
+        >
+          {/* Background Ellipses - Tablet */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div
+              className="absolute left-1/2 -translate-x-1/2"
+              style={{ top: "150px", width: "120%", maxWidth: "900px" }}
+            >
+              <Image
+                src={ASSETS.ellipse6512}
+                alt=""
+                width={1258}
+                height={1258}
+                sizes="120vw"
+                className="w-full h-auto"
+                style={{ transform: "scale(1.112)" }}
+                loading="lazy"
+                quality={70}
+              />
+            </div>
+            <div
+              className="absolute left-1/2 -translate-x-1/2"
+              style={{ top: "300px", width: "80%", maxWidth: "600px" }}
+            >
+              <Image
+                src={ASSETS.ellipse6513}
+                alt=""
+                width={753}
+                height={753}
+                sizes="80vw"
+                className="w-full h-auto"
+                style={{ transform: "scale(1.187)" }}
+                loading="lazy"
+                quality={70}
+              />
+            </div>
+          </div>
+
+          {/* Header - Tablet */}
+          <div className="relative bg-white z-10 text-center pt-10 px-6">
+            <h2 className="font-display text-[36px] font-bold text-black leading-none mb-3">
+              Optimist App
+            </h2>
+            <p
+              className="font-display text-[18px] leading-normal max-w-md mx-auto"
+              style={{ color: "rgba(0,0,0,0.42)" }}
+            >
+              Your full-control panel, right in your hand.
+            </p>
+          </div>
+
+          {/* Hand/Phone Image Container - Tablet */}
+          <div
+            ref={phoneRef}
+            className="absolute z-10 pointer-events-none"
+            style={{
+              right: "-120px",
+              bottom: "140px",
+              width: "650px",
+              height: "450px",
+            }}
+          >
+            <Image
+              key={activeFeature}
+              src={
+                FEATURES.find((f) => f.id === activeFeature)?.handImage ||
+                FEATURES[0].handImage
+              }
+              alt="Optimist App"
+              fill
+              sizes="650px"
+              quality={80}
+              className="object-contain object-right-bottom"
+              priority
+            />
+          </div>
+
+          {/* Carousel - Tablet */}
+          <div
+            ref={mobileCarouselRef}
+            className="absolute bottom-0 bg-white pt-4 left-0 right-0 z-30 flex gap-4 overflow-x-auto pb-8 px-6 scrollbar-hide"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {FEATURES.map((feature) => (
+              <div
+                key={feature.id}
+                className="feature-card mobile-feature-card"
+                data-feature-id={feature.id}
+                style={{ scrollSnapAlign: "center" }}
+              >
+                <MobileFeatureCard
+                  feature={feature}
+                  isActive={activeFeature === feature.id}
+                  onTap={handleMobileCardTap}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ============ MOBILE LAYOUT (below md) ============ */}
+        <div
+          className="md:hidden relative bg-white overflow-hidden"
           style={{ minHeight: "750px" }}
         >
           {/* Background Ellipses - Mobile */}
@@ -641,11 +826,11 @@ export function OptimistAppSection() {
             ref={headerRef}
             className="relative bg-white z-10 text-center pt-[43px] px-4"
           >
-            <h2 className="font-display text-[32px] font-bold text-black leading-none mb-3">
+            <h2 className="font-display text-[28px] xs:text-[30px] sm:text-[32px] font-bold text-black leading-none mb-3">
               Optimist App
             </h2>
             <p
-              className="font-display text-[16px] leading-normal"
+              className="font-display text-[15px] xs:text-[16px] sm:text-[16px] leading-normal"
               style={{ color: "rgba(0,0,0,0.42)" }}
             >
               Your full-control panel, right in your hand.
@@ -679,12 +864,12 @@ export function OptimistAppSection() {
           </div>
 
           {/* White Gradient at bottom */}
-          <div className="absolute left-0 right-0 bottom-0 h-[180px] pointer-events-none z-20" />
+          <div className="absolute left-0 right-0 bottom-0 h-[150px] sm:h-[180px] pointer-events-none z-20" />
 
           {/* Horizontal Scrollable Carousel - positioned at bottom */}
           <div
             ref={mobileCarouselRef}
-            className="absolute bottom-0 bg-white pt-4 left-0 right-0 z-30 flex gap-3 overflow-x-auto pb-6 px-4 scrollbar-hide"
+            className="absolute bottom-0 bg-white pt-3 sm:pt-4 left-0 right-0 z-30 flex gap-2 xs:gap-3 overflow-x-auto pb-4 xs:pb-5 sm:pb-6 px-3 xs:px-4 scrollbar-hide"
             style={{ scrollSnapType: "x mandatory" }}
           >
             {FEATURES.map((feature) => (

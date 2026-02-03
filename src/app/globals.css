@@ -44,6 +44,9 @@
   --color-optimist-border: var(--optimist-border);
   --color-optimist-border-light: var(--optimist-border-light);
 
+  /* Custom Breakpoints */
+  --breakpoint-xs: 400px;
+
   /* Fonts */
   --font-sans: var(--font-abc-solar);
   --font-display: var(--font-abc-solar-display);

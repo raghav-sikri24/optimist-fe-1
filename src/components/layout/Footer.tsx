@@ -348,10 +348,10 @@ export function Footer() {
           initial="hidden"
           animate={isImageInView ? "visible" : "hidden"}
           variants={imageVariants}
-          className="relative mt-8 md:mt-4 mb-10 md:mb-0"
+          className="relative mt-8 md:mt-10"
         >
           <motion.div
-            className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden"
+            className="relative w-full aspect-[15/9] md:aspect-[17/9] overflow-hidden"
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.4 }}
           >
@@ -360,7 +360,7 @@ export function Footer() {
               src={ASSETS.family}
               alt="Happy family enjoying comfort"
               fill
-              className="object-cover z-0 brightness-[0.6]"
+              className="object-cover z-0 brightness-[0.8]"
               sizes="(max-width: 1400px) 100vw, 1400px"
             />
 
