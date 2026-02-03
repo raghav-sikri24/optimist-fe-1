@@ -221,11 +221,13 @@ export function FeaturesShowcaseSection() {
       // Track target time and current interpolated time for smoother seeking
       let targetTime = 0;
       let currentTime = 0;
+      let lastTargetTime = 0;
       let isSeekingAllowed = true;
       let rafId: number | null = null;
 
-      // Lerp factor for smooth interpolation (lower = smoother but more lag)
-      const lerpFactor = 0.15;
+      // Lerp factors - use faster lerp for reverse scrolling
+      const lerpFactorForward = 0.15;
+      const lerpFactorReverse = 0.35;
 
       // Use requestAnimationFrame with lerp for smoother video updates
       const updateVideoTime = () => {
@@ -234,9 +236,17 @@ export function FeaturesShowcaseSection() {
         if (video.readyState >= 1 && Number.isFinite(video.duration)) {
           // Lerp towards target time for smoother transitions
           const diff = targetTime - currentTime;
-
-          // If difference is very small, snap to target
-          if (Math.abs(diff) < 0.01) {
+          const isReverse = targetTime < lastTargetTime;
+          
+          // Use faster lerp for reverse scrolling to improve responsiveness
+          const lerpFactor = isReverse ? lerpFactorReverse : lerpFactorForward;
+          
+          // For large jumps (like quick scroll direction change), snap faster
+          if (Math.abs(diff) > video.duration * 0.15) {
+            // Jump closer to target for large differences
+            currentTime = currentTime + diff * 0.5;
+          } else if (Math.abs(diff) < 0.01) {
+            // If difference is very small, snap to target
             currentTime = targetTime;
           } else {
             // Smooth interpolation towards target
@@ -245,7 +255,9 @@ export function FeaturesShowcaseSection() {
 
           // Only seek if there's a meaningful difference
           if (Math.abs(video.currentTime - currentTime) > 0.02) {
-            if ("fastSeek" in video && typeof video.fastSeek === "function") {
+            // Use regular currentTime for reverse seeking (more accurate than fastSeek)
+            // fastSeek can be inaccurate when seeking backward
+            if (!isReverse && "fastSeek" in video && typeof video.fastSeek === "function") {
               try {
                 video.fastSeek(currentTime);
               } catch {
@@ -270,6 +282,7 @@ export function FeaturesShowcaseSection() {
         scrub: 0.1,
         onUpdate: (self) => {
           if (Number.isFinite(video.duration)) {
+            lastTargetTime = targetTime;
             targetTime = self.progress * video.duration;
             // Cancel any pending frame and start new animation loop
             if (rafId) cancelAnimationFrame(rafId);
@@ -303,19 +316,29 @@ export function FeaturesShowcaseSection() {
       // Track target time and current interpolated time for smoother seeking
       let targetTime = 0;
       let currentTime = 0;
+      let lastTargetTime = 0;
       let rafId: number | null = null;
 
-      // Lerp factor for smooth interpolation (lower = smoother but more lag)
-      const lerpFactor = 0.12;
+      // Lerp factors - use faster lerp for reverse scrolling
+      const lerpFactorForward = 0.12;
+      const lerpFactorReverse = 0.35;
 
       // Use requestAnimationFrame with lerp for smoother video updates
       const updateVideoTime = () => {
         if (video.readyState >= 1 && Number.isFinite(video.duration)) {
           // Lerp towards target time for smoother transitions
           const diff = targetTime - currentTime;
-
-          // If difference is very small, snap to target
-          if (Math.abs(diff) < 0.01) {
+          const isReverse = targetTime < lastTargetTime;
+          
+          // Use faster lerp for reverse scrolling to improve responsiveness
+          const lerpFactor = isReverse ? lerpFactorReverse : lerpFactorForward;
+          
+          // For large jumps (like quick scroll direction change), snap faster
+          if (Math.abs(diff) > video.duration * 0.15) {
+            // Jump closer to target for large differences
+            currentTime = currentTime + diff * 0.5;
+          } else if (Math.abs(diff) < 0.01) {
+            // If difference is very small, snap to target
             currentTime = targetTime;
           } else {
             // Smooth interpolation towards target
@@ -347,6 +370,7 @@ export function FeaturesShowcaseSection() {
         onUpdate: (self) => {
           // Update video time based on scroll progress
           if (Number.isFinite(video.duration)) {
+            lastTargetTime = targetTime;
             targetTime = self.progress * video.duration;
             if (rafId) cancelAnimationFrame(rafId);
             rafId = requestAnimationFrame(updateVideoTime);
