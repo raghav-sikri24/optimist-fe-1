@@ -87,7 +87,7 @@ export function FeaturedBlogCard({ article }: FeaturedBlogCardProps) {
           </div>
 
           {/* Content */}
-          <div className="flex flex-col justify-center lg:w-1/2 py-2 lg:py-4">
+          <div className="flex flex-col justify-center lg:w-1/2 px-4 py-4 lg:px-0 lg:py-4">
             {/* Category Tag */}
             <div className="flex flex-wrap gap-2">
               {category.map((tag) => (
