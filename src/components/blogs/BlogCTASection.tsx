@@ -17,33 +17,31 @@ export function BlogCTASection() {
 
   useGSAP(
     () => {
-      const tl = gsap.timeline({
+      // Set initial state explicitly
+      gsap.set(contentRef.current, { opacity: 0, x: -40 });
+      gsap.set(decorRef.current, { opacity: 0, x: 40, rotation: -10 });
+
+      let hasAnimated = false;
+
+      const animateIn = () => {
+        if (hasAnimated) return;
+        hasAnimated = true;
+        gsap.to(contentRef.current, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" });
+        gsap.to(decorRef.current, { opacity: 1, x: 0, rotation: 0, duration: 0.8, ease: "power3.out", delay: 0.3 });
+      };
+
+      gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 95%",
           toggleActions: "play none none none",
           once: true,
+          onEnter: animateIn,
         },
       });
 
-      tl.from(contentRef.current, {
-        opacity: 0,
-        x: -40,
-        duration: 0.8,
-        ease: "power3.out",
-      });
-
-      tl.from(
-        decorRef.current,
-        {
-          opacity: 0,
-          x: 40,
-          rotation: -10,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.5",
-      );
+      // Fallback: ensure content is visible after 2 seconds regardless of scroll
+      setTimeout(animateIn, 2000);
     },
     { scope: sectionRef },
   );

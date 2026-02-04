@@ -23,19 +23,37 @@ export function BlogGrid({ articles, isLoading = false }: BlogGridProps) {
       if (!gridRef.current || isLoading) return;
 
       const cards = gridRef.current.querySelectorAll(".blog-card");
-      gsap.from(cards, {
-        opacity: 0,
-        y: 40,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out",
+      if (cards.length === 0) return;
+
+      // Set initial state
+      gsap.set(cards, { opacity: 0, y: 40 });
+
+      let hasAnimated = false;
+
+      const animateIn = () => {
+        if (hasAnimated) return;
+        hasAnimated = true;
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power3.out",
+        });
+      };
+
+      gsap.timeline({
         scrollTrigger: {
           trigger: gridRef.current,
-          start: "top 85%",
+          start: "top 95%",
           toggleActions: "play none none none",
           once: true,
+          onEnter: animateIn,
         },
       });
+
+      // Fallback: ensure cards are visible after 1.5 seconds
+      setTimeout(animateIn, 1500);
     },
     { scope: gridRef, dependencies: [articles, isLoading] },
   );

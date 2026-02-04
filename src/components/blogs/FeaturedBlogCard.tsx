@@ -24,18 +24,36 @@ export function FeaturedBlogCard({ article }: FeaturedBlogCardProps) {
 
   useGSAP(
     () => {
-      gsap.from(cardRef.current, {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        ease: "power3.out",
+      if (!cardRef.current) return;
+
+      // Set initial state
+      gsap.set(cardRef.current, { opacity: 0, y: 40 });
+
+      let hasAnimated = false;
+
+      const animateIn = () => {
+        if (hasAnimated) return;
+        hasAnimated = true;
+        gsap.to(cardRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        });
+      };
+
+      gsap.timeline({
         scrollTrigger: {
           trigger: cardRef.current,
-          start: "top 85%",
+          start: "top 95%",
           toggleActions: "play none none none",
           once: true,
+          onEnter: animateIn,
         },
       });
+
+      // Fallback: ensure card is visible after 1.5 seconds
+      setTimeout(animateIn, 1500);
     },
     { scope: cardRef },
   );
