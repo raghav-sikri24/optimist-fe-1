@@ -647,7 +647,7 @@ export function HeroSection() {
               style={{
                 objectFit: "cover",
                 objectPosition: "left top",
-                mixBlendMode: "overlay",
+                mixBlendMode: "normal",
               }}
             />
             {/* Layer 3: Leaves video overlay with screen blend mode */}
@@ -810,7 +810,7 @@ export function HeroSection() {
               height: "120%",
               objectFit: "cover",
               objectPosition: "left top",
-              mixBlendMode: "overlay",
+              mixBlendMode: "normal",
               opacity: 0.06,
             }}
           />
