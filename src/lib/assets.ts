@@ -38,6 +38,10 @@ export const ASSETS = {
   comparisonShadowBg: getAssetUrl("comparison-shadow-bg.png"),
   comparisonTopGradient: getAssetUrl("comparison-top-gradient.png"),
   acComparison: getAssetUrl("acComparison.png"),
+  team1: getAssetUrl("Team1.png"),
+  team2: getAssetUrl("Team2.png"),
+  team3: getAssetUrl("Team3.png"),
+  team4: getAssetUrl("Team4.png"),
 
   // India Story Section
   indiaStoryDesert: getAssetUrl("india-story-desert.png"),
@@ -126,8 +130,9 @@ export const ASSETS = {
 
   // Videos
   videos: {
-    pointersAnimation: getAssetUrl("PointersAnimation.mp4"),
+    pointersAnimation: getAssetUrl("PointerssAnimation.mp4"),
     productCardAnimation: getAssetUrl("ProductCardAnimation.mp4"),
+    productCardAnimation2: getAssetUrl("ProductCardAnimation2.mp4"),
     productCardAnimationWhite: getAssetUrl("ProductCardAnimationWhite.webm"),
     productCardAnimationWhite2: getAssetUrl("ProductCardAnimationWhite2.mp4"),
     treeCool: getAssetUrl("TreeCool.mp4"),

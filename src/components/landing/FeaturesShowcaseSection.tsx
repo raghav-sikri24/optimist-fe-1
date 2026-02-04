@@ -421,7 +421,7 @@ export function FeaturesShowcaseSection() {
         className="lg:hidden block w-full relative"
         style={{
           height: `${features.length * 70}vh`,
-          backgroundColor: "#e3e3e3",
+          backgroundColor: "#000000",
         }}
       >
         {/* Sticky container - stays fixed while parent scrolls */}
@@ -434,7 +434,7 @@ export function FeaturesShowcaseSection() {
             height: "100vh",
             display: "flex",
             flexDirection: "column",
-            backgroundColor: "#e3e3e3",
+            backgroundColor: "#000000",
             overflow: "hidden",
           }}
         >
@@ -444,7 +444,7 @@ export function FeaturesShowcaseSection() {
               height: "55%",
               width: "100%",
               overflow: "hidden",
-              backgroundColor: "#e3e3e3",
+              backgroundColor: "#000000",
               position: "relative",
               flexShrink: 0,
             }}
@@ -463,7 +463,7 @@ export function FeaturesShowcaseSection() {
             >
               <video
                 ref={mobileVideoRef}
-                src={`${ASSETS.videos.pointersAnimation}#t=0.001`}
+                src={`${ASSETS.videos.pointersAnimation}`}
                 className="h-[100%] w-auto max-w-none object-cover translate-x-[5%]"
                 muted
                 playsInline
@@ -481,7 +481,7 @@ export function FeaturesShowcaseSection() {
             style={{
               height: "45%",
               width: "100%",
-              backgroundColor: "#e3e3e3",
+              backgroundColor: "#000000",
               position: "relative",
               flexShrink: 0,
             }}
@@ -539,10 +539,7 @@ export function FeaturesShowcaseSection() {
       </div>
 
       {/* Desktop Layout */}
-      <section
-        ref={sectionRef}
-        className="relative bg-[#E7E7E7] hidden lg:block"
-      >
+      <section ref={sectionRef} className="relative bg-white hidden lg:block">
         {/* Background Leaf Pattern */}
         {/* <div className="absolute top-0 left-0 sticky w-full opacity-10 pointer-events-none z-20">
           <video
@@ -625,12 +622,12 @@ export function FeaturesShowcaseSection() {
           </div>
 
           {/* Right Sticky Video Section */}
-          <div className="w-1/2 h-screen sticky top-0 right-0 overflow-hidden bg-[#E7E7E7]">
+          <div className="w-1/2 h-screen sticky top-0 right-0 overflow-hidden bg-white">
             <div className="absolute inset-0 flex items-center justify-center">
               <video
                 ref={videoRef}
-                src={`${ASSETS.videos.pointersAnimation}#t=0.001`}
-                className="h-[100%] bg-[#E7E7E7] max-w-none w-auto object-cover translate-x-[25%]"
+                src={`${ASSETS.videos.pointersAnimation}`}
+                className="h-[100%] bg-white max-w-none w-auto object-cover translate-x-[25%]"
                 muted
                 playsInline
                 autoPlay={false}

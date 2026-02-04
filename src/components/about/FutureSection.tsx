@@ -130,7 +130,7 @@ export function FutureSection() {
           {/* Team Image - overlaps the blue card */}
           <div
             ref={imageRef}
-            className="relative z-10 w-[92%] max-w-[1172px] mx-auto h-[280px] md:h-[400px] lg:h-[498px] rounded-[20px] md:rounded-[28px] lg:rounded-[32px] overflow-hidden will-change-[transform,opacity]"
+            className="relative z-10 w-[92%] max-w-[1172px] mx-auto aspect-[1172/498] rounded-[20px] md:rounded-[28px] lg:rounded-[32px] overflow-hidden will-change-[transform,opacity]"
           >
             <Image
               src={ASSETS.futureTeam}

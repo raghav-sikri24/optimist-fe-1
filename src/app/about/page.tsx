@@ -8,6 +8,7 @@ import {
   ProofOfWorkSection,
   TimelineSection,
   CoreTeamSection,
+  SupportersSection,
   FutureSection,
   CTASection,
 } from "@/components/about";
@@ -135,6 +136,15 @@ export default function AboutPage() {
         variants={slideFromLeft}
       >
         <CoreTeamSection />
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={scaleUp}
+      >
+        <SupportersSection />
       </motion.div>
 
       <motion.div

@@ -19,7 +19,7 @@ const teamData = [
     name: "Ashish Goel",
     description:
       "Ashish Goel is a climate-tech builder and evangelist, former Founder & CEO of Urban Ladder, and a 5× Fortune 40 Under 40 awardee, now focused on building practical, engineering-led solutions for India's climate challenges.",
-    image: ASSETS.teamFounder,
+    image: ASSETS.team1,
     previousCompanies: ["/accel.svg", "/sparrow.svg", "/spectrum.svg"],
   },
   {
@@ -29,7 +29,7 @@ const teamData = [
     name: "Pranav Chopra",
     description:
       "Pranav Chopra is a technology entrepreneur and co-founder of Optimist, building India-first climate tech cooling solutions to solve heat challenges. He drives product innovation and engineering execution with a focus on impact and scale.",
-    image: ASSETS.teamMember,
+    image: ASSETS.team2,
     previousCompanies: ["/accel.svg", "/sparrow.svg"],
   },
   {
@@ -39,7 +39,7 @@ const teamData = [
     name: "Manjunath Vittala Rao",
     description:
       "Manjunath Vittala Rao is the Chief Innovation Officer at Optimist, leading innovation and standards-led quality thinking as the company builds India-first, high-performance cooling for real heat conditions.",
-    image: ASSETS.teamMember,
+    image: ASSETS.team3,
     previousCompanies: ["/spectrum.svg"],
   },
   {
@@ -49,7 +49,7 @@ const teamData = [
     name: "Prof. Anurag Goyal",
     description:
       "Prof. Anurag Goyal is an advisor at Optimist, bringing deep research and practical insight from his work on HVAC, heat transfer, and energy storage as an Assistant Professor of Mechanical Engineering at IIT Delhi, grounded in rigorous engineering principles.",
-    image: ASSETS.teamMember,
+    image: ASSETS.team4,
     previousCompanies: ["/accel.svg"],
   },
 ];
@@ -60,10 +60,10 @@ const FOCUSED_TEXT_COLOR = "white";
 const UNFOCUSED_BG_COLOR = "#D2FFE9";
 const UNFOCUSED_TEXT_COLOR = "black";
 
-// Arrow Icon Component
-function ArrowIcon({
+// Scroll Arrow Icon Component
+function ScrollArrowIcon({
   direction = "right",
-  size = 24,
+  size = 20,
 }: {
   direction?: "left" | "right";
   size?: number;
@@ -80,7 +80,7 @@ function ArrowIcon({
       <path
         d="M5 12H19M19 12L12 5M19 12L12 19"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -253,6 +253,7 @@ export function CoreTeamSection() {
   const [isMobile, setIsMobile] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Touch/scroll handling for mobile
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -408,11 +409,6 @@ export function CoreTeamSection() {
 
   const updateScrollState = useCallback(() => {
     if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } =
-        scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-
       if (isMobile) {
         // For mobile: detect scroll end and update focused card
         if (!isScrollingRef.current) {
@@ -434,14 +430,12 @@ export function CoreTeamSection() {
             setIsTransitioning(false);
           }, 50);
         }, 150);
-      } else {
-        // Calculate focused card on desktop scroll
-        updateFocusedCard(false);
       }
+      // Note: canScrollLeft/Right are now managed via focusedIndex in useEffect
     }
   }, [isMobile, updateFocusedCard]);
 
-  // Navigate to specific card (for mobile)
+  // Navigate to specific card
   const navigateToCard = useCallback(
     (index: number) => {
       if (!scrollContainerRef.current) return;
@@ -461,40 +455,43 @@ export function CoreTeamSection() {
       const containerRect = container.getBoundingClientRect();
       const cardRect = card.getBoundingClientRect();
 
-      // Center the card in the container
-      const scrollOffset =
-        cardRect.left -
-        containerRect.left -
-        (containerRect.width - cardRect.width) / 2 +
-        container.scrollLeft;
+      let scrollOffset: number;
+
+      if (isMobile) {
+        // Center the card in the container for mobile
+        scrollOffset =
+          cardRect.left -
+          containerRect.left -
+          (containerRect.width - cardRect.width) / 2 +
+          container.scrollLeft;
+      } else {
+        // For desktop: position card with left padding (matching container padding)
+        const leftPadding = 40; // px-10 = 40px
+        scrollOffset =
+          cardRect.left -
+          containerRect.left -
+          leftPadding +
+          container.scrollLeft;
+      }
 
       container.scrollTo({
-        left: scrollOffset,
+        left: Math.max(0, scrollOffset),
         behavior: "smooth",
       });
 
-      // The scroll event handler will update focusedIndex when scroll ends
+      // Update focused index immediately for responsive UI
+      setFocusedIndex(targetIndex);
+
+      // Update scroll state after animation
+      setTimeout(updateScrollState, 350);
     },
-    [isMobile],
+    [isMobile, updateScrollState],
   );
 
   const scroll = (direction: "left" | "right") => {
-    if (isMobile) {
-      // For mobile: navigate to next/previous card
-      const newIndex =
-        direction === "left" ? focusedIndex - 1 : focusedIndex + 1;
-      navigateToCard(newIndex);
-    } else {
-      // For desktop: smooth scroll
-      if (scrollContainerRef.current) {
-        const scrollAmount = 400;
-        scrollContainerRef.current.scrollBy({
-          left: direction === "left" ? -scrollAmount : scrollAmount,
-          behavior: "smooth",
-        });
-        setTimeout(updateScrollState, 300);
-      }
-    }
+    // Navigate to next/previous card (same logic for mobile and desktop)
+    const newIndex = direction === "left" ? focusedIndex - 1 : focusedIndex + 1;
+    navigateToCard(newIndex);
   };
 
   // Cleanup timeout on unmount
@@ -514,13 +511,11 @@ export function CoreTeamSection() {
     }
   };
 
-  // Update navigation button states based on focused index for mobile
+  // Update navigation button states based on focused index
   useEffect(() => {
-    if (isMobile) {
-      setCanScrollLeft(focusedIndex > 0);
-      setCanScrollRight(focusedIndex < teamData.length - 1);
-    }
-  }, [focusedIndex, isMobile]);
+    setCanScrollLeft(focusedIndex > 0);
+    setCanScrollRight(focusedIndex < teamData.length - 1);
+  }, [focusedIndex]);
 
   return (
     <section
@@ -536,85 +531,83 @@ export function CoreTeamSection() {
           Core Team
         </h2>
 
-        {/* Horizontal Scroll Container */}
-        <div
-          ref={scrollContainerRef}
-          onScroll={updateScrollState}
-          onTouchStart={handleTouchStart}
-          className="overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory md:snap-none"
-        >
-          <div
-            ref={cardsRef}
-            className="flex gap-4 md:gap-6 lg:gap-8 px-4 md:px-6 lg:px-10 w-max"
-          >
-            {teamData.map((member, index) => (
-              <div
-                key={member.id}
-                ref={(el) => {
-                  cardRefs.current[index] = el;
-                }}
-                className="snap-center md:snap-align-none"
-              >
-                <TeamCard
-                  title={member.title}
-                  role={member.role}
-                  name={member.name}
-                  description={member.description}
-                  image={member.image}
-                  isFocused={focusedIndex === index}
-                  isTransitioning={isTransitioning}
-                  isMobile={isMobile}
-                  previousCompanies={member.previousCompanies}
-                />
-              </div>
-            ))}
-            {/* Trailing spacer to allow last cards to reach focus point */}
-            <div
-              className="flex-shrink-0 w-[calc(50vw-200px)] md:w-[calc(40vw-150px)] lg:w-[calc(30vw-100px)]"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-
-        {/* Navigation Arrows */}
+        {/* Horizontal Scroll Container with hover arrows */}
         <div
           ref={navRef}
-          className="flex justify-end gap-3 md:gap-4 px-4 md:px-6 lg:px-10 will-change-[transform,opacity]"
+          className="relative group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
+          {/* Left Scroll Arrow */}
           <button
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
-            className={`w-[40px] h-[40px] md:w-[48px] md:h-[48px] lg:w-[54px] lg:h-[54px] rounded-full border border-black/12 flex items-center justify-center transition-all duration-200 ${
-              canScrollLeft
-                ? "text-black hover:bg-black/5 cursor-pointer"
-                : "text-black/30 cursor-not-allowed"
-            }`}
-            aria-label="Previous card"
+            className={`absolute left-3 md:left-6 lg:left-8 top-[180px] md:top-[200px] lg:top-[220px] z-20 
+              w-[48px] h-[48px] md:w-[54px] md:h-[54px] lg:w-[60px] lg:h-[60px] 
+              rounded-full bg-white border border-black/[0.12]
+              flex items-center justify-center 
+              transition-all duration-300 ease-out
+              ${isHovered && canScrollLeft ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-3 pointer-events-none"}
+              ${canScrollLeft ? "text-gray-700 hover:text-[#3478F6] hover:border-[#3478F6]/30 hover:shadow-[0_4px_20px_rgba(52,120,246,0.15)] cursor-pointer" : "text-gray-300 cursor-not-allowed"}
+            `}
+            style={{ boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.08)" }}
+            aria-label="Scroll left"
           >
-            <span className="md:hidden">
-              <ArrowIcon direction="left" size={20} />
-            </span>
-            <span className="hidden md:block">
-              <ArrowIcon direction="left" size={24} />
-            </span>
+            <ScrollArrowIcon direction="left" size={22} />
           </button>
+
+          {/* Right Scroll Arrow */}
           <button
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
-            className={`w-[40px] h-[40px] md:w-[48px] md:h-[48px] lg:w-[54px] lg:h-[54px] rounded-full border border-black/12 flex items-center justify-center transition-all duration-200 ${
-              canScrollRight
-                ? "text-black hover:bg-black/5 cursor-pointer"
-                : "text-black/30 cursor-not-allowed"
-            }`}
-            aria-label="Next card"
+            className={`absolute right-3 md:right-6 lg:right-8 top-[180px] md:top-[200px] lg:top-[220px] z-20 
+              w-[48px] h-[48px] md:w-[54px] md:h-[54px] lg:w-[60px] lg:h-[60px] 
+              rounded-full bg-white border border-black/[0.12]
+              flex items-center justify-center 
+              transition-all duration-300 ease-out
+              ${isHovered && canScrollRight ? "opacity-100 translate-x-0" : "opacity-0 translate-x-3 pointer-events-none"}
+              ${canScrollRight ? "text-gray-700 hover:text-[#3478F6] hover:border-[#3478F6]/30 hover:shadow-[0_4px_20px_rgba(52,120,246,0.15)] cursor-pointer" : "text-gray-300 cursor-not-allowed"}
+            `}
+            style={{ boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.08)" }}
+            aria-label="Scroll right"
           >
-            <span className="md:hidden">
-              <ArrowIcon direction="right" size={20} />
-            </span>
-            <span className="hidden md:block">
-              <ArrowIcon direction="right" size={24} />
-            </span>
+            <ScrollArrowIcon direction="right" size={22} />
           </button>
+
+          {/* Scroll Container */}
+          <div
+            ref={scrollContainerRef}
+            onScroll={updateScrollState}
+            onTouchStart={handleTouchStart}
+            className="overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory md:snap-none"
+          >
+            <div
+              ref={cardsRef}
+              className="flex gap-4 md:gap-6 lg:gap-8 px-4 md:px-6 lg:px-10 w-max"
+            >
+              {teamData.map((member, index) => (
+                <div
+                  key={member.id}
+                  ref={(el) => {
+                    cardRefs.current[index] = el;
+                  }}
+                  className="snap-center md:snap-align-none"
+                >
+                  <TeamCard
+                    title={member.title}
+                    role={member.role}
+                    name={member.name}
+                    description={member.description}
+                    image={member.image}
+                    isFocused={focusedIndex === index}
+                    isTransitioning={isTransitioning}
+                    isMobile={isMobile}
+                    previousCompanies={member.previousCompanies}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

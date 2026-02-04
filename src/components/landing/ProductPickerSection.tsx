@@ -1,6 +1,13 @@
 "use client";
 
-import { useRef, useState, Suspense, useEffect, useLayoutEffect, useMemo } from "react";
+import {
+  useRef,
+  useState,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+} from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -143,7 +150,9 @@ function formatPrice(price: number): string {
     currency: "INR",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(price).replace("₹", "Rs ");
+  })
+    .format(price)
+    .replace("₹", "Rs ");
 }
 
 function ACVideo() {
@@ -156,7 +165,10 @@ function ACVideo() {
 
     if (lastTimeRef.current !== undefined) {
       const delta = (time - lastTimeRef.current) * 0.001;
-      videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - delta);
+      videoRef.current.currentTime = Math.max(
+        0,
+        videoRef.current.currentTime - delta,
+      );
     }
     lastTimeRef.current = time;
 
@@ -184,7 +196,7 @@ function ACVideo() {
   return (
     <video
       ref={videoRef}
-      src={ASSETS.videos.productCardAnimation}
+      src={ASSETS.videos.productCardAnimation2}
       className="w-full h-auto object-contain cursor-pointer bg-transparent"
       muted
       playsInline
@@ -193,7 +205,6 @@ function ACVideo() {
     />
   );
 }
-
 
 export function ProductPickerSection() {
   const [activeTab, setActiveTab] = useState("1.5");
@@ -213,7 +224,11 @@ export function ProductPickerSection() {
   // Get price from Shopify or fallback
   const activePrice = useMemo(() => {
     const shopifyPrice = getPriceByTonnage(activeTonnage);
-    return shopifyPrice ?? FALLBACK_PRICES[activeTab as keyof typeof FALLBACK_PRICES] ?? 0;
+    return (
+      shopifyPrice ??
+      FALLBACK_PRICES[activeTab as keyof typeof FALLBACK_PRICES] ??
+      0
+    );
   }, [activeTonnage, getPriceByTonnage, activeTab]);
 
   const handleShare = async () => {
@@ -258,7 +273,7 @@ export function ProductPickerSection() {
           ease: "power3.out",
           force3D: true,
         },
-        0
+        0,
       );
 
       // Card animation with slight delay
@@ -271,13 +286,14 @@ export function ProductPickerSection() {
           ease: "power3.out",
           force3D: true,
         },
-        0.2
+        0.2,
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
-  const activeProduct = productDetails[activeTab as keyof typeof productDetails];
+  const activeProduct =
+    productDetails[activeTab as keyof typeof productDetails];
 
   return (
     <section
@@ -306,8 +322,7 @@ export function ProductPickerSection() {
         <div
           ref={cardRef}
           className="bg-[#F8F8FA] rounded-[24px] md:rounded-[32px] overflow-hidden will-change-[transform,opacity]"
-          style={{boxShadow:"0px 9px 30px 0px #00000017"
-          }}
+          style={{ boxShadow: "0px 9px 30px 0px #00000017" }}
         >
           {/* Tab Navigation */}
           <div className="border-b border-gray-200">
@@ -316,10 +331,11 @@ export function ProductPickerSection() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-4 md:py-5 text-center text-sm md:text-base font-semibold transition-all duration-300 relative ${activeTab === tab.id
-                    ? "text-optimist-blue-primary bg-[#3478F612]"
-                    : "text-gray-500 hover:text-gray-700 bg-[#F5F5F5]"
-                    }`}
+                  className={`flex-1 py-4 md:py-5 text-center text-sm md:text-base font-semibold transition-all duration-300 relative ${
+                    activeTab === tab.id
+                      ? "text-optimist-blue-primary bg-[#3478F612]"
+                      : "text-gray-500 hover:text-gray-700 bg-[#F5F5F5]"
+                  }`}
                 >
                   {tab.label}
                   {/* Active underline */}
@@ -382,11 +398,15 @@ export function ProductPickerSection() {
                     <h3 className="font-display text-[28px] md:text-[36px] lg:text-[42px] leading-[28px] md:leading-[36px] lg:leading-[42px] font-[600] text-gray-900">
                       {activeProduct.headline}
                     </h3>
-                    <span className="font-display text-[28px] md:text-[36px] lg:text-[42px] leading-tight font-bold" style={{    background: "linear-gradient(90deg, #3478F6 0%, #074FD5 100%)",
-    WebkitBackgroundClip: "text",
-    color: "transparent",
-
-}}>
+                    <span
+                      className="font-display text-[28px] md:text-[36px] lg:text-[42px] leading-tight font-bold"
+                      style={{
+                        background:
+                          "linear-gradient(90deg, #3478F6 0%, #074FD5 100%)",
+                        WebkitBackgroundClip: "text",
+                        color: "transparent",
+                      }}
+                    >
                       {activeProduct.tagline}
                     </span>
                   </div>
@@ -434,7 +454,7 @@ export function ProductPickerSection() {
 
               {/* Right Column - AC Image (Desktop Only) */}
               <div className="hidden lg:block">
-                <div className="relative bg-[#E7E7E7] rounded-[24px] overflow-hidden shadow-sm h-full min-h-[400px] flex items-center justify-center">
+                <div className="relative bg-white rounded-[24px] overflow-hidden shadow-sm h-full min-h-[400px] flex items-center justify-center">
                   {/* Share Button */}
                   <button
                     onClick={handleShare}

@@ -4,5 +4,6 @@ export { MissionSection } from "./MissionSection";
 export { ProofOfWorkSection } from "./ProofOfWorkSection";
 export { TimelineSection } from "./TimelineSection";
 export { CoreTeamSection } from "./CoreTeamSection";
+export { SupportersSection } from "./SupportersSection";
 export { FutureSection } from "./FutureSection";
 export { CTASection } from "./CTASection";

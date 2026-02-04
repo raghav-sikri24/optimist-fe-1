@@ -574,7 +574,7 @@ function ContactForm({ onSuccess }: ContactFormProps) {
               type="text"
               value={formData.serialNumber}
               onChange={(e) => updateField("serialNumber", e.target.value)}
-              placeholder="Enter serial number from product label"
+              placeholder="Enter serial number"
               disabled={isSubmitting}
               className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
@@ -617,7 +617,7 @@ function ContactForm({ onSuccess }: ContactFormProps) {
                   : "border-gray-300 focus:ring-blue-100 focus:border-blue-400"
               } disabled:opacity-60 disabled:cursor-not-allowed`}
             />
-            <div className="absolute bottom-3 right-3">
+            <div className="absolute bottom-[14px] right-2">
               <FileUpload
                 file={formData.attachedFile}
                 onFileChange={(file) => updateField("attachedFile", file)}

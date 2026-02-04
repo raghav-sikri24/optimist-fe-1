@@ -1,10 +1,38 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { ASSETS } from "@/lib/assets";
+
+// Arrow Icon Component for scroll navigation
+function ScrollArrowIcon({
+  direction = "right",
+  size = 20,
+}: {
+  direction?: "left" | "right";
+  size?: number;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={direction === "left" ? "rotate-180" : ""}
+    >
+      <path
+        d="M5 12H19M19 12L12 5M19 12L12 19"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 // =============================================================================
 // Timeline Section - "Engineering a new standard."
@@ -217,6 +245,35 @@ export function TimelineSection() {
   const cardsRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Update scroll state to track if we can scroll left/right
+  const updateScrollState = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  }, []);
+
+  // Smooth scroll function
+  const scroll = useCallback((direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollTo({
+        left:
+          scrollContainerRef.current.scrollLeft +
+          (direction === "left" ? -scrollAmount : scrollAmount),
+        behavior: "smooth",
+      });
+      // Update scroll state after animation
+      setTimeout(updateScrollState, 350);
+    }
+  }, [updateScrollState]);
+
   useGSAP(
     () => {
       const tl = gsap.timeline({
@@ -287,24 +344,68 @@ export function TimelineSection() {
           <span className="text-[#3478F6]">new standard.</span>
         </h2>
 
-        {/* Horizontal Scroll Container */}
+        {/* Horizontal Scroll Container with hover arrows */}
         <div
-          ref={scrollContainerRef}
-          className="overflow-x-auto scrollbar-hide pb-4"
+          className="relative group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <div
-            ref={cardsRef}
-            className="flex gap-4 md:gap-6 lg:gap-9 px-4 md:px-6 lg:px-12 w-max"
+          {/* Left Scroll Arrow */}
+          <button
+            onClick={() => scroll("left")}
+            disabled={!canScrollLeft}
+            className={`absolute left-3 md:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-20 
+              w-[48px] h-[48px] md:w-[54px] md:h-[54px] lg:w-[60px] lg:h-[60px] 
+              rounded-full bg-white border border-black/[0.12]
+              flex items-center justify-center 
+              transition-all duration-300 ease-out
+              ${isHovered && canScrollLeft ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-3 pointer-events-none"}
+              ${canScrollLeft ? "text-gray-700 hover:text-[#3478F6] hover:border-[#3478F6]/30 hover:shadow-[0_4px_20px_rgba(52,120,246,0.15)] cursor-pointer" : "text-gray-300 cursor-not-allowed"}
+            `}
+            style={{ boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.08)" }}
+            aria-label="Scroll left"
           >
-            {timelineData.map((item) => (
-              <TimelineCard
-                key={item.id}
-                label={item.label}
-                year={item.year}
-                description={item.description}
-                image={item.image}
-              />
-            ))}
+            <ScrollArrowIcon direction="left" size={22} />
+          </button>
+
+          {/* Right Scroll Arrow */}
+          <button
+            onClick={() => scroll("right")}
+            disabled={!canScrollRight}
+            className={`absolute right-3 md:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-20 
+              w-[48px] h-[48px] md:w-[54px] md:h-[54px] lg:w-[60px] lg:h-[60px] 
+              rounded-full bg-white border border-black/[0.12]
+              flex items-center justify-center 
+              transition-all duration-300 ease-out
+              ${isHovered && canScrollRight ? "opacity-100 translate-x-0" : "opacity-0 translate-x-3 pointer-events-none"}
+              ${canScrollRight ? "text-gray-700 hover:text-[#3478F6] hover:border-[#3478F6]/30 hover:shadow-[0_4px_20px_rgba(52,120,246,0.15)] cursor-pointer" : "text-gray-300 cursor-not-allowed"}
+            `}
+            style={{ boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.08)" }}
+            aria-label="Scroll right"
+          >
+            <ScrollArrowIcon direction="right" size={22} />
+          </button>
+
+          {/* Scroll Container */}
+          <div
+            ref={scrollContainerRef}
+            onScroll={updateScrollState}
+            className="overflow-x-auto scrollbar-hide pb-4"
+          >
+            <div
+              ref={cardsRef}
+              className="flex gap-4 md:gap-6 lg:gap-9 px-4 md:px-6 lg:px-12 w-max"
+            >
+              {timelineData.map((item) => (
+                <TimelineCard
+                  key={item.id}
+                  label={item.label}
+                  year={item.year}
+                  description={item.description}
+                  image={item.image}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
