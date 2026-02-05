@@ -129,7 +129,7 @@ function TimelineCard({
   image: string;
 }) {
   return (
-    <div className="relative flex-shrink-0 w-[290px] md:w-[600px] lg:w-[780px] h-[559px] md:h-[480px] lg:h-[516px] rounded-[20px] bg-[#F5F5F5] border border-[#E8E8E8] overflow-hidden">
+    <div className="relative flex-shrink-0 w-[290px] md:w-[600px] lg:w-[780px] h-[449px] md:h-[480px] lg:h-[516px] rounded-[20px] bg-[#F5F5F5] border border-[#E8E8E8] overflow-hidden">
       {/* Decorative Shape - positioned in upper right on mobile, lower-left on desktop */}
       <div className="absolute right-[-40px] top-[40px] md:left-[-30px] md:right-auto md:top-auto md:bottom-[-40px] lg:left-[-40px] lg:bottom-[-60px] pointer-events-none">
         <div className="w-[200px] h-[280px] md:w-[320px] md:h-[400px] lg:w-[400px] lg:h-[500px] opacity-50">
@@ -195,7 +195,7 @@ function TimelineCard({
         </p>
 
         {/* Image - at bottom */}
-        <div className="relative w-full h-[260px] rounded-[16px] overflow-hidden mt-auto">
+        <div className="relative w-full h-[150px] rounded-[16px] overflow-hidden mt-auto">
           <Image
             src={image}
             alt={`Timeline ${year}`}

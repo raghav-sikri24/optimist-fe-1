@@ -27,16 +27,15 @@ const isIOSDevice = () => {
 
 export function SmoothScroll({ children }: SmoothScrollProps) {
   const lenisRef = useRef<Lenis | null>(null);
-  // Initialize isMobile synchronously to prevent Lenis from ever initializing on mobile
-  const [isMobile, setIsMobile] = useState(() => 
-    typeof window !== "undefined" ? isMobileDevice() : false
-  );
-  const [isIOS, setIsIOS] = useState(() =>
-    typeof window !== "undefined" ? isIOSDevice() : false
-  );
+  // Initialize false to match SSR output and avoid hydration mismatch.
+  const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   // Update on resize (for orientation changes)
   useEffect(() => {
+    setIsMobile(isMobileDevice());
+    setIsIOS(isIOSDevice());
+
     const handleResize = () => {
       setIsMobile(isMobileDevice());
       setIsIOS(isIOSDevice());
