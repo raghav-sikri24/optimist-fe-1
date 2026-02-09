@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Paperclip, X, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { submitContactForm } from "@/lib/shopify";
+import { ASSETS } from "@/lib/assets";
 
 // =============================================================================
 // Types & Constants
@@ -814,7 +815,7 @@ export default function ContactPage() {
                   {/* Image */}
                   <div className="absolute bottom-0 left-0 right-0">
                     <Image
-                      src="/contact-us/sleeping-woman.png"
+                      src={ASSETS.sleepingWoman}
                       alt="Happy customer"
                       width={432}
                       height={300}

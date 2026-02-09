@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Image from "next/image";
+import { ASSETS } from "@/lib/assets";
 
 // Benefits data with card-specific styling
 const benefits = [
@@ -13,9 +14,9 @@ const benefits = [
     headline: "India's Most\nEnergy-Efficient AC",
     description: "Lowest electricity consumption every single day.",
     variant: "light" as const,
-    mobileAsset: "/Benf1Ass1.png",
-    desktopAsset1: "/Benf1Ass1.png",
-    desktopAsset2: "/Benf1Ass2.png",
+    mobileAsset: ASSETS.benf1Ass1,
+    desktopAsset1: ASSETS.benf1Ass1,
+    desktopAsset2: ASSETS.benf1Ass2,
   },
   {
     id: 2,
@@ -23,8 +24,8 @@ const benefits = [
     headline: "Tested to cool\nat 50°C",
     description: "No performance drop when others derate.",
     variant: "blue" as const,
-    mobileAsset: "/Benf2Ass1.png",
-    desktopAsset1: "/Benf2Ass1.png",
+    mobileAsset: ASSETS.benf2Ass1,
+    desktopAsset1: ASSETS.benf2Ass1,
   },
   {
     id: 3,
@@ -32,9 +33,9 @@ const benefits = [
     headline: "Live Gas Level\nIndicator with alerts",
     description: "0 Surprises. 100% Control",
     variant: "light" as const,
-    mobileAsset: "/Benf3Ass2.png",
-    desktopAsset1: "/Benf3Ass2.png",
-    desktopAsset2: "/Benf3Ass1.png",
+    mobileAsset: ASSETS.benf3Ass2,
+    desktopAsset1: ASSETS.benf3Ass2,
+    desktopAsset2: ASSETS.benf3Ass1,
   },
 ];
 

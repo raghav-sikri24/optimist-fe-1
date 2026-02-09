@@ -25,7 +25,7 @@ function HeroACImage({ isMobile }: { isMobile: boolean }) {
   return (
     <div className="relative flex items-end justify-center w-full">
       <motion.img
-        src={isMobile ? "/ACHeroMobile.png" : "/ACHeroDesktop.png"}
+        src={isMobile ? ASSETS.acHeroMobile : ASSETS.acHeroDesktop}
         alt="Optimist AC"
         className="object-contain"
         style={{
@@ -227,7 +227,7 @@ export function HeroSection() {
           <div ref={gradientRef} className="absolute inset-0 overflow-hidden">
             {/* Mobile background image */}
             <img
-              src="/Heromobilebg.png"
+              src={ASSETS.heroMobileBg}
               alt=""
               className="absolute inset-0 w-full h-full pointer-events-none"
               style={{
@@ -360,7 +360,7 @@ export function HeroSection() {
           >
             {/* Desktop background image */}
             <img
-              src="/Herodesktopbg.png"
+              src={ASSETS.heroDesktopBg}
               alt=""
               className="absolute inset-0 w-full h-full pointer-events-none"
               style={{
@@ -371,7 +371,7 @@ export function HeroSection() {
             {/* Leaves video overlay - subtle effect */}
             <video
               ref={leafVideoRef1}
-              src="/small-vecteezy_summer-concept-the-motion-of-leaves-sunlight-natural-shadow_29616214_small.mp4"
+              src="/animations/small-vecteezy_summer-concept-the-motion-of-leaves-sunlight-natural-shadow_29616214_small.mp4"
               autoPlay
               loop
               muted
