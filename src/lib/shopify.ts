@@ -1359,16 +1359,11 @@ function generateRandomPassword(): string {
   return password + "Aa1!";
 }
 
-export async function subscribeToWaitlist(phone: string): Promise<boolean> {
-  // Generate a random password - user won't need it for waitlist
-  // They can use "Forgot Password" if they ever want to create a real account
+export async function subscribeToWaitlist(phone: string, name?: string): Promise<boolean> {
   const randomPassword = generateRandomPassword();
 
-  // Clean phone number and format to E.164 format for Shopify
   let cleanPhone = phone.replace(/\D/g, "");
 
-  // If phone starts with 91 and is 12 digits, it already has country code
-  // If it's 10 digits, add +91 prefix for India
   if (cleanPhone.length === 10) {
     cleanPhone = `+91${cleanPhone}`;
   } else if (cleanPhone.length === 12 && cleanPhone.startsWith("91")) {
@@ -1377,9 +1372,12 @@ export async function subscribeToWaitlist(phone: string): Promise<boolean> {
     cleanPhone = `+${cleanPhone}`;
   }
 
-  // Shopify requires email - generate a placeholder email from phone number
   const phoneDigits = phone.replace(/\D/g, "");
   const placeholderEmail = `${phoneDigits}@waitlist.optimist.in`;
+
+  const nameParts = name?.trim().split(/\s+/) || [];
+  const firstName = nameParts[0] || undefined;
+  const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : undefined;
 
   const query = `
     mutation CustomerCreate($input: CustomerCreateInput!) {
@@ -1387,6 +1385,8 @@ export async function subscribeToWaitlist(phone: string): Promise<boolean> {
         customer {
           id
           phone
+          firstName
+          lastName
         }
         customerUserErrors {
           field
@@ -1399,7 +1399,7 @@ export async function subscribeToWaitlist(phone: string): Promise<boolean> {
 
   const data = await shopifyFetch<{
     customerCreate: {
-      customer: { id: string; phone: string } | null;
+      customer: { id: string; phone: string; firstName: string | null; lastName: string | null } | null;
       customerUserErrors: { field: string[]; message: string; code: string }[];
     };
   }>({
@@ -1409,6 +1409,8 @@ export async function subscribeToWaitlist(phone: string): Promise<boolean> {
         email: placeholderEmail,
         phone: cleanPhone,
         password: randomPassword,
+        firstName,
+        lastName,
         acceptsMarketing: true,
       },
     },

@@ -24,12 +24,12 @@ function isValidPhone(phone: string): boolean {
 function PhoneFormView() {
   const { submitPhone, isLoading, error, closeModal } = useWaitlist();
   const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // Focus input on mount
   useEffect(() => {
-    inputRef.current?.focus();
+    nameInputRef.current?.focus();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +47,7 @@ function PhoneFormView() {
       return;
     }
 
-    await submitPhone(phone);
+    await submitPhone(phone, name || undefined);
   };
 
   const displayError = validationError || error;
@@ -90,10 +90,22 @@ function PhoneFormView() {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        {/* Phone Input */}
         <div className="relative mb-4">
           <input
-            ref={inputRef}
+            ref={nameInputRef}
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="enter your name"
+            disabled={isLoading}
+            className={`w-full px-6 py-4 bg-[#E8E8E8] rounded-full text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all text-base md:text-lg ${
+              isLoading ? "opacity-60 cursor-not-allowed" : ""
+            }`}
+          />
+        </div>
+
+        <div className="relative mb-4">
+          <input
             type="tel"
             value={phone}
             onChange={(e) => {

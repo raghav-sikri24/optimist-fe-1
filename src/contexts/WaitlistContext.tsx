@@ -22,7 +22,7 @@ interface WaitlistContextType {
   error: string | null;
   openModal: () => void;
   closeModal: () => void;
-  submitPhone: (phone: string) => Promise<boolean>;
+  submitPhone: (phone: string, name?: string) => Promise<boolean>;
   showSuccess: () => void;
   resetModal: () => void;
 }
@@ -74,12 +74,12 @@ export function WaitlistProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const submitPhone = useCallback(async (phone: string): Promise<boolean> => {
+  const submitPhone = useCallback(async (phone: string, name?: string): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
 
     try {
-      await subscribeToWaitlist(phone);
+      await subscribeToWaitlist(phone, name);
       setIsLoading(false);
       setModalView("success");
       return true;
