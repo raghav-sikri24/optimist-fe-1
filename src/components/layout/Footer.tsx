@@ -96,6 +96,7 @@ const policyLinks = [
   { href: "/privacy-policy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Service" },
   { href: "/return-policy", label: "Return Policy" },
+  { href: "/warranty", label: "Warranty" },
 ];
 
 const socialLinks = [
