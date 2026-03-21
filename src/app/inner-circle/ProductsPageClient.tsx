@@ -138,7 +138,7 @@ const heroInfoItemVariants = {
 // =============================================================================
 
 const MAX_DISPLAY_IMAGES = 20;
-const QUANTITY_OPTIONS = [1, 2, 3, 4, 5] as const;
+const QUANTITY_OPTIONS = [1] as const;
 
 // Fallback variant for Inner Circle Club page
 const FALLBACK_VARIANTS: DisplayVariant[] = [
@@ -220,10 +220,12 @@ export default function ProductsPageClient({
   // TEMPORARY: When the site goes live, all products will be listed together
   const variants = useMemo((): DisplayVariant[] => {
     if (combinedProduct && combinedProduct.allVariants.length > 0) {
-      const innerCircleVariants = combinedProduct.allVariants.filter(
-        (v) => v.productTitle.toLowerCase().includes("inner circle"),
+      const innerCircleVariants = combinedProduct.allVariants.filter((v) =>
+        v.productTitle.toLowerCase().includes("inner circle"),
       );
-      return innerCircleVariants.length > 0 ? innerCircleVariants : FALLBACK_VARIANTS;
+      return innerCircleVariants.length > 0
+        ? innerCircleVariants
+        : FALLBACK_VARIANTS;
     }
     return FALLBACK_VARIANTS;
   }, [combinedProduct]);
