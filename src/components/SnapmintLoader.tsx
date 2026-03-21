@@ -14,8 +14,7 @@ const SNAPMINT_SCRIPT_ID = "snapmint-script";
 export default function SnapmintLoader(): null {
   const pathname = usePathname();
 
-  const isProductsRoute =
-    pathname.startsWith("/products") && !pathname.startsWith("/inner-circle");
+  const isProductsRoute = true;
 
   useEffect(() => {
     if (isProductsRoute) return;
