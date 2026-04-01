@@ -29,7 +29,7 @@ const TC_SUMMARY = [
     text: "We're lending you the unit to test and live with. Ownership remains with Optimist during the programme, but we're exploring transition options (like ownership or upgrades) once we launch commercially.",
   },
   {
-    bold: "₹25,000 covers your full service experience",
+    bold: "₹28,000 covers your full service experience",
     text: "— installation, maintenance, support, and ongoing servicing for up to 5 years. You're not paying for the unit itself.",
   },
   {
@@ -385,8 +385,6 @@ export default function InnerCircleClubClient() {
 
         {/* T&C Note */}
         <div className="mt-6 sm:mt-8 text-[12.5px] sm:text-[13.5px] text-[#3d4259] leading-[1.6]">
-          By clicking &apos;I Agree&apos;, you confirm you have read and
-          understood the above.{" "}
           <button
             type="button"
             onClick={() => setShowTcModal(true)}
