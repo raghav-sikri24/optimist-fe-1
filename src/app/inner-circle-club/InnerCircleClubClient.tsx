@@ -11,7 +11,7 @@ import { removeFromCart as removeFromCartAPI } from "@/lib/shopify";
 // =============================================================================
 
 const PACKAGE_ITEMS = [
-  "Optimist AC unit, fully installed",
+  "Optimist AC test unit, fully installed",
   "All maintenance and servicing",
   "Real-time monitoring and diagnostics",
   "Priority support for the duration of the programme",
@@ -310,8 +310,8 @@ export default function InnerCircleClubClient() {
           </p>
           <p className="mb-3">
             Think of it as being part of the founding group. You get a fully
-            installed, working Optimist AC in your home. In return, you help us
-            make it better by sharing your real-world experience.
+            installed, working Optimist AC test unit in your home. In return,
+            you help us make it better by sharing your real-world experience.
           </p>
         </InfoSection>
 
