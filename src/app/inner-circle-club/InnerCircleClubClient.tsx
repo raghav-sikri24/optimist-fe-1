@@ -206,7 +206,6 @@ function InfoSection({
 // =============================================================================
 
 export default function InnerCircleClubClient() {
-  const [tcRead, setTcRead] = useState(false);
   const [tcAccepted, setTcAccepted] = useState(false);
   const [showTcModal, setShowTcModal] = useState(false);
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
@@ -276,14 +275,14 @@ export default function InnerCircleClubClient() {
         <img
           src="/images/inner-circle-banner.jpg"
           alt="The Optimist Inner Circle — A first-of-its-kind testing programme for Optimist air-conditioning systems, built for early believers. Learn more."
-          className="w-full h-auto block"
+          className="w-full block h-auto md:max-w-[75%] lg:max-w-[80%] md:mx-auto"
         />
       </button>
 
       {/* Content Sections */}
       <div
         ref={sectionsRef}
-        className="max-w-[760px] mx-auto px-4 sm:px-6 md:px-8 pt-10 sm:pt-14 md:pt-20 pb-10 sm:pb-14 md:pb-20"
+        className="max-w-[760px] mx-auto px-4 sm:px-6 md:px-8 pt-10 sm:pt-14 md:pt-10 pb-10 sm:pb-14 md:pb-20"
       >
         {/* <div className="mb-8 sm:mb-10 md:mb-14">
           <div className="text-[10px] tracking-[0.26em] uppercase text-optimist-blue-primary font-semibold mb-3">
@@ -370,7 +369,7 @@ export default function InnerCircleClubClient() {
             </div>
           </div>
 
-          <div className="bg-[#f8f8f5] rounded-xl px-5 sm:px-7 md:px-8 py-5 sm:py-6">
+          <div className="bg-[#f8f9fd] border border-[rgba(26,79,219,0.12)] rounded-xl px-5 sm:px-7 md:px-8 py-5 sm:py-6">
             <ul className="list-disc pl-4 space-y-4 text-[13px] sm:text-[14px] text-[#3d4259] leading-[1.7]">
               {TC_SUMMARY.map((item) => (
                 <li key={item.bold}>
@@ -384,46 +383,18 @@ export default function InnerCircleClubClient() {
           </div>
         </div>
 
-        {/* T&C Checkbox */}
-        <div className="mt-6 sm:mt-8 flex items-start gap-3">
-          <div className="relative flex-shrink-0 mt-[2px]">
-            <input
-              type="checkbox"
-              checked={tcRead}
-              onChange={(e) => {
-                setTcRead(e.target.checked);
-                if (!e.target.checked) setTcAccepted(false);
-              }}
-              className="sr-only peer"
-              id="tc-read-checkbox"
-            />
-            <label
-              htmlFor="tc-read-checkbox"
-              className="w-5 h-5 rounded border-[1.5px] border-[rgba(37,99,235,0.3)] peer-checked:bg-optimist-blue-primary peer-checked:border-optimist-blue-primary transition-colors flex items-center justify-center cursor-pointer"
-            >
-              {tcRead && (
-                <Check className="w-3 h-3 text-white stroke-[3]" />
-              )}
-            </label>
-          </div>
-          <label
-            htmlFor="tc-read-checkbox"
-            className="text-[12.5px] sm:text-[13.5px] text-[#3d4259] leading-[1.6] cursor-pointer select-none"
+        {/* T&C Note */}
+        <div className="mt-6 sm:mt-8 text-[12.5px] sm:text-[13.5px] text-[#3d4259] leading-[1.6]">
+          By clicking &apos;I Agree&apos;, you confirm you have read and
+          understood the above.{" "}
+          <button
+            type="button"
+            onClick={() => setShowTcModal(true)}
+            className="text-optimist-blue-primary font-semibold underline underline-offset-2 bg-transparent border-none cursor-pointer p-0 text-inherit"
           >
-            By clicking &apos;I Agree&apos;, you confirm you have read and
-            understood the above.{" "}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowTcModal(true);
-              }}
-              className="text-optimist-blue-primary font-semibold underline underline-offset-2 bg-transparent border-none cursor-pointer p-0 text-inherit"
-            >
-              Click here
-            </button>{" "}
-            for the complete terms and conditions.
-          </label>
+            Click here
+          </button>{" "}
+          for the complete terms and conditions.
         </div>
       </div>
 
@@ -496,12 +467,11 @@ export default function InnerCircleClubClient() {
 
       {/* Fixed Accept Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-[200] bg-white/97 backdrop-blur-2xl border-t border-[rgba(26,79,219,0.12)] px-4 sm:px-5 md:px-10 py-3 sm:py-[1.1rem] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6 shadow-[0_-4px_24px_rgba(37,99,235,0.07)]">
-        <label className={`flex items-center gap-3 select-none ${tcRead ? "cursor-pointer" : "cursor-not-allowed opacity-50"}`}>
+        <label className="flex items-center gap-3 select-none cursor-pointer">
           <div className="relative flex-shrink-0">
             <input
               type="checkbox"
               checked={tcAccepted}
-              disabled={!tcRead}
               onChange={(e) => setTcAccepted(e.target.checked)}
               className="sr-only peer"
             />
