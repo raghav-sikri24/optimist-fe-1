@@ -151,10 +151,20 @@ const TC_SECTIONS = [
 function TopBar() {
   return (
     <div className="sticky top-0 z-[100] flex items-center justify-between px-4 sm:px-5 md:px-10 py-3 sm:py-4 bg-white/92 backdrop-blur-xl border-b border-[rgba(26,79,219,0.12)]">
-      <div className="text-[13px] sm:text-[15px] font-bold text-[#0d0f1a] tracking-[0.01em]">
+      {/* <div className="text-[13px] sm:text-[15px] font-bold text-[#0d0f1a] tracking-[0.01em]">
         Optimist <span className="text-optimist-blue-primary">·</span> Inner
         Circle
-      </div>
+      </div> */}{" "}
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/icons/logo-nav-mobile.svg"
+          alt="Optimist"
+          width={95}
+          height={19}
+          className="h-[16px] xs:h-[17px] sm:h-[19px] w-auto"
+        />
+      </motion.div>
       <div className="flex items-center gap-[7px] text-[8px] sm:text-[10px] tracking-[0.15em] uppercase text-[#8890a8]">
         <span className="w-1.5 h-1.5 rounded-full bg-optimist-blue-primary flex-shrink-0" />
         <span className="hidden xs:inline">Review & Accept</span>
