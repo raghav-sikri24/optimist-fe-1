@@ -23,16 +23,16 @@ const PACKAGE_ITEMS = [
 
 const TC_SUMMARY = [
   {
-    text: "The ₹28,000 OIC membership fees covers your full service experience — delivery, installation (other than site specific incidentals), service and support for 5 years.",
+    text: "The ₹28,000 OIC membership fees covers your full service experience — delivery, installation (other than site specific incidentals), service and support for up to 8 years.",
   },
   {
-    text: "You can opt out of the program no-questions-asked within 30 days, and get a full refund of your membership fees.",
+    text: "You can opt out of the program no-questions-asked within 30 days, and get a full refund of your membership fee, subject to return of the unit in reasonable condition.",
   },
   {
     text: "The unit is deployed as part of the programme and is not being sold.",
   },
   {
-    text: "The test AC is yours to use without interruption. Just don't relocate or modify without telling us!",
+    text: "The test AC is intended to remain installed and available for use during the program, subject to servicing, safety, and operational requirements.",
   },
   {
     text: "We may need minimal access to the unit for servicing, upgrades, or safety.",
@@ -71,7 +71,7 @@ const TC_SECTIONS = [
   {
     num: 6,
     title: "Right to Use (Limited Licence)",
-    content: `<ul><li>Optimist grants the Participant a limited, non-exclusive, non-transferable right to use the Unit for the duration of the Programme, subject to these Terms.</li><li>Such right is provided solely for participation in the Programme and is intended to enable long-term, uninterrupted usage of the Unit during the Programme period, subject to compliance with these Terms and the limited circumstances set out herein.</li><li>The Participant shall not transfer, sub-license, commercially exploit, or otherwise deal with the Unit, and shall not relocate or materially modify the Unit without prior written approval from Optimist.</li></ul>`,
+    content: `<ul><li>Optimist grants the Participant a limited, non-exclusive, non-transferable right to use the Unit for the duration of the Programme, subject to these Terms.</li><li>Such right is provided solely for participation in the Programme and is intended to enable continued use of the Unit during the Programme period, subject to these Terms.</li><li>The Participant shall not transfer, sub-license, commercially exploit, or otherwise deal with the Unit, and shall not relocate or materially modify the Unit without prior written approval from Optimist.</li></ul>`,
   },
   {
     num: 7,
@@ -91,7 +91,7 @@ const TC_SECTIONS = [
   {
     num: 10,
     title: "Programme Duration and Use",
-    content: `<ul><li>The Programme is intended to provide support for a period of up to five (5) years, subject to these Terms and applicable operational or regulatory considerations.</li><li>Continued use of the Unit is subject to compliance with these Terms and the limited circumstances set out herein.</li></ul>`,
+    content: `<ul><li>The Programme is intended to provide support for a period of up to eight (8) years, subject to these Terms and applicable operational or regulatory considerations.</li><li>Continued use of the Unit is subject to compliance with these Terms and the limited circumstances set out herein.</li></ul>`,
   },
   {
     num: 11,
@@ -568,7 +568,7 @@ export default function InnerCircleClubClient() {
         >
           <p className="mb-3">
             The Optimist Inner Circle is an invite-only program that gives a
-            select group of people early access to an Optimist test AC.
+            select group of people early access to an Optimist AC as part of a controlled deployment and evaluation program.
           </p>
           <p className="mb-3">
             Think of it as being part of the product creation journey. You get
@@ -608,8 +608,7 @@ export default function InnerCircleClubClient() {
             ))}
           </ul>
           <p className="mb-3">
-            You pay <strong className="text-[#0d0f1a]">Rs. 28,000</strong> for
-            the membership.
+            A membership fee of <strong className="text-[#0d0f1a]">₹28,000</strong> is payable towards participation in the program and associated services.
           </p>
           <p>
             You give us feedback! And if you like what you experience, spread
