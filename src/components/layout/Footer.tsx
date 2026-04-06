@@ -84,6 +84,7 @@ const navLinksCol1 = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About us" },
   { href: "/products", label: "Products" },
+  { href: "/contact-us", label: "Contact us" },
 ];
 
 const navLinksCol2 = [
