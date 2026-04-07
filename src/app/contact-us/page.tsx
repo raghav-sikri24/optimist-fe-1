@@ -827,6 +827,16 @@ export default function ContactPage() {
                       </a>
                     </p>
                   </div>
+                  <div>
+                    <p className="text-gray-500 text-sm font-medium text-gray-700 mb-1">
+                      Office Address
+                    </p>
+                    <p className="text-gray-500">
+                      Plot No. 82, First Floor, Udyog Vihar, Phase-4,
+                      <br />
+                      Gurugram, Haryana - 122015
+                    </p>
+                  </div>
                 </div>
               </div>
 
