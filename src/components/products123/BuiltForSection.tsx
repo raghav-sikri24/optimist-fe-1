@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import ASSETS from "@/lib/assets";
-import { useWaitlist } from "@/contexts/WaitlistContext";
+import { useRouter } from "next/navigation";
 import { FAQSection } from "./FAQSection";
 
 // =============================================================================
@@ -18,7 +18,7 @@ export function BuiltForSection() {
 
   const [videoEnded, setVideoEnded] = useState(false);
   const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
-  const { openModal } = useWaitlist();
+  const router = useRouter();
 
   // Use Framer Motion's useInView to detect when section is visible
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
@@ -301,12 +301,11 @@ export function BuiltForSection() {
             </p>
           </div>
 
-          {/* Join the Waitlist Button - hidden on mobile */}
           <button
-            onClick={openModal}
+            onClick={() => router.push("/products")}
             className="hidden md:flex btn-buy-now items-center justify-center gap-2.5 px-8 md:px-12 py-4 h-14 md:h-16 rounded-full text-[#FFFCDC] font-semibold text-base md:text-xl whitespace-nowrap"
           >
-            <span>Join the Waitlist</span>
+            <span>Buy Now</span>
             <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </motion.div>

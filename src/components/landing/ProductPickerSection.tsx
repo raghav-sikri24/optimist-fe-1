@@ -15,7 +15,7 @@ import { Share2 } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
-import { useWaitlist } from "@/contexts/WaitlistContext";
+import { useRouter } from "next/navigation";
 import { useProducts } from "@/contexts/ProductsContext";
 import { useToast } from "@/components/ui/Toast";
 import { ASSETS } from "@/lib/assets";
@@ -104,9 +104,9 @@ function ACModelCanvas() {
 }
 
 const capacityTabs = [
-  { id: "1", label: "1 TON", tonnage: "1" },
+  // { id: "1", label: "1 TON", tonnage: "1" },
   { id: "1.5", label: "1.5 TON", tonnage: "1.5" },
-  { id: "2", label: "2 TON", tonnage: "2" },
+  // { id: "2", label: "2 TON", tonnage: "2" },
 ];
 
 // Fallback prices when Shopify data is unavailable (matching Shopify prices)
@@ -211,7 +211,7 @@ export function ProductPickerSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const { openModal } = useWaitlist();
+  const router = useRouter();
   const { showToast } = useToast();
   const { getPriceByTonnage, isLoading: isPriceLoading } = useProducts();
 
@@ -445,10 +445,10 @@ export function ProductPickerSection() {
                     </span>
                   </div>
                   <button
-                    onClick={openModal}
+                    onClick={() => router.push("/products")}
                     className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base"
                   >
-                    Join the Waitlist
+                    Buy Now
                   </button>
                 </div>
               </div>

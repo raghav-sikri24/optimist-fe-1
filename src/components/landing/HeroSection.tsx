@@ -5,8 +5,8 @@ import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useWaitlist } from "@/contexts/WaitlistContext";
 import { ASSETS } from "@/lib/assets";
+import { useRouter } from "next/navigation";
 import type { HeroBadge } from "@/lib/shopify";
 
 // Smooth scroll to element using GSAP
@@ -69,7 +69,7 @@ export function HeroSection({
   const parallaxContainerRef = useRef<HTMLDivElement>(null);
   const parallaxContentRef = useRef<HTMLDivElement>(null);
   const leafVideoRef1 = useRef<HTMLVideoElement>(null);
-  const { openModal } = useWaitlist();
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -360,10 +360,10 @@ export function HeroSection({
               style={{ zIndex: 31 }}
             >
               <button
-                onClick={openModal}
+                onClick={() => router.push("/products")}
                 className="btn-buy-now-hero hero-btn-mobile min-w-[200px] text-[#1265FF] flex items-center justify-center"
               >
-                Join the Waitlist
+                Buy Now
               </button>
             </div>
           </div>
@@ -510,10 +510,10 @@ export function HeroSection({
                     Why Optimist ?
                   </button> */}
                   <button
-                    onClick={openModal}
+                    onClick={() => router.push("/products")}
                     className="btn-buy-now-hero hero-btn-desktop text-[#1265FF] flex items-center justify-center"
                   >
-                    Join the Waitlist
+                    Buy Now
                   </button>
                 </div>
               </div>

@@ -371,176 +371,173 @@ export function Navigation() {
               </Link>
             </motion.div>
 
-            {/* Right Actions - Desktop (hidden on landing page) */}
-            {!isLandingPage && false && (
-              <div className="hidden md:flex items-center gap-3 lg:gap-4 xl:gap-6 justify-end md:w-[240px] lg:w-[280px] xl:w-[325px]">
-                {/* Cart */}
-                <motion.button
-                  custom={0}
+            <div className="hidden md:flex items-center gap-3 lg:gap-4 xl:gap-6 justify-end md:w-[240px] lg:w-[280px] xl:w-[325px]">
+              {/* Cart */}
+              <motion.button
+                custom={0}
+                initial="hidden"
+                animate="visible"
+                variants={actionVariants}
+                onClick={toggleCart}
+                className="flex items-center gap-1.5 lg:gap-2 text-black/60 hover:text-black transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="relative w-5 h-5 lg:w-6 lg:h-6">
+                  <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
+                  <AnimatePresence>
+                    {totalQuantity > 0 && (
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 25,
+                        }}
+                        className="absolute -top-2 -right-2 w-3.5 h-3.5 lg:w-4 lg:h-4 flex items-center justify-center text-[8px] lg:text-[9px] font-bold bg-optimist-blue-primary text-white rounded-full"
+                      >
+                        {totalQuantity > 99 ? "99+" : totalQuantity}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </div>
+                <span className="text-sm lg:text-base leading-none font-normal">
+                  Cart
+                </span>
+              </motion.button>
+
+              {/* Account / Login Button */}
+              {isAuthenticated ? (
+                <motion.div
+                  custom={1}
                   initial="hidden"
                   animate="visible"
                   variants={actionVariants}
-                  onClick={toggleCart}
-                  className="flex items-center gap-1.5 lg:gap-2 text-black/60 hover:text-black transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="relative"
                 >
-                  <div className="relative w-5 h-5 lg:w-6 lg:h-6">
-                    <ShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
-                    <AnimatePresence>
-                      {totalQuantity > 0 && (
-                        <motion.span
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          exit={{ scale: 0 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 25,
-                          }}
-                          className="absolute -top-2 -right-2 w-3.5 h-3.5 lg:w-4 lg:h-4 flex items-center justify-center text-[8px] lg:text-[9px] font-bold bg-optimist-blue-primary text-white rounded-full"
-                        >
-                          {totalQuantity > 99 ? "99+" : totalQuantity}
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  <span className="text-sm lg:text-base leading-none font-normal">
-                    Cart
-                  </span>
-                </motion.button>
+                  <motion.button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 px-3 lg:px-4 xl:px-6 py-2 rounded-[40px] border border-black/[0.15] text-black/60 hover:text-black hover:bg-black/5 transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <User className="w-5 h-5 lg:w-6 lg:h-6" />
+                    <span className="text-sm lg:text-base leading-none font-normal truncate max-w-[80px] lg:max-w-[100px]">
+                      {customer?.firstName || "Account"}
+                    </span>
+                  </motion.button>
 
-                {/* Account / Login Button */}
-                {isAuthenticated ? (
+                  <AnimatePresence>
+                    {isUserMenuOpen && (
+                      <>
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 z-40"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        />
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          exit="hidden"
+                          variants={dropdownVariants}
+                          className="absolute right-0 top-full mt-2 w-48 lg:w-52 xl:w-56 bg-white border border-black/[0.12] rounded-lg lg:rounded-xl shadow-lg z-50"
+                        >
+                          <div className="px-3 lg:px-4 py-2.5 lg:py-3 border-b border-black/[0.12]">
+                            <p className="text-xs lg:text-sm font-medium text-black truncate">
+                              {customer?.firstName} {customer?.lastName}
+                            </p>
+                            <p className="text-[10px] lg:text-xs text-black/60 truncate">
+                              {customer?.email}
+                            </p>
+                          </div>
+                          <div className="py-1.5 lg:py-2">
+                            <motion.div
+                              whileHover={{ x: 4 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <Link
+                                href="/account"
+                                onClick={() => setIsUserMenuOpen(false)}
+                                className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm text-black/60 hover:text-black hover:bg-black/5 transition-colors"
+                              >
+                                <User className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                                My Account
+                              </Link>
+                            </motion.div>
+                            <motion.div
+                              whileHover={{ x: 4 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <Link
+                                href="/account/orders"
+                                onClick={() => setIsUserMenuOpen(false)}
+                                className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm text-black/60 hover:text-black hover:bg-black/5 transition-colors"
+                              >
+                                <Package className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                                Order History
+                              </Link>
+                            </motion.div>
+                            <motion.div
+                              whileHover={{ x: 4 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <Link
+                                href="/account/addresses"
+                                onClick={() => setIsUserMenuOpen(false)}
+                                className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm text-black/60 hover:text-black hover:bg-black/5 transition-colors"
+                              >
+                                <MapPin className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                                Addresses
+                              </Link>
+                            </motion.div>
+                          </div>
+                          <div className="border-t border-black/[0.12] py-1.5 lg:py-2">
+                            <motion.button
+                              onClick={handleLogout}
+                              className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 w-full text-xs lg:text-sm text-red-500 hover:bg-red-50 transition-colors"
+                              whileHover={{ x: 4 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <LogOut className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                              Sign Out
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ) : (
+                !isAuthLoading && (
                   <motion.div
                     custom={1}
                     initial="hidden"
                     animate="visible"
                     variants={actionVariants}
-                    className="relative"
                   >
-                    <motion.button
-                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                      className="flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 px-3 lg:px-4 xl:px-6 py-2 lg:py-2.5 xl:py-3 rounded-[40px] border border-black/[0.15] text-black/60 hover:text-black hover:bg-black/5 transition-all"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                    <Link
+                      href="/login"
+                      className="flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 px-3 lg:px-4 xl:px-6 py-2 rounded-[40px] border border-black/[0.15] text-black/60 hover:text-black hover:bg-black/5 transition-all"
                     >
-                      <User className="w-5 h-5 lg:w-6 lg:h-6" />
-                      <span className="text-sm lg:text-base leading-none font-normal truncate max-w-[80px] lg:max-w-[100px]">
-                        {customer?.firstName || "Account"}
-                      </span>
-                    </motion.button>
-
-                    <AnimatePresence>
-                      {isUserMenuOpen && (
-                        <>
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-40"
-                            onClick={() => setIsUserMenuOpen(false)}
-                          />
-                          <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            exit="hidden"
-                            variants={dropdownVariants}
-                            className="absolute right-0 top-full mt-2 w-48 lg:w-52 xl:w-56 bg-white border border-black/[0.12] rounded-lg lg:rounded-xl shadow-lg z-50"
-                          >
-                            <div className="px-3 lg:px-4 py-2.5 lg:py-3 border-b border-black/[0.12]">
-                              <p className="text-xs lg:text-sm font-medium text-black truncate">
-                                {customer?.firstName} {customer?.lastName}
-                              </p>
-                              <p className="text-[10px] lg:text-xs text-black/60 truncate">
-                                {customer?.email}
-                              </p>
-                            </div>
-                            <div className="py-1.5 lg:py-2">
-                              <motion.div
-                                whileHover={{ x: 4 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <Link
-                                  href="/account"
-                                  onClick={() => setIsUserMenuOpen(false)}
-                                  className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm text-black/60 hover:text-black hover:bg-black/5 transition-colors"
-                                >
-                                  <User className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                                  My Account
-                                </Link>
-                              </motion.div>
-                              <motion.div
-                                whileHover={{ x: 4 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <Link
-                                  href="/account/orders"
-                                  onClick={() => setIsUserMenuOpen(false)}
-                                  className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm text-black/60 hover:text-black hover:bg-black/5 transition-colors"
-                                >
-                                  <Package className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                                  Order History
-                                </Link>
-                              </motion.div>
-                              <motion.div
-                                whileHover={{ x: 4 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <Link
-                                  href="/account/addresses"
-                                  onClick={() => setIsUserMenuOpen(false)}
-                                  className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 text-xs lg:text-sm text-black/60 hover:text-black hover:bg-black/5 transition-colors"
-                                >
-                                  <MapPin className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                                  Addresses
-                                </Link>
-                              </motion.div>
-                            </div>
-                            <div className="border-t border-black/[0.12] py-1.5 lg:py-2">
-                              <motion.button
-                                onClick={handleLogout}
-                                className="flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-1.5 lg:py-2 w-full text-xs lg:text-sm text-red-500 hover:bg-red-50 transition-colors"
-                                whileHover={{ x: 4 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <LogOut className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                                Sign Out
-                              </motion.button>
-                            </div>
-                          </motion.div>
-                        </>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                ) : (
-                  !isAuthLoading && (
-                    <motion.div
-                      custom={1}
-                      initial="hidden"
-                      animate="visible"
-                      variants={actionVariants}
-                    >
-                      <Link
-                        href="/login"
-                        className="flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 px-3 lg:px-4 xl:px-6 py-2 lg:py-2.5 xl:py-3 rounded-[40px] border border-black/[0.15] text-black/60 hover:text-black hover:bg-black/5 transition-all"
+                      <motion.span
+                        className="flex items-center gap-1.5 lg:gap-2 xl:gap-2.5"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
-                        <motion.span
-                          className="flex items-center gap-1.5 lg:gap-2 xl:gap-2.5"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <User className="w-5 h-5 lg:w-6 lg:h-6" />
-                          <span className="text-sm lg:text-base leading-none font-normal">
-                            Login
-                          </span>
-                        </motion.span>
-                      </Link>
-                    </motion.div>
-                  )
-                )}
-              </div>
-            )}
+                        <User className="w-5 h-5 lg:w-6 lg:h-6" />
+                        <span className="text-sm lg:text-base leading-none font-normal">
+                          Login
+                        </span>
+                      </motion.span>
+                    </Link>
+                  </motion.div>
+                )
+              )}
+            </div>
 
             {/* Mobile Menu Button (hidden on landing page) */}
 
@@ -583,8 +580,6 @@ export function Navigation() {
             </motion.button>
           </div>
 
-          {/* Mobile Navigation Menu (hidden on landing page) */}
-
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
@@ -624,7 +619,7 @@ export function Navigation() {
                     );
                   })}
 
-                  {/* <motion.button
+                  <motion.button
                     custom={navLinks.length}
                     initial="hidden"
                     animate="visible"
@@ -647,7 +642,7 @@ export function Navigation() {
                         {totalQuantity}
                       </motion.span>
                     )}
-                  </motion.button> */}
+                  </motion.button>
 
                   {isAuthenticated ? (
                     <>

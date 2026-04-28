@@ -3,14 +3,14 @@
 import { useRef, useLayoutEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { useWaitlist } from "@/contexts/WaitlistContext";
 import { ASSETS } from "@/lib/assets";
+import { useRouter } from "next/navigation";
 
 export function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
   const topCardRef = useRef<HTMLDivElement>(null);
   const bottomGridRef = useRef<HTMLDivElement>(null);
-  const { openModal } = useWaitlist();
+  const router = useRouter();
 
   // Set initial states immediately to prevent flash/lag on first scroll
   useLayoutEffect(() => {
@@ -111,10 +111,10 @@ export function CTASection() {
                 </p>
               </div>
               <button
-                onClick={openModal}
+                onClick={() => router.push("/products")}
                 className="btn-buy-now text-[#FFFCDC] hidden md:inline-flex items-center justify-center px-8 py-3 rounded-full font-semibold"
               >
-                Join the Waitlist
+                Buy Now
               </button>
             </div>
           </div>
