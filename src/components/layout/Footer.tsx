@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { useWaitlist } from "@/contexts/WaitlistContext";
 import { useLandingContent } from "@/hooks/useMetaobjectContent";
 import { ASSETS } from "@/lib/assets";
+import { useRouter } from "next/navigation";
 
 // LinkedIn icon component
 function LinkedInIcon() {
@@ -114,13 +114,6 @@ const socialLinks = [
   },
 ];
 
-// Phone validation helper
-function isValidPhone(phone: string): boolean {
-  // Indian phone: 10 digits, optionally with +91 prefix
-  const phoneRegex = /^(\+91)?[6-9]\d{9}$/;
-  return phoneRegex.test(phone.replace(/\s/g, ""));
-}
-
 // Easing
 const easeOutExpo = "easeOut" as const;
 
@@ -168,39 +161,12 @@ export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [phone, setPhone] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const { submitPhone, isLoading, openModal, showSuccess } = useWaitlist();
+  const router = useRouter();
   const { content: landingContent } = useLandingContent();
   const footerImageSrc = landingContent?.footerImageUrl ?? ASSETS.family;
 
   const isContentInView = useInView(contentRef, { once: true, amount: 0.2 });
   const isImageInView = useInView(imageRef, { once: true, amount: 0.3 });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    // Validate phone
-    if (!phone.trim()) {
-      setError("Please enter your phone number");
-      return;
-    }
-
-    if (!isValidPhone(phone)) {
-      setError("Please enter a valid phone number");
-      return;
-    }
-
-    // Call the API
-    const success = await submitPhone(phone);
-    if (success) {
-      setPhone("");
-      // Open modal and show success view
-      openModal();
-      showSuccess();
-    }
-  };
 
   return (
     <footer ref={footerRef} className="relative overflow-hidden">
@@ -288,67 +254,23 @@ export function Footer() {
             </div>
           </motion.div>
 
-          {/* Column 4 - Newsletter */}
+          {/* Column 4 - Shop Now */}
           <motion.div
             variants={itemVariants}
             className="col-span-2 md:col-span-2"
           >
             <p className="text-xs uppercase tracking-wider text-[#FFFCDC] mb-4">
-              JOIN THE WAITLIST
+              SHOP NOW
             </p>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-              <div className="flex flex-col md:flex-row gap-3">
-                <motion.input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                    setError(null);
-                  }}
-                  placeholder="enter your phone number"
-                  disabled={isLoading}
-                  className={`w-full md:flex-1 px-4 py-3 bg-optimist-dark border rounded-full text-[#FFFCDC] placeholder:text-[#FFFCDC]/50 focus:outline-none focus:border-optimist-blue-primary transition-colors ${
-                    error ? "border-red-500" : "border-optimist-border"
-                  } ${isLoading ? "opacity-60 cursor-not-allowed" : ""}`}
-                  whileFocus={{ scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
-                />
-                <motion.button
-                  type="submit"
-                  disabled={isLoading}
-                  className="btn-buy-now w-full md:w-auto md:px-6 py-3 rounded-full text-[#FFFCDC] font-semibold text-sm whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {isLoading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <motion.span
-                        className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                      />
-                      Submitting...
-                    </span>
-                  ) : (
-                    "Join the Waitlist"
-                  )}
-                </motion.button>
-              </div>
-              {error && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-red-400 text-sm pl-4"
-                >
-                  {error}
-                </motion.p>
-              )}
-            </form>
+            <motion.button
+              onClick={() => router.push("/products")}
+              className="btn-buy-now w-full md:w-auto md:px-8 py-3 rounded-full text-[#FFFCDC] font-semibold text-sm whitespace-nowrap"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              Shop Now
+            </motion.button>
           </motion.div>
         </motion.div>
 

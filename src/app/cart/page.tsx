@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { ShoppingBag, ArrowRight, ArrowLeft, Minus, Plus, Trash2, Package } from "lucide-react";
 import { useCart, getCartLines } from "@/contexts/CartContext";
 import { formatPrice } from "@/lib/shopify";
+import PincodeModal from "@/components/ui/PincodeModal";
+import { useState, useCallback } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -23,11 +25,23 @@ const staggerContainer = {
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, isLoading, totalQuantity } = useCart();
+  const [showPincodeModal, setShowPincodeModal] = useState(false);
 
   const cartLines = getCartLines(cart);
   const subtotal = cart?.cost.subtotalAmount;
   const total = cart?.cost.totalAmount;
   const checkoutUrl = cart?.checkoutUrl;
+
+  const handleCheckoutClick = useCallback(() => {
+    if (!checkoutUrl || isLoading) return;
+    setShowPincodeModal(true);
+  }, [checkoutUrl, isLoading]);
+
+  const handleCheckoutConfirmed = useCallback(() => {
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
+  }, [checkoutUrl]);
 
   return (
     <div className="min-h-screen bg-white pt-24 md:pt-28 lg:pt-32 pb-16">
@@ -236,16 +250,11 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <a
-                  href={checkoutUrl || "#"}
-                  className={`flex items-center justify-center gap-2 w-full py-4 rounded-full text-white font-semibold bg-[#0A0A0A] hover:bg-[#1a1a1a] transition-colors ${
-                    !checkoutUrl || isLoading
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                  onClick={(e) => {
-                    if (!checkoutUrl || isLoading) e.preventDefault();
-                  }}
+                <button
+                  type="button"
+                  onClick={handleCheckoutClick}
+                  disabled={!checkoutUrl || isLoading}
+                  className={`flex items-center justify-center gap-2 w-full py-4 rounded-full text-white font-semibold bg-[#0A0A0A] hover:enabled:bg-[#1a1a1a] transition-colors border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {isLoading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -255,7 +264,7 @@ export default function CartPage() {
                       <ArrowRight className="w-5 h-5" />
                     </>
                   )}
-                </a>
+                </button>
 
                 <p className="text-[12px] text-center text-[#737373]">
                   Secure checkout powered by Shopify
@@ -265,6 +274,14 @@ export default function CartPage() {
           </motion.div>
         )}
       </motion.div>
+
+      <PincodeModal
+        isOpen={showPincodeModal}
+        onClose={() => setShowPincodeModal(false)}
+        onConfirm={handleCheckoutConfirmed}
+        confirmLabel="Proceed to Checkout →"
+        loadingLabel="Redirecting…"
+      />
     </div>
   );
 }

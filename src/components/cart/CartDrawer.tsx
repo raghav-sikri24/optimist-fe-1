@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { X, ShoppingBag, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, getCartLines } from "@/contexts/CartContext";
 import { formatPrice } from "@/lib/shopify";
 import { CartItem } from "./CartItem";
+import PincodeModal from "@/components/ui/PincodeModal";
 
 const overlayVariants = {
   hidden: { opacity: 0 },
@@ -20,10 +21,22 @@ const panelVariants = {
 
 export function CartDrawer() {
   const { cart, isCartOpen, closeCart, totalQuantity, isLoading } = useCart();
+  const [showPincodeModal, setShowPincodeModal] = useState(false);
 
   const cartLines = getCartLines(cart);
   const subtotal = cart?.cost.subtotalAmount;
   const checkoutUrl = cart?.checkoutUrl;
+
+  const handleCheckoutClick = useCallback(() => {
+    if (!checkoutUrl || isLoading) return;
+    setShowPincodeModal(true);
+  }, [checkoutUrl, isLoading]);
+
+  const handleCheckoutConfirmed = useCallback(() => {
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
+  }, [checkoutUrl]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -49,6 +62,7 @@ export function CartDrawer() {
   }, [isCartOpen]);
 
   return (
+  <>
     <AnimatePresence>
       {isCartOpen && (
         <div
@@ -146,16 +160,11 @@ export function CartDrawer() {
 
                 {/* Actions */}
                 <div className="space-y-3">
-                  <a
-                    href={checkoutUrl || "#"}
-                    className={`flex items-center justify-center gap-2 w-full py-3 rounded-full text-white font-medium bg-[#0A0A0A] hover:bg-[#1a1a1a] transition-colors ${
-                      !checkoutUrl || isLoading
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
-                    onClick={(e) => {
-                      if (!checkoutUrl || isLoading) e.preventDefault();
-                    }}
+                  <button
+                    type="button"
+                    onClick={handleCheckoutClick}
+                    disabled={!checkoutUrl || isLoading}
+                    className={`flex items-center justify-center gap-2 w-full py-3 rounded-full text-white font-medium bg-[#0A0A0A] hover:enabled:bg-[#1a1a1a] transition-colors border-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {isLoading ? (
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -165,7 +174,7 @@ export function CartDrawer() {
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
-                  </a>
+                  </button>
                   <Link
                     href="/cart"
                     onClick={closeCart}
@@ -180,5 +189,14 @@ export function CartDrawer() {
         </div>
       )}
     </AnimatePresence>
+
+    <PincodeModal
+      isOpen={showPincodeModal}
+      onClose={() => setShowPincodeModal(false)}
+      onConfirm={handleCheckoutConfirmed}
+      confirmLabel="Proceed to Checkout →"
+      loadingLabel="Redirecting…"
+    />
+  </>
   );
 }

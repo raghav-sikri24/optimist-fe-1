@@ -150,6 +150,6 @@ export function getDeliveryMessage(result: PincodeResult): string {
     return "Sorry, delivery to this pincode is currently not available";
   const cityPart = result.city ? ` to ${result.city}` : "";
   if (result.deliveryTier === "express")
-    return `Delivery${cityPart} in 24-48 hours`;
+    return `Delivery${cityPart} within 24–48 hrs`;
   return `Delivery${cityPart} in 3–7 business days`;
 }

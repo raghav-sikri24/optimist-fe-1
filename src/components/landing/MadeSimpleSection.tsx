@@ -3,7 +3,7 @@
 import { useRef, useLayoutEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { useWaitlist } from "@/contexts/WaitlistContext";
+import { useRouter } from "next/navigation";
 
 const REMOTE_IMG = "/images/made-simple/remote.png";
 const PALM_TREE_MASK = "/images/made-simple/palm-tree-mask.svg";
@@ -16,7 +16,7 @@ export function MadeSimpleSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const leftCardRef = useRef<HTMLDivElement>(null);
   const rightCardRef = useRef<HTMLDivElement>(null);
-  const { openModal } = useWaitlist();
+  const router = useRouter();
 
   useLayoutEffect(() => {
     if (leftCardRef.current) {
@@ -113,10 +113,10 @@ export function MadeSimpleSection() {
               </h2>
 
               <button
-                onClick={openModal}
+                onClick={() => router.push("/products")}
                 className="mt-6 lg:mt-10 inline-flex items-center justify-center w-[183px] py-4 rounded-[36px] bg-white text-[#3478F6] font-semibold text-base transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
-                Join the Waitlist
+                Buy Now
               </button>
             </div>
           </div>
