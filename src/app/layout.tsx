@@ -7,6 +7,7 @@ import { ViewCanvas } from "@/components/canvas/ViewCanvas";
 import { LayoutContent } from "@/components/layout/LayoutContent";
 import { Providers } from "@/components/providers/Providers";
 import SnapmintLoader from "@/components/SnapmintLoader";
+import SaleAssistButton from "@/components/SaleAssistButton";
 
 const GTM_ID = "GTM-KNHD6RHP";
 const GA4_ID = "G-FMPV82QJV9";
@@ -182,6 +183,9 @@ export default function RootLayout({
             <LayoutContent>{children}</LayoutContent>
           </SmoothScroll>
         </Providers>
+
+        {/* SaleAssist Live Demo Button */}
+        <SaleAssistButton />
       </body>
     </html>
   );

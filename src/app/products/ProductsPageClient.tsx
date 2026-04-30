@@ -803,57 +803,88 @@ export default function ProductsPageClient({
                 )}
               </motion.div> */}
 
-              {/* Action Buttons - Desktop */}
+              {/* Action Buttons */}
               <motion.div
                 variants={heroInfoItemVariants}
-                className="hidden md:flex gap-4"
+                className="flex flex-col gap-3"
               >
-                <motion.button
-                  onClick={handleAddToCart}
-                  disabled={isCartLoading || !canAddToCart}
-                  className={`flex-1 flex items-center justify-center gap-2.5 px-6 py-4 border rounded-full font-medium text-base transition-all ${
-                    buttonState === "loading"
-                      ? "border-gray-200 text-gray-400"
-                      : buttonState === "outOfStock"
-                        ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                        : "border-[rgba(0,0,0,0.12)] text-black hover:border-[rgba(0,0,0,0.24)] disabled:opacity-50"
-                  }`}
-                  whileHover={
-                    canAddToCart
-                      ? { scale: 1.02, borderColor: "rgba(0,0,0,0.24)" }
-                      : {}
-                  }
-                  whileTap={canAddToCart ? { scale: 0.98 } : {}}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ShoppingBagIcon className="w-6 h-6" />
-                  <span>
+                <div className="flex gap-3 md:gap-4">
+                  <motion.button
+                    onClick={handleAddToCart}
+                    disabled={isCartLoading || !canAddToCart}
+                    className={`flex-1 flex items-center justify-center gap-2 md:gap-2.5 px-4 md:px-6 py-3 md:py-4 border rounded-full font-medium text-sm md:text-base transition-all ${
+                      buttonState === "loading"
+                        ? "border-gray-200 text-gray-400"
+                        : buttonState === "outOfStock"
+                          ? "border-gray-200 text-gray-400 cursor-not-allowed"
+                          : "border-[rgba(0,0,0,0.12)] text-black hover:border-[rgba(0,0,0,0.24)] disabled:opacity-50"
+                    }`}
+                    whileHover={
+                      canAddToCart
+                        ? { scale: 1.02, borderColor: "rgba(0,0,0,0.24)" }
+                        : {}
+                    }
+                    whileTap={canAddToCart ? { scale: 0.98 } : {}}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ShoppingBagIcon className="w-5 h-5 md:w-6 md:h-6" />
+                    <span>
+                      {buttonState === "loading"
+                        ? "Loading..."
+                        : buttonState === "outOfStock"
+                          ? "Out of Stock"
+                          : "Add to Cart"}
+                    </span>
+                  </motion.button>
+                  <motion.button
+                    onClick={handleBuyNow}
+                    disabled={isCartLoading || !canAddToCart}
+                    className={`flex-1 px-4 md:px-6 py-3 md:py-4 rounded-full font-medium text-sm md:text-base text-center transition-all ${
+                      buttonState === "loading"
+                        ? "bg-gray-300 text-gray-500"
+                        : buttonState === "outOfStock"
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : "btn-buy-now text-[#FFFCDC]"
+                    }`}
+                    whileHover={canAddToCart ? { scale: 1.02 } : {}}
+                    whileTap={canAddToCart ? { scale: 0.98 } : {}}
+                    transition={{ duration: 0.2 }}
+                  >
                     {buttonState === "loading"
                       ? "Loading..."
                       : buttonState === "outOfStock"
-                        ? "Out of Stock"
-                        : "Add to Cart"}
-                  </span>
-                </motion.button>
+                        ? "Unavailable"
+                        : "Buy Now"}
+                  </motion.button>
+                </div>
                 <motion.button
-                  onClick={handleBuyNow}
-                  disabled={isCartLoading || !canAddToCart}
-                  className={`flex-1 px-6 py-4 rounded-full font-medium text-base text-center transition-all ${
-                    buttonState === "loading"
-                      ? "bg-gray-300 text-gray-500"
-                      : buttonState === "outOfStock"
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "btn-buy-now text-[#FFFCDC]"
-                  }`}
-                  whileHover={canAddToCart ? { scale: 1.02 } : {}}
-                  whileTap={canAddToCart ? { scale: 0.98 } : {}}
+                  onClick={() => {
+                    (window as any).saleassist?.mountWidget({
+                      id: "b64c75ac-d186-4979-a841-1572d8d9614b",
+                    });
+                  }}
+                  className="w-full flex items-center justify-center gap-2 md:gap-2.5 px-4 md:px-6 py-3 md:py-4 border border-[rgba(0,0,0,0.12)] rounded-full font-medium text-sm md:text-base text-black hover:border-[rgba(0,0,0,0.24)] transition-all"
+                  whileHover={{ scale: 1.02, borderColor: "rgba(0,0,0,0.24)" }}
+                  whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {buttonState === "loading"
-                    ? "Loading..."
-                    : buttonState === "outOfStock"
-                      ? "Unavailable"
-                      : "Buy Now"}
+                  <svg
+                    className="w-5 h-5 md:w-6 md:h-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polygon points="23 7 16 12 23 17 23 7" />
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                  </svg>
+                  <span>Live Demo</span>
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+                  </span>
                 </motion.button>
               </motion.div>
 
@@ -1136,12 +1167,12 @@ export default function ProductsPageClient({
         style={{ pointerEvents: showMobileFooter ? "auto" : "none" }}
         className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-black/85 backdrop-blur-md border-t border-white/[0.12] shadow-[0_-4px_20px_rgba(0,0,0,0.3)] [transform:translateZ(0)]"
       >
-        <div className="px-4 py-4">
+        <div className="px-4 py-3">
           <div className="flex items-center gap-3">
             <motion.button
               onClick={handleAddToCart}
               disabled={isCartLoading || !canAddToCart}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-full font-medium text-sm transition-all ${
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full font-medium text-sm transition-all ${
                 buttonState === "loading"
                   ? "bg-gray-300 text-gray-500"
                   : buttonState === "outOfStock"
@@ -1163,7 +1194,7 @@ export default function ProductsPageClient({
             <motion.button
               onClick={handleBuyNow}
               disabled={isCartLoading || !canAddToCart}
-              className={`flex-1 px-4 py-3.5 rounded-full font-medium text-sm text-center transition-all ${
+              className={`flex-1 px-4 py-3 rounded-full font-medium text-sm text-center transition-all ${
                 buttonState === "loading"
                   ? "bg-gray-400 text-gray-600"
                   : buttonState === "outOfStock"
