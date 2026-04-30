@@ -14,10 +14,10 @@ const SNAPMINT_SCRIPT_ID = "snapmint-script";
 export default function SnapmintLoader(): null {
   const pathname = usePathname();
 
-  const isProductsRoute = true;
+  const isProductsRoute = pathname?.startsWith("/products");
 
   useEffect(() => {
-    if (isProductsRoute) return;
+    if (!isProductsRoute || true) return;
 
     let timeoutId: NodeJS.Timeout;
 
