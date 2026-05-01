@@ -30,6 +30,7 @@ import { useProducts, type DisplayVariant } from "@/contexts/ProductsContext";
 import { ASSETS } from "@/lib/assets";
 import { useJudgeMeRating } from "@/lib/judgeme";
 import { type Product, type VariantRichText } from "@/lib/shopify";
+import { redirectWithAnalytics } from "@/lib/analytics";
 import { RichTextContent } from "@/lib/richTextRenderer";
 import { useProductPageContent } from "@/hooks/useMetaobjectContent";
 import PincodeModal from "@/components/ui/PincodeModal";
@@ -529,7 +530,7 @@ export default function ProductsPageClient({
     try {
       const updatedCart = await addToCart(selectedVariant.variantId, quantity);
       if (updatedCart?.checkoutUrl) {
-        window.location.href = updatedCart.checkoutUrl;
+        redirectWithAnalytics(updatedCart.checkoutUrl);
       } else {
         showToast("Failed to initiate checkout", "error");
         setIsBuyNowLoading(false);

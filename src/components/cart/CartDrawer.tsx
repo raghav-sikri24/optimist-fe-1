@@ -8,6 +8,7 @@ import { useCart, getCartLines } from "@/contexts/CartContext";
 import { formatPrice } from "@/lib/shopify";
 import { CartItem } from "./CartItem";
 import PincodeModal from "@/components/ui/PincodeModal";
+import { redirectWithAnalytics } from "@/lib/analytics";
 
 const overlayVariants = {
   hidden: { opacity: 0 },
@@ -34,7 +35,7 @@ export function CartDrawer() {
 
   const handleCheckoutConfirmed = useCallback(() => {
     if (checkoutUrl) {
-      window.location.href = checkoutUrl;
+      redirectWithAnalytics(checkoutUrl);
     }
   }, [checkoutUrl]);
 

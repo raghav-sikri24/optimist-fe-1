@@ -8,6 +8,7 @@ import { useCart, getCartLines } from "@/contexts/CartContext";
 import { formatPrice } from "@/lib/shopify";
 import PincodeModal from "@/components/ui/PincodeModal";
 import { useState, useCallback } from "react";
+import { redirectWithAnalytics } from "@/lib/analytics";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -39,7 +40,7 @@ export default function CartPage() {
 
   const handleCheckoutConfirmed = useCallback(() => {
     if (checkoutUrl) {
-      window.location.href = checkoutUrl;
+      redirectWithAnalytics(checkoutUrl);
     }
   }, [checkoutUrl]);
 

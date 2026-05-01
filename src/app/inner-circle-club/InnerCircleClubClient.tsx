@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getSavedPincode } from "@/hooks/usePincodeCheck";
 import PincodeModal from "@/components/ui/PincodeModal";
+import { redirectWithAnalytics } from "@/lib/analytics";
 
 // =============================================================================
 // Constants
@@ -516,7 +517,7 @@ export default function InnerCircleClubClient() {
 
       const updatedCart = await addToCart(innerCircleVariant.variantId, 1);
       if (updatedCart?.checkoutUrl) {
-        window.location.href = updatedCart.checkoutUrl;
+        redirectWithAnalytics(updatedCart.checkoutUrl);
       }
     } catch {
       setIsPaymentLoading(false);
