@@ -6,56 +6,51 @@ import { useCallback, useState } from "react";
 // Types
 // ---------------------------------------------------------------------------
 
-export type DeliveryTier = "express" | "standard";
+export type Zone = "delhi-ncr" | "bangalore" | "hyderabad";
 
 export interface PincodeResult {
   serviceable: boolean;
-  deliveryTier: DeliveryTier | null;
+  zone: Zone | null;
   city: string | null;
+}
+
+interface PincodeEntry {
+  city: string;
+  zone: Zone;
 }
 
 // ---------------------------------------------------------------------------
 // Module-level cache — shared across every hook instance, fetched at most once
 // ---------------------------------------------------------------------------
 
-let expressCache: Record<string, string> | null = null;
-let standardCache: Record<string, string> | null = null;
+let cache: Record<string, PincodeEntry> | null = null;
 let fetchPromise: Promise<void> | null = null;
 
 async function ensureLoaded(): Promise<void> {
-  if (expressCache && standardCache) return;
+  if (cache) return;
 
   if (!fetchPromise) {
-    fetchPromise = Promise.all([
-      fetch("/data/pincodes-express.json").then((r) => r.json()),
-      fetch("/data/pincodes-standard.json").then((r) => r.json()),
-    ]).then(([express, standard]) => {
-      expressCache = express;
-      standardCache = standard;
-    });
+    fetchPromise = fetch("/data/pincodes.json")
+      .then((r) => r.json())
+      .then((data: Record<string, PincodeEntry>) => {
+        cache = data;
+      });
   }
 
   return fetchPromise;
 }
 
 function lookup(pincode: string): PincodeResult {
-  if (expressCache && pincode in expressCache) {
+  if (cache && pincode in cache) {
+    const entry = cache[pincode];
     return {
       serviceable: true,
-      deliveryTier: "express",
-      city: expressCache[pincode] || null,
+      zone: entry.zone,
+      city: entry.city || null,
     };
   }
 
-  if (standardCache && pincode in standardCache) {
-    return {
-      serviceable: true,
-      deliveryTier: "standard",
-      city: standardCache[pincode] || null,
-    };
-  }
-
-  return { serviceable: false, deliveryTier: null, city: null };
+  return { serviceable: false, zone: null, city: null };
 }
 
 // ---------------------------------------------------------------------------
@@ -111,11 +106,11 @@ export function usePincodeCheck() {
   const checkPincode = useCallback(async (pincode: string) => {
     const cleaned = pincode.trim();
     if (!isValidPincode(cleaned)) {
-      setResult({ serviceable: false, deliveryTier: null, city: null });
+      setResult({ serviceable: false, zone: null, city: null });
       setIsChecked(true);
       return {
         serviceable: false,
-        deliveryTier: null,
+        zone: null,
         city: null,
       } as PincodeResult;
     }
@@ -146,10 +141,16 @@ export function usePincodeCheck() {
 // ---------------------------------------------------------------------------
 
 export function getDeliveryMessage(result: PincodeResult): string {
-  if (!result.serviceable)
-    return "Sorry, delivery to this pincode is currently not available";
+  if (!result.serviceable) {
+    return "Sorry, we currently deliver only to Delhi NCR, Bangalore and Hyderabad";
+  }
+
   const cityPart = result.city ? ` to ${result.city}` : "";
-  if (result.deliveryTier === "express")
-    return `Delivery${cityPart} within 24–48 hrs`;
-  return `Delivery${cityPart} in 3–7 business days`;
+
+  if (result.zone === "delhi-ncr") {
+    return `Delivery${cityPart} in 6–8 days`;
+  }
+
+  // Bangalore and Hyderabad both 10-12 days
+  return `Delivery${cityPart} in 10–12 days`;
 }

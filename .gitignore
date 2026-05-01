@@ -37,7 +37,7 @@ yarn-error.log*
 .vercel
 
 # generated pincode data (built from CSV at build time)
-/public/data/pincodes-*.json
+/public/data/pincodes.json
 
 # typescript
 *.tsbuildinfo
