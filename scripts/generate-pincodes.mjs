@@ -11,8 +11,7 @@ mkdirSync(OUT_DIR, { recursive: true });
 
 function parseCsvRows(text) {
   const lines = text.split("\n").filter((l) => l.trim());
-  const header = lines[0].split(",").map((h) => h.trim());
-  return { header, rows: lines.slice(1).map((l) => l.split(",").map((c) => c.trim())) };
+  return lines.slice(1).map((l) => l.split(",").map((c) => c.trim()));
 }
 
 function titleCase(str) {
@@ -23,54 +22,60 @@ function titleCase(str) {
     .join(" ");
 }
 
-// --- Pikkol (express / within 48 hrs) ---
-const pikkolRaw = readFileSync(
-  resolve(ASSETS, "Pincode Servicable List - Optimist - Pikkol Serviceable Pincode.csv"),
-  "utf-8",
-);
-const pikkol = parseCsvRows(pikkolRaw);
-const expressMap = {};
+// Zone classification by city name from CSV
+const DELHI_NCR_CITIES = new Set([
+  "delhi",
+  "new delhi",
+  "noida",
+  "gurgaon",
+  "faridabad",
+  "ghaziabad",
+]);
 
-for (const row of pikkol.rows) {
-  const pin = row[0]?.replace(/\D/g, "");
-  const city = row[1] || "";
-  if (pin && pin.length === 6) {
-    expressMap[pin] = titleCase(city);
-  }
+const BANGALORE_CITIES = new Set(["bangalore"]);
+
+const HYDERABAD_CITIES = new Set([
+  "hyderabad",
+  "hyderabad city division",
+]);
+
+function classifyZone(city) {
+  const c = city.toLowerCase().trim();
+  if (DELHI_NCR_CITIES.has(c)) return "delhi-ncr";
+  if (BANGALORE_CITIES.has(c)) return "bangalore";
+  if (HYDERABAD_CITIES.has(c)) return "hyderabad";
+  return null;
 }
 
-// --- Proship (standard / 5-7 business days) ---
-const proshipRaw = readFileSync(
-  resolve(ASSETS, "Pincode Servicable List - Optimist - Proship Serviceable Pincode.csv"),
+const pikkolRaw = readFileSync(
+  resolve(
+    ASSETS,
+    "Pincode Servicable List - Optimist - Pikkol Serviceable Pincode.csv",
+  ),
   "utf-8",
 );
-const proship = parseCsvRows(proshipRaw);
 
-const carrierStartIdx = 3; // columns after Pincode, City, State
-const standardMap = {};
+const rows = parseCsvRows(pikkolRaw);
+const pincodes = {};
+const zoneCounts = { "delhi-ncr": 0, bangalore: 0, hyderabad: 0, skipped: 0 };
 
-for (const row of proship.rows) {
+for (const row of rows) {
   const pin = row[0]?.replace(/\D/g, "");
   const city = row[1] || "";
   if (!pin || pin.length !== 6) continue;
 
-  // Skip if already in express (express takes priority)
-  if (expressMap[pin]) continue;
-
-  const hasServiceable = row
-    .slice(carrierStartIdx)
-    .some((val) => val.toLowerCase() === "serviceable");
-
-  if (hasServiceable) {
-    standardMap[pin] = titleCase(city);
+  const zone = classifyZone(city);
+  if (!zone) {
+    zoneCounts.skipped++;
+    continue;
   }
+
+  pincodes[pin] = { city: titleCase(city), zone };
+  zoneCounts[zone]++;
 }
 
-writeFileSync(resolve(OUT_DIR, "pincodes-express.json"), JSON.stringify(expressMap));
-writeFileSync(resolve(OUT_DIR, "pincodes-standard.json"), JSON.stringify(standardMap));
+writeFileSync(resolve(OUT_DIR, "pincodes.json"), JSON.stringify(pincodes));
 
-const expressCount = Object.keys(expressMap).length;
-const standardCount = Object.keys(standardMap).length;
 console.log(
-  `[generate-pincodes] express: ${expressCount}, standard: ${standardCount}, total: ${expressCount + standardCount}`,
+  `[generate-pincodes] delhi-ncr: ${zoneCounts["delhi-ncr"]}, bangalore: ${zoneCounts.bangalore}, hyderabad: ${zoneCounts.hyderabad}, skipped: ${zoneCounts.skipped}, total: ${Object.keys(pincodes).length}`,
 );
