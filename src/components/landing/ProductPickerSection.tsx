@@ -105,23 +105,28 @@ function ACModelCanvas() {
 }
 
 // Fallback tab shown while Shopify data is loading
-const FALLBACK_TABS = [
-  { id: "fallback-1.5", label: "1.5 TON" },
-];
+const FALLBACK_TABS = [{ id: "fallback-1.5", label: "1.5 TON" }];
 
 // Static copy keyed by variant ID — used for headline/tagline/features
-const VARIANT_COPY: Record<string, {
-  headline: string;
-  tagline: string;
-  features: string[];
-  savings: string;
-}> = {};
+const VARIANT_COPY: Record<
+  string,
+  {
+    headline: string;
+    tagline: string;
+    features: string[];
+    savings: string;
+  }
+> = {};
 
 const DEFAULT_COPY = {
-  headline: "Designed for medium rooms.",
-  tagline: "Perfect balance of power.",
-  features: ["Engineered to cool", "Built to save", "Easy to maintain"],
-  savings: "For long term savings",
+  headline: "Designed right for India",
+  tagline: "Cools 120 to 300 sft rooms",
+  features: [
+    "30 Days Return -No Question Asked",
+    "5 Years Warranty -No Hidden Charges",
+    "48 Hours Delivery & Installation",
+  ],
+  savings: "",
 };
 
 function formatPrice(price: number): string {
@@ -200,7 +205,7 @@ export function ProductPickerSection() {
     if (acVariants.length > 0) {
       return acVariants.map((v) => ({
         id: v.id,
-        label: v.name.toUpperCase(),
+        label: `Optimist ${v.name.toUpperCase()} 5 Star Inverter Split Ac`,
       }));
     }
     return FALLBACK_TABS;
@@ -210,14 +215,19 @@ export function ProductPickerSection() {
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
-    if (capacityTabs.length > 0 && !capacityTabs.find((t) => t.id === activeTab)) {
+    if (
+      capacityTabs.length > 0 &&
+      !capacityTabs.find((t) => t.id === activeTab)
+    ) {
       setActiveTab(capacityTabs[0].id);
     }
   }, [capacityTabs, activeTab]);
 
   // Select variant directly by ID — no tonnage string matching
   const activeVariant = useMemo(() => {
-    return acVariants.find((v) => v.id === activeTab) ?? acVariants[0] ?? undefined;
+    return (
+      acVariants.find((v) => v.id === activeTab) ?? acVariants[0] ?? undefined
+    );
   }, [acVariants, activeTab]);
 
   const activePrice = activeVariant?.price ?? 0;
@@ -298,7 +308,10 @@ export function ProductPickerSection() {
     { scope: sectionRef },
   );
 
-  const activeProduct = (activeTab && VARIANT_COPY[activeTab]) ? VARIANT_COPY[activeTab] : DEFAULT_COPY;
+  const activeProduct =
+    activeTab && VARIANT_COPY[activeTab]
+      ? VARIANT_COPY[activeTab]
+      : DEFAULT_COPY;
 
   return (
     <section
@@ -316,7 +329,7 @@ export function ProductPickerSection() {
 
           {/* Headline */}
           <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 whitespace-nowrap">
-            Choose Your Optimist
+            Buy Your Optimist
           </h2>
 
           {/* Right line */}
@@ -359,13 +372,13 @@ export function ProductPickerSection() {
               <div className="lg:hidden">
                 <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-[20px] overflow-hidden shadow-sm">
                   {/* Share Button */}
-                  <button
+                  {/* <button
                     onClick={handleShare}
                     className="absolute top-4 right-4 z-10 flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
                     Share
-                  </button>
+                  </button> */}
 
                   {/* AC Image */}
                   <div className="aspect-[4/3] relative flex items-center justify-center p-8">
@@ -451,18 +464,18 @@ export function ProductPickerSection() {
                   </div>
 
                   {/* Features Row */}
-                  <div className="flex items-center flex-wrap gap-2 md:gap-3">
+                  <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-y-2 md:gap-x-3 xl:gap-x-4">
                     {activeProduct.features.map((feature, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 md:gap-3"
+                        className="flex items-center gap-2 md:gap-3 xl:gap-4"
                       >
-                        <span className="text-sm md:text-[16px] md:leading-[16px] font-[400] text-gray-600 font-normal">
+                        {index > 0 && (
+                          <div className="hidden md:block w-px h-4 bg-gray-300 shrink-0" />
+                        )}
+                        <span className="text-[13px] md:text-[13px] lg:text-[14px] xl:text-[16px] xl:leading-[20px] leading-snug font-normal text-gray-600">
                           {feature}
                         </span>
-                        {index < activeProduct.features.length - 1 && (
-                          <div className="w-px h-4 bg-gray-300" />
-                        )}
                       </div>
                     ))}
                   </div>
@@ -508,13 +521,13 @@ export function ProductPickerSection() {
               <div className="hidden lg:block">
                 <div className="relative bg-white rounded-[24px] overflow-hidden shadow-sm h-full min-h-[400px] flex items-center justify-center">
                   {/* Share Button */}
-                  <button
+                  {/* <button
                     onClick={handleShare}
                     className="absolute top-5 right-5 z-10 flex items-center gap-2 px-4 py-2.5 rounded-full shadow-md text-sm font-medium text-gray-700 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
                     Share
-                  </button>
+                  </button> */}
 
                   {/* AC Image */}
                   <div className="w-full h-full flex items-center justify-center p-10">
