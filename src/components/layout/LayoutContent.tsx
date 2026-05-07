@@ -5,12 +5,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 // Routes that should not have Navigation (header)
-const NO_NAV_ROUTES = [
-  "/forgot-password",
-  "/reset-password",
-  "/inner-circle",
-  "/inner-circle-club",
-];
+const NO_NAV_ROUTES = ["/inner-circle", "/inner-circle-club"];
 
 // Routes that should not have Footer
 const NO_FOOTER_ROUTES = [

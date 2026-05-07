@@ -81,6 +81,7 @@ export const ASSETS = {
 
   // Contact Us
   sleepingWoman: getAssetUrl("sleeping-woman.png"),
+  contactUsBg: "/assets/contactUs.jpeg",
 
   // Ratings & Stars
   fiveStarRating: getAssetUrl("5StarRating.png"),

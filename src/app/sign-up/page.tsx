@@ -67,6 +67,7 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState<{
     firstName?: string;
     lastName?: string;
@@ -75,6 +76,14 @@ export default function SignUpPage() {
     confirmPassword?: string;
     general?: string;
   }>({});
+
+  const isVerificationEmailMessage = (message: string) => {
+    const normalizedMessage = message.toLowerCase();
+    return (
+      normalizedMessage.includes("sent an email") &&
+      normalizedMessage.includes("verify")
+    );
+  };
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -119,6 +128,7 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setSuccessMessage("");
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -131,6 +141,12 @@ export default function SignUpPage() {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Registration failed";
+      if (isVerificationEmailMessage(message)) {
+        setSuccessMessage(message);
+        showToast(message, "success");
+        return;
+      }
+
       setErrors({ general: message });
       showToast(message, "error");
     } finally {
@@ -442,6 +458,17 @@ export default function SignUpPage() {
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               <AnimatePresence>
+                {successMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm"
+                  >
+                    {successMessage}
+                  </motion.div>
+                )}
                 {errors.general && (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}

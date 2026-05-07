@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { Share2 } from "lucide-react";
+import { RotateCcw, Share2, ShieldCheck, Truck } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -130,6 +130,17 @@ const DEFAULT_COPY = {
   ],
   savings: "",
 };
+
+const FEATURE_ICONS = [RotateCcw, ShieldCheck, Truck];
+
+function getFeatureParts(feature: string) {
+  const [title, subtitle] = feature.split(/\s*-\s*/);
+
+  return {
+    title,
+    subtitle,
+  };
+}
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN").format(price);
@@ -497,25 +508,37 @@ export function ProductPickerSection() {
                   </div>
 
                   {/* Features Row */}
-                  <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-y-2 md:gap-x-3 xl:gap-x-4">
-                    {activeProduct.features.map((feature, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 md:gap-3 xl:gap-4"
-                      >
-                        {index > 0 && (
-                          <div className="hidden md:block w-px h-4 bg-gray-300 shrink-0" />
-                        )}
-                        <span className="text-[13px] md:text-[13px] lg:text-[14px] xl:text-[16px] xl:leading-[20px] leading-snug font-normal text-gray-600">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {activeProduct.features.map((feature, index) => {
+                      const FeatureIcon = FEATURE_ICONS[index] ?? ShieldCheck;
+                      const { title, subtitle } = getFeatureParts(feature);
+
+                      return (
+                        <div
+                          key={feature}
+                          className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/80 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,23,42,0.05)] md:flex-col md:items-start md:gap-2 md:px-3 md:py-3"
+                        >
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EAF2FF] text-optimist-blue-primary md:h-9 md:w-9">
+                            <FeatureIcon className="h-4 w-4 md:h-4.5 md:w-4.5" />
+                          </span>
+                          <span className="flex min-w-0 flex-col">
+                            <span className="text-[12px] font-semibold leading-snug text-gray-900 md:text-[13px] xl:text-sm">
+                              {title}
+                            </span>
+                            {subtitle && (
+                              <span className="mt-0.5 text-[11px] leading-snug text-gray-500 md:text-xs">
+                                {subtitle}
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Bottom: Price and CTA */}
-                <div className="flex flex-row items-center gap-6 md:gap-8 mt-8 lg:mt-0">
+                <div className="flex flex-row justify-between items-center mt-8 lg:mt-0">
                   <div className="flex flex-col gap-1.5">
                     {isPriceLoading ? (
                       <div className="h-6 w-28 bg-gray-200 animate-pulse rounded" />
@@ -549,7 +572,7 @@ export function ProductPickerSection() {
                       !activeVariant?.variantId ||
                       !activeVariant?.available
                     }
-                    className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn-buy-now min-w-[90px] inline-flex items-center justify-center px-4 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Buy Now
                   </button>
