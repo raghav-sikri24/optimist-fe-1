@@ -15,11 +15,13 @@ import { Share2 } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
-import { useRouter } from "next/navigation";
 import { useProducts } from "@/contexts/ProductsContext";
+import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/components/ui/Toast";
 import { ASSETS } from "@/lib/assets";
 import { useJudgeMeRating } from "@/lib/judgeme";
+import { redirectWithAnalytics } from "@/lib/analytics";
+import PincodeModal from "@/components/ui/PincodeModal";
 
 function ACModel() {
   const { scene, animations } = useGLTF("/Product Card Animation 01.glb");
@@ -188,9 +190,11 @@ export function ProductPickerSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
   const { showToast } = useToast();
   const { combinedProduct, isLoading: isPriceLoading } = useProducts();
+  const { addToCart, isLoading: isCartLoading } = useCart();
+  const [showPincodeModal, setShowPincodeModal] = useState(false);
+  const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
 
   // Get AC-only variants (same filter as products page — excludes Inner Circle)
   const acVariants = useMemo(() => {
@@ -253,6 +257,35 @@ export function ProductPickerSection() {
       showToast("Link copied to clipboard!", "success");
     } catch {
       showToast("Failed to copy link", "error");
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (!activeVariant || !activeVariant.variantId) {
+      showToast("Please select a variant", "error");
+      return;
+    }
+    if (!activeVariant.available) {
+      showToast("This variant is out of stock", "error");
+      return;
+    }
+    setShowPincodeModal(true);
+  };
+
+  const handleBuyNowConfirmed = async () => {
+    if (!activeVariant || !activeVariant.variantId) return;
+    setIsBuyNowLoading(true);
+    try {
+      const updatedCart = await addToCart(activeVariant.variantId, 1);
+      if (updatedCart?.checkoutUrl) {
+        redirectWithAnalytics(updatedCart.checkoutUrl);
+      } else {
+        showToast("Failed to initiate checkout", "error");
+        setIsBuyNowLoading(false);
+      }
+    } catch {
+      showToast("Failed to proceed to checkout", "error");
+      setIsBuyNowLoading(false);
     }
   };
 
@@ -509,8 +542,14 @@ export function ProductPickerSection() {
                     </span>
                   </div>
                   <button
-                    onClick={() => router.push("/products")}
-                    className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base"
+                    onClick={handleBuyNow}
+                    disabled={
+                      isCartLoading ||
+                      isPriceLoading ||
+                      !activeVariant?.variantId ||
+                      !activeVariant?.available
+                    }
+                    className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Buy Now
                   </button>
@@ -539,6 +578,18 @@ export function ProductPickerSection() {
           </div>
         </div>
       </div>
+
+      <PincodeModal
+        isOpen={showPincodeModal}
+        onClose={() => {
+          setShowPincodeModal(false);
+          setIsBuyNowLoading(false);
+        }}
+        onConfirm={handleBuyNowConfirmed}
+        confirmLabel="Proceed to Checkout →"
+        loadingLabel="Opening checkout…"
+        isConfirmLoading={isBuyNowLoading}
+      />
     </section>
   );
 }
