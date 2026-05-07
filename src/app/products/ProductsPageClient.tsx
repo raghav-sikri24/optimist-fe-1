@@ -2,7 +2,6 @@
 
 import {
   CartIcon,
-  HeadphoneIcon,
   InstallationIcon,
   ServiceCommitmentIcon,
   ShoppingBagIcon,
@@ -712,7 +711,7 @@ export default function ProductsPageClient({
                     )}
                 </div>
                 <span className="text-[#6c6a6a] text-sm md:text-base font-light">
-                  (inclusive of all the taxes)
+                  (inclusive of all taxes)
                 </span>
                 {selectedVariantOutOfStock && (
                   <span className="text-red-500 text-sm font-medium">
@@ -891,23 +890,19 @@ export default function ProductsPageClient({
 
               {/* Feature Icons Row */}
               <motion.div variants={heroInfoItemVariants}>
-                <div className="w-full grid grid-cols-4 gap-2 py-4 px-3 bg-[#F8F8F8] rounded-xl">
+                <div className="w-full grid grid-cols-3 gap-2 py-4 px-3 bg-[#F8F8F8] rounded-xl">
                   {[
                     {
                       icon: InstallationIcon,
-                      label: "Free\nInstallation",
+                      label: "30 Days Return\nNo Question Asked",
                     },
                     {
                       icon: WarrantyIcon,
-                      label: "5 Year\nWarranty",
-                    },
-                    {
-                      icon: HeadphoneIcon,
-                      label: "24x7\nsupport",
+                      label: "5 Years Warranty\nNo Hidden Charges",
                     },
                     {
                       icon: ServiceCommitmentIcon,
-                      label: "48 hrs service\ncommitment",
+                      label: "48 Hours Delivery\n& Installation",
                     },
                   ].map((feature) => (
                     <div

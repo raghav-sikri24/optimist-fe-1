@@ -961,7 +961,7 @@ export default function ContactPage() {
                   {/* Image */}
                   <div className="relative -mt-68 -mx-8 -mb-8">
                     <Image
-                      src={ASSETS.sleepingWoman}
+                      src={ASSETS.contactUsBg}
                       alt="Happy customer"
                       width={432}
                       height={300}
