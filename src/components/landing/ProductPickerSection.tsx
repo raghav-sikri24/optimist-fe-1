@@ -11,15 +11,17 @@ import {
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { Share2 } from "lucide-react";
+import { RotateCcw, Share2, ShieldCheck, Truck } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
-import { useRouter } from "next/navigation";
 import { useProducts } from "@/contexts/ProductsContext";
+import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/components/ui/Toast";
 import { ASSETS } from "@/lib/assets";
 import { useJudgeMeRating } from "@/lib/judgeme";
+import { redirectWithAnalytics } from "@/lib/analytics";
+import PincodeModal from "@/components/ui/PincodeModal";
 
 function ACModel() {
   const { scene, animations } = useGLTF("/Product Card Animation 01.glb");
@@ -105,24 +107,40 @@ function ACModelCanvas() {
 }
 
 // Fallback tab shown while Shopify data is loading
-const FALLBACK_TABS = [
-  { id: "fallback-1.5", label: "1.5 TON" },
-];
+const FALLBACK_TABS = [{ id: "fallback-1.5", label: "1.5 TON" }];
 
 // Static copy keyed by variant ID — used for headline/tagline/features
-const VARIANT_COPY: Record<string, {
-  headline: string;
-  tagline: string;
-  features: string[];
-  savings: string;
-}> = {};
+const VARIANT_COPY: Record<
+  string,
+  {
+    headline: string;
+    tagline: string;
+    features: string[];
+    savings: string;
+  }
+> = {};
 
 const DEFAULT_COPY = {
-  headline: "Designed for medium rooms.",
-  tagline: "Perfect balance of power.",
-  features: ["Engineered to cool", "Built to save", "Easy to maintain"],
-  savings: "For long term savings",
+  headline: "Designed right for India",
+  tagline: "Cools 120 to 300 sft rooms",
+  features: [
+    "30 Days Return -No Question Asked",
+    "5 Years Warranty -No Hidden Charges",
+    "48 Hours Delivery & Installation",
+  ],
+  savings: "",
 };
+
+const FEATURE_ICONS = [RotateCcw, ShieldCheck, Truck];
+
+function getFeatureParts(feature: string) {
+  const [title, subtitle] = feature.split(/\s*-\s*/);
+
+  return {
+    title,
+    subtitle,
+  };
+}
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN").format(price);
@@ -183,9 +201,11 @@ export function ProductPickerSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
   const { showToast } = useToast();
   const { combinedProduct, isLoading: isPriceLoading } = useProducts();
+  const { buyNow, isLoading: isCartLoading } = useCart();
+  const [showPincodeModal, setShowPincodeModal] = useState(false);
+  const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
 
   // Get AC-only variants (same filter as products page — excludes Inner Circle)
   const acVariants = useMemo(() => {
@@ -200,7 +220,7 @@ export function ProductPickerSection() {
     if (acVariants.length > 0) {
       return acVariants.map((v) => ({
         id: v.id,
-        label: v.name.toUpperCase(),
+        label: `Optimist ${v.name} 5 Star Inverter Split AC`,
       }));
     }
     return FALLBACK_TABS;
@@ -210,14 +230,19 @@ export function ProductPickerSection() {
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
-    if (capacityTabs.length > 0 && !capacityTabs.find((t) => t.id === activeTab)) {
+    if (
+      capacityTabs.length > 0 &&
+      !capacityTabs.find((t) => t.id === activeTab)
+    ) {
       setActiveTab(capacityTabs[0].id);
     }
   }, [capacityTabs, activeTab]);
 
   // Select variant directly by ID — no tonnage string matching
   const activeVariant = useMemo(() => {
-    return acVariants.find((v) => v.id === activeTab) ?? acVariants[0] ?? undefined;
+    return (
+      acVariants.find((v) => v.id === activeTab) ?? acVariants[0] ?? undefined
+    );
   }, [acVariants, activeTab]);
 
   const activePrice = activeVariant?.price ?? 0;
@@ -243,6 +268,35 @@ export function ProductPickerSection() {
       showToast("Link copied to clipboard!", "success");
     } catch {
       showToast("Failed to copy link", "error");
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (!activeVariant || !activeVariant.variantId) {
+      showToast("Please select a variant", "error");
+      return;
+    }
+    if (!activeVariant.available) {
+      showToast("This variant is out of stock", "error");
+      return;
+    }
+    setShowPincodeModal(true);
+  };
+
+  const handleBuyNowConfirmed = async () => {
+    if (!activeVariant || !activeVariant.variantId) return;
+    setIsBuyNowLoading(true);
+    try {
+      const checkoutUrl = await buyNow(activeVariant.variantId, 1);
+      if (checkoutUrl) {
+        redirectWithAnalytics(checkoutUrl);
+      } else {
+        showToast("Failed to initiate checkout", "error");
+        setIsBuyNowLoading(false);
+      }
+    } catch {
+      showToast("Failed to proceed to checkout", "error");
+      setIsBuyNowLoading(false);
     }
   };
 
@@ -298,7 +352,10 @@ export function ProductPickerSection() {
     { scope: sectionRef },
   );
 
-  const activeProduct = (activeTab && VARIANT_COPY[activeTab]) ? VARIANT_COPY[activeTab] : DEFAULT_COPY;
+  const activeProduct =
+    activeTab && VARIANT_COPY[activeTab]
+      ? VARIANT_COPY[activeTab]
+      : DEFAULT_COPY;
 
   return (
     <section
@@ -316,7 +373,7 @@ export function ProductPickerSection() {
 
           {/* Headline */}
           <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 whitespace-nowrap">
-            Choose Your Optimist
+            Buy Your Optimist
           </h2>
 
           {/* Right line */}
@@ -359,13 +416,13 @@ export function ProductPickerSection() {
               <div className="lg:hidden">
                 <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-[20px] overflow-hidden shadow-sm">
                   {/* Share Button */}
-                  <button
+                  {/* <button
                     onClick={handleShare}
                     className="absolute top-4 right-4 z-10 flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
                     Share
-                  </button>
+                  </button> */}
 
                   {/* AC Image */}
                   <div className="aspect-[4/3] relative flex items-center justify-center p-8">
@@ -451,25 +508,37 @@ export function ProductPickerSection() {
                   </div>
 
                   {/* Features Row */}
-                  <div className="flex items-center flex-wrap gap-2 md:gap-3">
-                    {activeProduct.features.map((feature, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 md:gap-3"
-                      >
-                        <span className="text-sm md:text-[16px] md:leading-[16px] font-[400] text-gray-600 font-normal">
-                          {feature}
-                        </span>
-                        {index < activeProduct.features.length - 1 && (
-                          <div className="w-px h-4 bg-gray-300" />
-                        )}
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {activeProduct.features.map((feature, index) => {
+                      const FeatureIcon = FEATURE_ICONS[index] ?? ShieldCheck;
+                      const { title, subtitle } = getFeatureParts(feature);
+
+                      return (
+                        <div
+                          key={feature}
+                          className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/80 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,23,42,0.05)] md:flex-col md:items-start md:gap-2 md:px-3 md:py-3"
+                        >
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EAF2FF] text-optimist-blue-primary md:h-9 md:w-9">
+                            <FeatureIcon className="h-4 w-4 md:h-4.5 md:w-4.5" />
+                          </span>
+                          <span className="flex min-w-0 flex-col">
+                            <span className="text-[12px] font-semibold leading-snug text-gray-900 md:text-[13px] xl:text-sm">
+                              {title}
+                            </span>
+                            {subtitle && (
+                              <span className="mt-0.5 text-[11px] leading-snug text-gray-500 md:text-xs">
+                                {subtitle}
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Bottom: Price and CTA */}
-                <div className="flex flex-row items-center gap-6 md:gap-8 mt-8 lg:mt-0">
+                <div className="flex flex-row justify-between items-center mt-8 lg:mt-0">
                   <div className="flex flex-col gap-1.5">
                     {isPriceLoading ? (
                       <div className="h-6 w-28 bg-gray-200 animate-pulse rounded" />
@@ -496,8 +565,14 @@ export function ProductPickerSection() {
                     </span>
                   </div>
                   <button
-                    onClick={() => router.push("/products")}
-                    className="btn-buy-now inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base"
+                    onClick={handleBuyNow}
+                    disabled={
+                      isCartLoading ||
+                      isPriceLoading ||
+                      !activeVariant?.variantId ||
+                      !activeVariant?.available
+                    }
+                    className="btn-buy-now min-w-[90px] inline-flex items-center justify-center px-4 md:px-10 py-3 md:py-3.5 rounded-full text-[#FFFCDC] font-semibold text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Buy Now
                   </button>
@@ -508,13 +583,13 @@ export function ProductPickerSection() {
               <div className="hidden lg:block">
                 <div className="relative bg-white rounded-[24px] overflow-hidden shadow-sm h-full min-h-[400px] flex items-center justify-center">
                   {/* Share Button */}
-                  <button
+                  {/* <button
                     onClick={handleShare}
                     className="absolute top-5 right-5 z-10 flex items-center gap-2 px-4 py-2.5 rounded-full shadow-md text-sm font-medium text-gray-700 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
                     Share
-                  </button>
+                  </button> */}
 
                   {/* AC Image */}
                   <div className="w-full h-full flex items-center justify-center p-10">
@@ -526,6 +601,18 @@ export function ProductPickerSection() {
           </div>
         </div>
       </div>
+
+      <PincodeModal
+        isOpen={showPincodeModal}
+        onClose={() => {
+          setShowPincodeModal(false);
+          setIsBuyNowLoading(false);
+        }}
+        onConfirm={handleBuyNowConfirmed}
+        confirmLabel="Proceed to Checkout →"
+        loadingLabel="Opening checkout…"
+        isConfirmLoading={isBuyNowLoading}
+      />
     </section>
   );
 }

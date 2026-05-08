@@ -3,9 +3,13 @@
 import { usePathname } from "next/navigation";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollResetOnRouteChange } from "@/components/layout/ScrollResetOnRouteChange";
 
-// Routes that should not have Navigation and Footer
-const AUTH_ROUTES = [
+// Routes that should not have Navigation (header)
+const NO_NAV_ROUTES = ["/inner-circle", "/inner-circle-club"];
+
+// Routes that should not have Footer
+const NO_FOOTER_ROUTES = [
   "/login",
   "/sign-up",
   "/forgot-password",
@@ -20,17 +24,17 @@ interface LayoutContentProps {
 
 export function LayoutContent({ children }: LayoutContentProps) {
   const pathname = usePathname();
-  const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
-
-  if (isAuthRoute) {
-    return <main>{children}</main>;
-  }
+  const hideNav = NO_NAV_ROUTES.some((route) => pathname.startsWith(route));
+  const hideFooter = NO_FOOTER_ROUTES.some((route) =>
+    pathname.startsWith(route),
+  );
 
   return (
     <>
-      <Navigation />
+      <ScrollResetOnRouteChange />
+      {!hideNav && <Navigation />}
       <main>{children}</main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </>
   );
 }

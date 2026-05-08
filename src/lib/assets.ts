@@ -81,6 +81,7 @@ export const ASSETS = {
 
   // Contact Us
   sleepingWoman: getAssetUrl("sleeping-woman.png"),
+  contactUsBg: "/assets/contactUs.jpeg",
 
   // Ratings & Stars
   fiveStarRating: getAssetUrl("5StarRating.png"),
@@ -170,6 +171,7 @@ export const ASSETS = {
   loginMobileGradient: getAssetUrl("loginMobileGradient.png"),
   desktopMobileGradient: getAssetUrl("DesktopMobileGradient.png"),
   clipPathGroup: getAssetUrl("Clip path group.png"),
+  accountDecorativeAsset: "/assets/accountDecorativeAsset.png",
 
   remoteSectionMobile: getAssetUrl("RemoteSectionMobile.png"),
   remoteSectionDesktop: getAssetUrl("RemoteSectionDesktop.png"),
@@ -183,7 +185,7 @@ export const ASSETS = {
 
   // Inside Optimist Section
   insideOptimistAcUnit: "/assets/inside-optimist/ac-unit.png",
-  insideOptimistHeatExchanger: "/assets/inside-optimist/heat-exchanger.png",
+  insideOptimistHeatExchanger: "/assets/inside-optimist/heat-exchanger.jpeg",
   insideOptimistCompressor: "/assets/inside-optimist/compressor.png",
   insideOptimistExpansionValve: "/assets/inside-optimist/expansion-valve.png",
 

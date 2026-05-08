@@ -67,6 +67,7 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState<{
     firstName?: string;
     lastName?: string;
@@ -75,6 +76,14 @@ export default function SignUpPage() {
     confirmPassword?: string;
     general?: string;
   }>({});
+
+  const isVerificationEmailMessage = (message: string) => {
+    const normalizedMessage = message.toLowerCase();
+    return (
+      normalizedMessage.includes("sent an email") &&
+      normalizedMessage.includes("verify")
+    );
+  };
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -119,6 +128,7 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setSuccessMessage("");
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -131,6 +141,12 @@ export default function SignUpPage() {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Registration failed";
+      if (isVerificationEmailMessage(message)) {
+        setSuccessMessage(message);
+        showToast(message, "success");
+        return;
+      }
+
       setErrors({ general: message });
       showToast(message, "error");
     } finally {
@@ -163,14 +179,14 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen flex bg-white overflow-hidden">
       {/* Left Section - Product Showcase (Desktop Only) */}
-      <div className="hidden lg:block lg:w-[55%] p-[50px_0_40px_50px]">
+      <div className="hidden lg:block lg:w-[55%] p-[120px_0_40px_50px]">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="w-full flex flex-col py-[5%] justify-center h-full rounded-[44px] relative overflow-hidden"
           style={{
-            minHeight: "calc(100vh - 100px)",
+            minHeight: "calc(100vh - 170px)",
           }}
         >
           {/* Background Image */}
@@ -247,7 +263,7 @@ export default function SignUpPage() {
 
           {/* Badges */}
           <motion.div
-            className="flex flex-row gap-5 items-center mx-auto z-[10]"
+            className="flex flex-row gap-5 md:gap-10 justify-center items-center z-[10]"
             initial="initial"
             animate="animate"
             variants={staggerContainer}
@@ -271,10 +287,10 @@ export default function SignUpPage() {
                 style={{ color: "#FFFFFF" }}
               >
                 <span className="font-display font-bold text-[25px] leading-none">
-                  Highest ISEER
+                  India’s #1 Energy
                 </span>
                 <span className="font-display text-[19px] leading-none">
-                  In India
+                  Efficient AC
                 </span>
               </div>
             </motion.div>
@@ -311,7 +327,7 @@ export default function SignUpPage() {
                 style={{ color: "#FFFFFF" }}
               >
                 <span className="font-display font-bold text-[25px] leading-none">
-                  4.8 rated
+                  4.8* rated
                 </span>
                 <span className="font-display text-[19px] leading-none">
                   by early users
@@ -329,7 +345,7 @@ export default function SignUpPage() {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="lg:hidden relative"
+          className="lg:hidden relative mt-[72px]"
         >
           <div className="h-[221px] w-full rounded-bl-[22px] rounded-br-[22px] relative overflow-hidden">
             {/* Background Image */}
@@ -356,9 +372,9 @@ export default function SignUpPage() {
               <h1 className="font-display font-semibold text-[32px] text-[#FFFCDC] leading-[1.25] tracking-[-0.64px]">
                 Create your account
               </h1>
-              <p className="font-display text-[16px] text-[#FFFCDC]/60 leading-[1.5] tracking-[0.32px] mt-1">
+              {/* <p className="font-display text-[16px] text-[#FFFCDC]/60 leading-[1.5] tracking-[0.32px] mt-1">
                 Join the Optimist family
-              </p>
+              </p> */}
             </div>
           </div>
         </motion.div>
@@ -412,7 +428,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Form Container */}
-        <div className="flex-1 flex items-center justify-center px-4 py-8 lg:py-0 relative z-10">
+        <div className="flex-1 flex items-center justify-center px-4 py-8 lg:pt-[88px] lg:pb-0 relative z-10">
           <motion.div
             className="w-full max-w-[454px]"
             variants={staggerContainer}
@@ -431,17 +447,28 @@ export default function SignUpPage() {
               >
                 Create your <span style={{ color: "#3478F6" }}>account</span>
               </h1>
-              <p
+              {/* <p
                 className="text-[16px] leading-[1.5] tracking-[0.32px] mt-4"
                 style={{ color: "#737373" }}
               >
                 Join the Optimist family
-              </p>
+              </p> */}
             </motion.div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               <AnimatePresence>
+                {successMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm"
+                  >
+                    {successMessage}
+                  </motion.div>
+                )}
                 {errors.general && (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
