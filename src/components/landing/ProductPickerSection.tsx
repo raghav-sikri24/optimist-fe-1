@@ -29,7 +29,7 @@ const VARIANT_COPY: Record<
 
 const DEFAULT_COPY = {
   headline: "Designed right for India",
-  tagline: "Cools 120 to 300 sft rooms",
+  tagline: "Cools 120 to 200 sft rooms",
   features: [
     "30 Days Return -No Question Asked",
     "5 Years Warranty -No Hidden Charges",
@@ -53,56 +53,58 @@ function formatPrice(price: number): string {
   return new Intl.NumberFormat("en-IN").format(price);
 }
 
-function ACVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const requestRef: any = useRef<number>(null);
-  const lastTimeRef: any = useRef<number>(null);
-
-  const animateReverse = (time: number) => {
-    if (!videoRef.current) return;
-
-    if (lastTimeRef.current !== undefined) {
-      const delta = (time - lastTimeRef.current) * 0.001;
-      videoRef.current.currentTime = Math.max(
-        0,
-        videoRef.current.currentTime - delta,
-      );
-    }
-    lastTimeRef.current = time;
-
-    if (videoRef.current.currentTime > 0) {
-      requestRef.current = requestAnimationFrame(animateReverse);
-    } else {
-      lastTimeRef.current = undefined;
-    }
-  };
-
-  const handleMouseEnter = () => {
-    if (requestRef.current) {
-      cancelAnimationFrame(requestRef.current);
-      requestRef.current = undefined;
-      lastTimeRef.current = undefined;
-    }
-    videoRef.current?.play().catch((e) => {});
-  };
-
-  const handleMouseLeave = () => {
-    videoRef.current?.pause();
-    requestRef.current = requestAnimationFrame(animateReverse);
-  };
-
-  return (
-    <video
-      ref={videoRef}
-      src={ASSETS.videos.productCardAnimation2}
-      className="w-full h-auto object-contain cursor-pointer bg-transparent"
-      muted
-      playsInline
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    />
-  );
-}
+// ACVideo replaced by a static image (ASSETS.optimistImageAsset) for better
+// performance. Restore this component if the hover-reverse video is brought back.
+// function ACVideo() {
+//   const videoRef = useRef<HTMLVideoElement>(null);
+//   const requestRef: any = useRef<number>(null);
+//   const lastTimeRef: any = useRef<number>(null);
+//
+//   const animateReverse = (time: number) => {
+//     if (!videoRef.current) return;
+//
+//     if (lastTimeRef.current !== undefined) {
+//       const delta = (time - lastTimeRef.current) * 0.001;
+//       videoRef.current.currentTime = Math.max(
+//         0,
+//         videoRef.current.currentTime - delta,
+//       );
+//     }
+//     lastTimeRef.current = time;
+//
+//     if (videoRef.current.currentTime > 0) {
+//       requestRef.current = requestAnimationFrame(animateReverse);
+//     } else {
+//       lastTimeRef.current = undefined;
+//     }
+//   };
+//
+//   const handleMouseEnter = () => {
+//     if (requestRef.current) {
+//       cancelAnimationFrame(requestRef.current);
+//       requestRef.current = undefined;
+//       lastTimeRef.current = undefined;
+//     }
+//     videoRef.current?.play().catch((e) => {});
+//   };
+//
+//   const handleMouseLeave = () => {
+//     videoRef.current?.pause();
+//     requestRef.current = requestAnimationFrame(animateReverse);
+//   };
+//
+//   return (
+//     <video
+//       ref={videoRef}
+//       src={ASSETS.videos.productCardAnimation2}
+//       className="w-full h-auto object-contain cursor-pointer bg-transparent"
+//       muted
+//       playsInline
+//       onMouseEnter={handleMouseEnter}
+//       onMouseLeave={handleMouseLeave}
+//     />
+//   );
+// }
 
 export function ProductPickerSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -487,7 +489,7 @@ export function ProductPickerSection() {
 
               {/* Right Column - AC Image (Desktop Only) */}
               <div className="hidden lg:block">
-                <div className="relative bg-white rounded-[24px] overflow-hidden shadow-sm h-full min-h-[400px] flex items-center justify-center">
+                <div className="relative bg-white rounded-[24px] overflow-hidden shadow-sm h-full min-h-[400px]">
                   {/* Share Button */}
                   {/* <button
                     onClick={handleShare}
@@ -497,10 +499,15 @@ export function ProductPickerSection() {
                     Share
                   </button> */}
 
-                  {/* AC Image */}
-                  <div className="w-full h-full flex items-center justify-center p-10">
-                    <ACVideo />
-                  </div>
+                  {/* AC Image — the source file (1200×1200) has whitespace padding,
+                      so object-cover crops the edges and the AC fills the card. */}
+                  {/* <ACVideo /> */}
+                  <Image
+                    src={ASSETS.optimistImageAsset}
+                    alt="Optimist AC Unit"
+                    fill
+                    className="object-cover px-4"
+                  />
                 </div>
               </div>
             </div>

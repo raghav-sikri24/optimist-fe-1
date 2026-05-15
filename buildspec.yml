@@ -29,8 +29,14 @@ phases:
   post_build:
     commands:
       - echo Deploying to S3
-      - aws s3 sync out s3://$S3_BUCKET --delete
-      - aws s3 cp out/index.html s3://$S3_BUCKET/index.html --cache-control max-age=0,no-cache,no-store,must-revalidate --content-type text/html
+      # 1. Next.js hashed assets (/_next/static/*) — content-hashed, safe to cache forever.
+      - aws s3 sync out/_next s3://$S3_BUCKET/_next --delete --cache-control "public, max-age=31536000, immutable"
+      # 2. Other static files (images, fonts, videos, etc.) — cache for 30 days, can be re-validated.
+      - aws s3 sync out s3://$S3_BUCKET --delete --exclude "_next/*" --exclude "*.html" --exclude "*.xml" --exclude "*.txt" --cache-control "public, max-age=2592000, must-revalidate"
+      # 3. HTML / XML / TXT — short cache so deploys propagate quickly.
+      - aws s3 sync out s3://$S3_BUCKET --exclude "*" --include "*.html" --include "*.xml" --include "*.txt" --cache-control "public, max-age=300, must-revalidate"
+      # 4. index.html — never cache so users always see the latest deploy.
+      - aws s3 cp out/index.html s3://$S3_BUCKET/index.html --cache-control "max-age=0,no-cache,no-store,must-revalidate" --content-type text/html
       - echo Invalidating CloudFront
       - aws cloudfront create-invalidation --distribution-id $CF_DIST_ID --paths "/*"
 
