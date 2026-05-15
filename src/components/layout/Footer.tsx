@@ -157,7 +157,7 @@ export function Footer() {
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     if (pathname === href) {
       e.preventDefault();
@@ -169,19 +169,18 @@ export function Footer() {
 
   return (
     <footer ref={footerRef} className="relative overflow-hidden">
-      {/* Blue Cool Background */}
+      {/* Blue Cool Background — pure CSS gradient (replaces a 4.3 MB PNG). */}
       <div
-        className="absolute inset-0 "
-        style={{ backdropFilter: "blur(200px)" }}
-      >
-        <Image
-          src={ASSETS.blueCoolBackground}
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle 320px at 18% 100%, rgba(70, 205, 235, 0.75) 0%, transparent 65%),
+            radial-gradient(circle 720px at 22% 105%, rgba(18, 101, 255, 0.55) 0%, transparent 72%),
+            radial-gradient(ellipse 110% 75% at 28% 115%, rgba(0, 40, 160, 0.45) 0%, transparent 78%),
+            #000000
+          `,
+        }}
+      />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 pt-12 md:pt-16 pb-6 md:pb-12">
         {/* Top Section - Links & Newsletter */}
