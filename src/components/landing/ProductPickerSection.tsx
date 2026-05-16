@@ -13,9 +13,6 @@ import { useJudgeMeRating } from "@/lib/judgeme";
 import { redirectWithAnalytics } from "@/lib/analytics";
 import PincodeModal from "@/components/ui/PincodeModal";
 
-// Fallback tab shown while Shopify data is loading
-const FALLBACK_TABS = [{ id: "fallback-1.5", label: "1.5 TON" }];
-
 // Static copy keyed by variant ID — used for headline/tagline/features
 const VARIANT_COPY: Record<
   string,
@@ -132,7 +129,7 @@ export function ProductPickerSection() {
         label: `Optimist ${v.name} 5 Star Inverter Split AC`,
       }));
     }
-    return FALLBACK_TABS;
+    return [];
   }, [acVariants]);
 
   // Track selected tab by variant ID; default to first variant

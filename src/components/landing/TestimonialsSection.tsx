@@ -51,41 +51,13 @@ interface TestimonialDisplay {
   image: string;
 }
 
-const FALLBACK_TESTIMONIALS: TestimonialDisplay[] = [
-  {
-    id: 1,
-    name: "Anupam",
-    profession: "Banker",
-    location: "Gurgaon",
-    quote:
-      "We hit 47–48°C outside and the cooling never dropped. Airflow stayed steady through the day. It felt like the AC knew what I wanted!",
-    image: ASSETS.anupam,
-  },
-  {
-    id: 2,
-    name: "Sera",
-    profession: "Chartered Accountant",
-    location: "Delhi",
-    quote:
-      "What surprised me wasn't just the cooling. Our electricity bill was noticeably lower, even with longer usage.",
-    image: ASSETS.sera,
-  },
-  {
-    id: 3,
-    name: "Krishnakanth",
-    profession: "Semi-conductor Research",
-    location: "Hyderabad",
-    quote:
-      "Optimist managed both heat and humidity easily. The App is brilliant - the gas level indicator, while a small widget, is a game changer.",
-    image: ASSETS.krishnakanth,
-  },
-];
-
 interface TestimonialsSectionProps {
   testimonials?: TestimonialItem[];
 }
 
-export function TestimonialsSection({ testimonials: apiTestimonials }: TestimonialsSectionProps) {
+export function TestimonialsSection({
+  testimonials: apiTestimonials,
+}: TestimonialsSectionProps) {
   const testimonials: TestimonialDisplay[] =
     apiTestimonials && apiTestimonials.length > 0
       ? apiTestimonials.map((t, i) => ({
@@ -94,9 +66,9 @@ export function TestimonialsSection({ testimonials: apiTestimonials }: Testimoni
           profession: t.profession,
           location: t.location,
           quote: t.review,
-          image: t.imageUrl ?? FALLBACK_TESTIMONIALS[i % FALLBACK_TESTIMONIALS.length].image,
+          image: t.imageUrl || "",
         }))
-      : FALLBACK_TESTIMONIALS;
+      : [];
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -137,31 +109,34 @@ export function TestimonialsSection({ testimonials: apiTestimonials }: Testimoni
   }, []);
 
   // Navigate to a specific card
-  const scrollToCard = useCallback((index: number) => {
-    if (!carouselRef.current) return;
-    const targetIndex = Math.max(0, Math.min(index, testimonials.length - 1));
-    const cards = carouselRef.current.querySelectorAll(".testimonial-card");
-    const card = cards[targetIndex] as HTMLElement | undefined;
-    if (!card) return;
+  const scrollToCard = useCallback(
+    (index: number) => {
+      if (!carouselRef.current) return;
+      const targetIndex = Math.max(0, Math.min(index, testimonials.length - 1));
+      const cards = carouselRef.current.querySelectorAll(".testimonial-card");
+      const card = cards[targetIndex] as HTMLElement | undefined;
+      if (!card) return;
 
-    const container = carouselRef.current;
-    const containerRect = container.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
+      const container = carouselRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
 
-    // Center the card in the container
-    const scrollOffset =
-      cardRect.left -
-      containerRect.left -
-      (containerRect.width - cardRect.width) / 2 +
-      container.scrollLeft;
+      // Center the card in the container
+      const scrollOffset =
+        cardRect.left -
+        containerRect.left -
+        (containerRect.width - cardRect.width) / 2 +
+        container.scrollLeft;
 
-    container.scrollTo({
-      left: Math.max(0, scrollOffset),
-      behavior: "smooth",
-    });
+      container.scrollTo({
+        left: Math.max(0, scrollOffset),
+        behavior: "smooth",
+      });
 
-    setActiveIndex(targetIndex);
-  }, [testimonials.length]);
+      setActiveIndex(targetIndex);
+    },
+    [testimonials.length],
+  );
 
   const scroll = (direction: "left" | "right") => {
     const newIndex = direction === "left" ? activeIndex - 1 : activeIndex + 1;

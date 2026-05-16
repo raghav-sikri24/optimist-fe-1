@@ -1,6 +1,10 @@
 import { Suspense } from "react";
 import { type Metadata } from "next";
-import { getProducts, type Product } from "@/lib/shopify";
+import {
+  getProducts,
+  getProductPageContent,
+  type Product,
+} from "@/lib/shopify";
 import ProductsPageClient from "./ProductsPageClient";
 import { ProductDetailSkeleton } from "@/components/products/ProductDetailSkeleton";
 
@@ -71,7 +75,13 @@ function withWidth(url: string, width: number): string {
 }
 
 export default async function ProductsPage() {
-  const product = await getProductData();
+  // Fetch product + CMS content in parallel at build time so both ship in
+  // the initial static HTML. Avoids a client-side round-trip on every visit
+  // and eliminates the null-first-render flash for CMS-driven copy.
+  const [product, pageContent] = await Promise.all([
+    getProductData(),
+    getProductPageContent(),
+  ]);
   const lcpUrl = getLcpImageUrl(product);
 
   return (
@@ -87,7 +97,7 @@ export default async function ProductsPage() {
         />
       )}
       <Suspense fallback={<ProductDetailSkeleton />}>
-        <ProductsPageClient product={product} />
+        <ProductsPageClient product={product} pageContent={pageContent} />
       </Suspense>
     </>
   );

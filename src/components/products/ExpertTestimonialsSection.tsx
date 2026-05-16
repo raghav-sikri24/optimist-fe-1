@@ -18,53 +18,6 @@ interface ExpertTestimonial {
   image: string;
 }
 
-const FALLBACK_TESTIMONIALS: ExpertTestimonial[] = [
-  {
-    id: "veena",
-    name: "Veena Srinivasan",
-    company: "WELL Labs",
-    quote:
-      "As urban temperatures soar, we need cooling solutions that help us cope but without the associated climate footprint. Optimist\u2019s AC addresses this critical gap in the market and I am looking forward to getting mine soon!",
-    image: "/images/04_Veena Srinivasan.jpg.jpeg",
-  },
-  {
-    id: "shreya",
-    name: "Shreya Mishra",
-    company: "Solar Square",
-    quote:
-      "Solving hard problems requires deep conviction. I\u2019m a firm believer in Optimist\u2019s mission to drive real progress. Ashish and Pranav have the right mindset to build something meaningful, and I\u2019m excited to have a ring-side view of their journey.",
-    image: "/images/05_Shreya.jpeg",
-  },
-  {
-    id: "vishnu",
-    name: "Vishnu Rajeev",
-    company: "",
-    quote:
-      "Optimist is quietly redefining what premium and sustainable should mean \u2014 not just for India, but globally. Ashish and Pranav combine execution speed with deep integrity and a genuine commitment to climate adaptation and the planet. Founders like these don\u2019t just build products \u2014 they build movements.",
-    image: "/images/07_Vishnu.jpeg",
-  },
-  {
-    id: "arjun",
-    name: "Arjun Gupta",
-    company: "Smart Joules",
-    quote:
-      "Most run away from solving hard problems. Some care more about the consequences of success rather than the probability or pathway. Such is the story of Ashish and his team at Optimist, who are taking a crack at one of the most important global issues with a first principles approach.",
-    image: "/images/10_Arjun Gupta.jpg.jpeg",
-  },
-  {
-    id: "tarun",
-    name: "Tarun Mehta",
-    company: "Ather",
-    quote:
-      "With a changing environment, cooling at scale is becoming a fundamental need for our society. It\u2019s a hard engineering and manufacturing challenge and we need more teams willing to take on the toughest engineering challenges. I\u2019m backing Optimist because they have the technical depth and the long-term vision needed to solve hard problems that actually matter for our future.",
-    image: "/images/15_Tarun.png",
-  },
-];
-
-// =============================================================================
-// Desktop Card — 634×218 horizontal card with large photo left + text right
-// =============================================================================
-
 const DesktopCard = memo(function DesktopCard({
   testimonial,
 }: {
@@ -163,13 +116,13 @@ export const ExpertTestimonialsSection = memo(
           name: e.name,
           company: e.profession,
           quote: e.review,
-          image:
-            e.imageUrl ??
-            FALLBACK_TESTIMONIALS[i % FALLBACK_TESTIMONIALS.length].image,
+          image: e.imageUrl || "",
         }));
       }
-      return FALLBACK_TESTIMONIALS;
+      return [];
     }, [experts]);
+
+    console.log("TESTIMONIALS:", TESTIMONIALS);
 
     const ROW_2_ORDER = useMemo(() => {
       const len = TESTIMONIALS.length;

@@ -1,8 +1,11 @@
 // Shopify Storefront API Client and GraphQL Operations
 
 const domain =
-  process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN || "octolife-3.myshopify.com";
+  process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
+  process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN ||
+  "octolife-3.myshopify.com";
 const storefrontAccessToken =
+  process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN ||
   process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN ||
   "3b12d6020365806434052cc061a5b5e3";
 const apiVersion = process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || "2025-01";
@@ -2027,6 +2030,7 @@ export async function getProductPageContent(): Promise<ProductPageContent | null
       expertTestimonials: parseExpertTestimonials(expertNodes as any[]),
     };
   } catch (error) {
+    console.error("[getProductPageContent] failed:", error);
     return null;
   }
 }
