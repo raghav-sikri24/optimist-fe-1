@@ -1,8 +1,4 @@
-import favicon from "../../public/icons/Favicon_Optimist_32px X 32px.png";
-
 const S3_BUCKET_URL = "https://optimist-fe-assets.s3.amazonaws.com";
-
-// Warn if the environment variable is not set
 
 /**
  * Get the full URL for an asset stored in S3
@@ -24,7 +20,6 @@ export const ASSETS = {
   ac2: getAssetUrl("AC2.png"),
   ac3: getAssetUrl("AC3.png"),
   heroAc: getAssetUrl("hero_ac.png"),
-  mainAcMobile: getAssetUrl("MainACMobile.png"),
   acTilt: getAssetUrl("/acTiltedAngle.png"),
   comparisonShadowBg: "/assets/products/comparison-shadow-bg.webp",
   acComparison: "/assets/products/acComparison.webp",
@@ -33,20 +28,11 @@ export const ASSETS = {
   team3: getAssetUrl("Team3.png"),
   team4: getAssetUrl("Team4.png"),
 
-  // India Story Section
-  indiaStoryDesert: getAssetUrl("india-story-desert.png"),
-  indiaStorySleeping: getAssetUrl("india-story-sleeping.png"),
-  indiaStoryValidated: getAssetUrl("india-story-validated.png"),
-
   // Warranty Section
   warrantyCard: "/assets/products/warranty-card.webp",
   warrantyCheck: getAssetUrl("/warranty-check.png"),
 
   // Recognition Section
-  recognitionBgDesktop: getAssetUrl("/recognition-bg-desktop.png"),
-  recognitionBgMobile: getAssetUrl("/recognition-bg-mobile.png"),
-  laurelLeft: "/icons/laurel-left.svg",
-  laurelRight: "/icons/laurel-right.svg",
   shieldSlash: "/icons/shield-slash.svg",
   leafIcon: getAssetUrl("leaf.png"),
   hourglass: getAssetUrl("hourglass.png"),
@@ -58,14 +44,10 @@ export const ASSETS = {
   heroMobileBg: getAssetUrl("Heromobilebg.png"),
 
   // Benefits Section
-  benf1Ass1: getAssetUrl("Benf1Ass1.png"),
-  benf1Ass2: getAssetUrl("Benf1Ass2.png"),
   benf2Ass1: getAssetUrl("Benf2Ass1.png"),
   benf2Ass2: getAssetUrl("Benf2Ass2.png"),
   benf3Ass1: getAssetUrl("Benf3Ass1.png"),
   benf3Ass2: getAssetUrl("Benf3Ass2.png"),
-  benf4Ass1: getAssetUrl("Benf4Ass1.png"),
-  benf4Ass2: getAssetUrl("Benf4Ass2.png"),
 
   // Supporters Section
   iitLogo: getAssetUrl("iit-logo.png"),
@@ -80,7 +62,6 @@ export const ASSETS = {
   clipPathGroup2: getAssetUrl("Clip path group2.png"),
 
   // Contact Us
-  sleepingWoman: getAssetUrl("sleeping-woman.png"),
   contactUsBg: "/assets/contactUs.jpeg",
 
   // Ratings & Stars
@@ -99,24 +80,10 @@ export const ASSETS = {
   ellipse1: getAssetUrl("Ellipse 1.png"),
   ellipse6512: getAssetUrl("Ellipse 6512.png"),
   ellipse6513: getAssetUrl("Ellipse 6513.png"),
-  blueCoolBackground: getAssetUrl("BlueCoolBackground.png"),
-  brownBgRemote: getAssetUrl("BrownBgRemote.png"),
 
   // Decorative
-  optimistTree: getAssetUrl("OptimistTree.png"),
   family: getAssetUrl("Family.png"),
   frame48095518: getAssetUrl("Frame 48095518.png"),
-
-  // Logo & Branding
-  favicon: favicon,
-
-  // Testimonials
-  ananyaRao: getAssetUrl("AnanyaRao.png"),
-  kunalShah: getAssetUrl("KunalShah.png"),
-  rohanMehta: getAssetUrl("RohanMehta.png"),
-  anupam: getAssetUrl("Anupam.png"),
-  sera: getAssetUrl("Sera.jpeg"),
-  krishnakanth: getAssetUrl("Krishnakanth.jpeg"),
 
   // Hand Images (Optimist App Section)
   filterTracking: getAssetUrl("Filter tracking.png"),
@@ -136,7 +103,6 @@ export const ASSETS = {
   discussionVideo: getAssetUrl("C5488 (1).mp4"),
 
   // Icons
-  starIcon: "/icons/star.svg",
   rocketLaunchIcon: "/icons/rocket-launch.svg",
   calendarCheckIcon: "/icons/calendar-check.svg",
 
@@ -170,11 +136,7 @@ export const ASSETS = {
   // Auth Page Assets
   loginMobileGradient: getAssetUrl("loginMobileGradient.png"),
   desktopMobileGradient: getAssetUrl("DesktopMobileGradient.png"),
-  clipPathGroup: getAssetUrl("Clip path group.png"),
   accountDecorativeAsset: "/assets/accountDecorativeAsset.png",
-
-  remoteSectionMobile: getAssetUrl("RemoteSectionMobile.png"),
-  remoteSectionDesktop: getAssetUrl("RemoteSectionDesktop.png"),
 
   // Proof Section
   proofCheckmark: "/assets/proof/checkmark.png",

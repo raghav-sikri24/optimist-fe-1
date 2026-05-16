@@ -19,10 +19,13 @@ import { useCart, buildBusinessCartAttributes } from "@/contexts/CartContext";
 import { useProducts, type DisplayVariant } from "@/contexts/ProductsContext";
 import { ASSETS } from "@/lib/assets";
 import { useJudgeMeRating } from "@/lib/judgeme";
-import { type Product, type VariantRichText } from "@/lib/shopify";
+import {
+  type Product,
+  type ProductPageContent,
+  type VariantRichText,
+} from "@/lib/shopify";
 import { redirectWithAnalytics } from "@/lib/analytics";
 import { RichTextContent } from "@/lib/richTextRenderer";
-import { useProductPageContent } from "@/hooks/useMetaobjectContent";
 import PincodeModal from "@/components/ui/PincodeModal";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -185,56 +188,6 @@ const heroInfoItemVariants = {
 
 const MAX_DISPLAY_IMAGES = 20;
 const QUANTITY_OPTIONS = [1, 2, 3, 4, 5] as const;
-
-// Fallback variants when Shopify data is unavailable
-const FALLBACK_VARIANTS: DisplayVariant[] = [
-  {
-    id: "1ton",
-    variantId: "",
-    productId: "",
-    productTitle: "Optimist 1 Ton 5 Star Inverter Split AC",
-    name: "1 Ton",
-    subtitle: "For compact rooms",
-    price: 30000,
-    compareAtPrice: null,
-    available: false,
-    tonnage: "1",
-    images: [],
-    description: "",
-    descriptionHtml: "",
-  },
-  {
-    id: "15ton",
-    variantId: "",
-    productId: "",
-    productTitle: "Optimist 1.5 Ton 5 Star Inverter Split AC",
-    name: "1.5 Ton",
-    subtitle: "Ideal for most Indian homes",
-    price: 40000,
-    compareAtPrice: null,
-    available: false,
-    tonnage: "1.5",
-    images: [],
-    description: "",
-    descriptionHtml: "",
-  },
-  {
-    id: "2ton",
-    variantId: "",
-    productId: "",
-    productTitle: "Optimist 2 Ton 5 Star Inverter Split AC",
-    name: "2 Ton",
-    subtitle: "For X-large rooms",
-    price: 50000,
-    compareAtPrice: null,
-    available: false,
-    tonnage: "2",
-    images: [],
-    description: "",
-    descriptionHtml: "",
-  },
-];
-
 // =============================================================================
 // Utils - Moved outside component to avoid recreation
 // =============================================================================
@@ -260,6 +213,7 @@ function getVariantRichText(
 
 interface ProductsPageClientProps {
   product: Product | null;
+  pageContent: ProductPageContent | null;
 }
 
 // =============================================================================
@@ -268,8 +222,8 @@ interface ProductsPageClientProps {
 
 export default function ProductsPageClient({
   product,
+  pageContent,
 }: ProductsPageClientProps) {
-  const { content: pageContent } = useProductPageContent();
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const variantsScrollRef = useRef<HTMLDivElement>(null);
@@ -302,9 +256,9 @@ export default function ProductsPageClient({
       const acVariants = combinedProduct.allVariants.filter(
         (v) => !v.productTitle.toLowerCase().includes("inner circle"),
       );
-      return acVariants.length > 0 ? acVariants : FALLBACK_VARIANTS;
+      return acVariants || [];
     }
-    return FALLBACK_VARIANTS;
+    return [];
   }, [combinedProduct]);
 
   // Check if we have real Shopify data (not fallback)

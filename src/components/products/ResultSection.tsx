@@ -21,32 +21,6 @@ interface ResultFeature {
   description: string;
 }
 
-// =============================================================================
-// Constants (fallback)
-// =============================================================================
-
-const FALLBACK_FEATURES: ResultFeature[] = [
-  {
-    icon: <SnowflakeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#3478F6]" />,
-    title: "Consistent cooling",
-    description: "No peaks. No drops.",
-  },
-  {
-    icon: <PiggyBankIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#3478F6]" />,
-    title: "Lower running cost",
-    description: "Efficiency that holds.",
-  },
-  {
-    icon: <PersonWalkIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#3478F6]" />,
-    title: "Less to manage",
-    description: "It just works.",
-  },
-];
-
-// =============================================================================
-// Feature Card Component
-// =============================================================================
-
 interface FeatureCardProps {
   feature: ResultFeature;
 }
@@ -111,7 +85,7 @@ export const ResultSection = memo(function ResultSection({
           title: item.heading,
           description: item.subHeading,
         }))
-      : FALLBACK_FEATURES;
+      : [];
 
   useLayoutEffect(() => {
     if (titleRef.current) {
@@ -186,10 +160,7 @@ export const ResultSection = memo(function ResultSection({
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 md:gap-6 lg:gap-[26px] w-full max-w-[400px] sm:max-w-none mx-auto"
         >
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="result-card w-full"
-            >
+            <div key={index} className="result-card w-full">
               <FeatureCard feature={feature} />
             </div>
           ))}
