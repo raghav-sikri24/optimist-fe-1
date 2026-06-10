@@ -4,7 +4,8 @@ import Image from "next/image";
 import { m } from "framer-motion";
 import { Check, X } from "lucide-react";
 import { PalmLogo } from "@/components/home/HomeHeader";
-import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
+import { SectionHeader } from "@/components/home/SectionHeader";
+import { fadeUp, viewportOnce } from "@/lib/motion-variants";
 import type { HomeComparisonContent } from "@/lib/shopify";
 
 const CREAM = "#FBF6DB";
@@ -20,31 +21,19 @@ export function ComparisonSection({ content }: ComparisonSectionProps) {
   if (!rows.length) return null;
 
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Centered header */}
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="text-center"
-        >
-          <m.p
-            variants={fadeUp}
-            className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-          >
-            {subtitle}
-          </m.p>
-          <m.h2
-            variants={fadeUp}
-            className="mt-3 font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-          >
-            {titleLine1}
-            <br />
-            {titleLine2}
-          </m.h2>
-        </m.div>
+        <SectionHeader
+          eyebrow={subtitle}
+          title={
+            <>
+              {titleLine1}
+              <br />
+              {titleLine2}
+            </>
+          }
+        />
 
         {/* Comparison table */}
         <m.div
@@ -52,7 +41,7 @@ export function ComparisonSection({ content }: ComparisonSectionProps) {
           whileInView="visible"
           viewport={viewportOnce}
           variants={fadeUp}
-          className="relative mx-auto mt-12 max-w-[920px]"
+          className="relative mx-auto mt-8 max-w-[920px] sm:mt-12"
         >
           {/* Cream highlight band behind the "optimist" column. An overlay grid
               mirrors the column widths so the band lines up exactly. */}
@@ -67,17 +56,17 @@ export function ComparisonSection({ content }: ComparisonSectionProps) {
 
           <div className="relative grid grid-cols-[1.6fr_1fr_1fr]">
             {/* Header row */}
-            <div className="flex items-end px-2 pb-5 pt-7 text-[15px] text-black/45">
+            <div className="flex items-end px-2 pb-3 pt-5 text-[13px] text-black/45 sm:pb-5 sm:pt-7 sm:text-[15px]">
               Features
             </div>
-            <div className="flex items-end justify-center px-2 pb-5 pt-7">
-              <span className="font-display text-[18px] font-semibold text-optimist-black">
+            <div className="flex items-end justify-center px-1 pb-3 pt-5 sm:px-2 sm:pb-5 sm:pt-7">
+              <span className="font-display text-[14px] font-semibold text-optimist-black sm:text-[18px]">
                 Other AC&rsquo;s
               </span>
             </div>
-            <div className="flex items-end justify-center gap-1.5 px-2 pb-5 pt-7">
-              <PalmLogo className="h-[22px] w-auto" />
-              <span className="font-display text-[20px] font-semibold text-optimist-blue-hero">
+            <div className="flex items-end justify-center gap-1 px-1 pb-3 pt-5 sm:gap-1.5 sm:px-2 sm:pb-5 sm:pt-7">
+              <PalmLogo className="h-[16px] w-auto sm:h-[22px]" />
+              <span className="font-display text-[15px] font-semibold text-optimist-blue-hero sm:text-[20px]">
                 optimist
               </span>
             </div>
@@ -86,36 +75,36 @@ export function ComparisonSection({ content }: ComparisonSectionProps) {
             {rows.map((row, i) => (
               <div key={i} className="contents">
                 {/* Feature name + icon */}
-                <div className="flex items-center gap-3 border-t border-black/[0.07] px-2 py-7">
+                <div className="flex items-center gap-2 border-t border-black/[0.07] px-2 py-4 sm:gap-3 sm:py-7">
                   {row.iconUrl ? (
                     <Image
                       src={row.iconUrl}
                       alt={row.iconAlt ?? row.feature}
                       width={32}
                       height={32}
-                      className="h-7 w-7 flex-shrink-0 object-contain"
+                      className="h-5 w-5 flex-shrink-0 object-contain sm:h-7 sm:w-7"
                     />
                   ) : null}
-                  <span className="font-display text-[18px] font-semibold text-optimist-black">
+                  <span className="font-display text-[14px] font-semibold leading-tight text-optimist-black sm:text-[18px]">
                     {row.feature}
                   </span>
                 </div>
 
                 {/* Other AC's */}
-                <div className="flex flex-col items-center justify-center gap-2 border-t border-black/[0.07] px-2 py-7 text-center">
-                  <X className="h-5 w-5 text-black/25" strokeWidth={2.5} />
-                  <span className="text-[15px] text-black/50">
+                <div className="flex flex-col items-center justify-center gap-1.5 border-t border-black/[0.07] px-1 py-4 text-center sm:gap-2 sm:px-2 sm:py-7">
+                  <X className="h-4 w-4 text-black/25 sm:h-5 sm:w-5" strokeWidth={2.5} />
+                  <span className="text-[12px] leading-tight text-black/50 sm:text-[15px]">
                     {row.otherAc}
                   </span>
                 </div>
 
                 {/* optimist */}
-                <div className="flex flex-col items-center justify-center gap-2 border-t border-black/[0.07] px-2 py-7 text-center">
+                <div className="flex flex-col items-center justify-center gap-1.5 border-t border-black/[0.07] px-1 py-4 text-center sm:gap-2 sm:px-2 sm:py-7">
                   <Check
-                    className="h-5 w-5 text-[#16A34A]"
+                    className="h-4 w-4 text-[#16A34A] sm:h-5 sm:w-5"
                     strokeWidth={2.5}
                   />
-                  <span className="text-[15px] font-medium text-optimist-black">
+                  <span className="text-[12px] font-medium leading-tight text-optimist-black sm:text-[15px]">
                     {row.optimist}
                   </span>
                 </div>

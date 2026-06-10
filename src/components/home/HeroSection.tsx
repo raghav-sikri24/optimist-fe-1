@@ -33,7 +33,7 @@ function FloatingBadge({
   return (
     <m.div
       aria-hidden="true"
-      className={`pointer-events-none absolute z-20 hidden lg:block ${className}`}
+      className={`pointer-events-none absolute z-20 hidden xl:block ${className}`}
       initial={{ opacity: 0, scale: 0.6 }}
       animate={{ opacity: 1, scale: 1, y: [0, -drift, 0] }}
       transition={{
@@ -60,9 +60,9 @@ function FeatureCard({ features }: { features: HomeHeroContent["features"] }) {
       variants={fadeUp}
       className="rounded-[20px] border border-black/[0.07] bg-white/50 backdrop-blur-sm"
     >
-      <div className="grid grid-cols-3 divide-x divide-black/[0.07]">
+      <div className="grid grid-cols-1 divide-y divide-black/[0.07] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {features.map((feature, i) => (
-          <div key={i} className="flex flex-col gap-2 px-7 py-8">
+          <div key={i} className="flex flex-col gap-2 px-5 py-6 sm:px-7 sm:py-8">
             {feature.iconUrl ? (
               <Image
                 src={feature.iconUrl}
@@ -74,7 +74,7 @@ function FeatureCard({ features }: { features: HomeHeroContent["features"] }) {
             ) : (
               <div className="h-[40px]" />
             )}
-            <h3 className="mt-3 text-[19px] font-semibold leading-tight text-optimist-black">
+            <h3 className="mt-3 text-[17px] font-semibold leading-tight text-optimist-black sm:text-[19px]">
               {feature.title}
             </h3>
             <p className="text-[15px] leading-snug text-black/50">
@@ -113,7 +113,7 @@ export function HeroSection({ hero }: HeroSectionProps) {
       />
 
       {/* ---- Upper hero: headline + badges + AC ---- */}
-      <div className="relative z-10 mx-auto max-w-[1280px] px-6 pt-[150px] lg:px-10">
+      <div className="relative z-10 mx-auto max-w-[1280px] px-6 pt-[104px] sm:pt-[130px] lg:px-10 lg:pt-[150px]">
         {/* Floating decorative badges */}
         <FloatingBadge src={BADGE_FAN} className="left-[7%] top-[150px]" delay={0.3} drift={14} duration={5.5} />
         <FloatingBadge src={BADGE_THERMO} className="right-[9%] top-[78px]" delay={0.45} drift={10} duration={6} />
@@ -160,7 +160,7 @@ export function HeroSection({ hero }: HeroSectionProps) {
               priority
               sizes="(min-width: 1024px) 920px, 90vw"
               className="h-auto w-full max-w-[920px] object-contain"
-              style={{ width: "clamp(560px, 56vw, 920px)" }}
+              style={{ width: "clamp(300px, 64vw, 920px)" }}
             />
           </div>
         </div>
@@ -172,7 +172,7 @@ export function HeroSection({ hero }: HeroSectionProps) {
         whileInView="visible"
         viewport={viewportOnce}
         variants={staggerParent(0.12)}
-        className="relative z-10 mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-10 px-6 pb-[110px] pt-[56px] lg:grid-cols-[460px_1fr] lg:gap-16 lg:px-10"
+        className="relative z-10 mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-8 px-6 pb-16 pt-10 sm:gap-10 lg:grid-cols-[460px_1fr] lg:gap-16 lg:px-10 lg:pb-[110px] lg:pt-[56px]"
       >
         <m.div variants={fadeUp}>
           <h2 className="font-display text-[clamp(28px,2.9vw,40px)] font-semibold leading-[1.16] text-optimist-black">

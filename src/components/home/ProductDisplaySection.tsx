@@ -7,6 +7,7 @@ import { ASSETS } from "@/lib/assets";
 import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
 import type { HomeProductDisplayContent } from "@/lib/shopify";
 import PincodeModal from "@/components/ui/PincodeModal";
+import { SectionHeader } from "@/components/home/SectionHeader";
 import { useGetItNow } from "@/components/home/useGetItNow";
 
 const BG_GRID = "/newHomepage/Background%20pattern.webp";
@@ -38,29 +39,10 @@ export function ProductDisplaySection({ content }: ProductDisplaySectionProps) {
   const features = content?.features ?? [];
 
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Heading */}
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="text-center"
-        >
-          <m.p
-            variants={fadeUp}
-            className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-          >
-            {subtitle}
-          </m.p>
-          <m.h2
-            variants={fadeUp}
-            className="mt-3 font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-          >
-            {title}
-          </m.h2>
-        </m.div>
+        <SectionHeader eyebrow={subtitle} title={title} />
 
         {/* AC + price card */}
         <div className="relative mt-8">
@@ -88,7 +70,7 @@ export function ProductDisplaySection({ content }: ProductDisplaySectionProps) {
             whileInView="visible"
             viewport={viewportOnce}
             variants={staggerParent(0.1)}
-            className="relative -mt-[120px] overflow-hidden rounded-[28px] border border-black/[0.06] bg-white px-9 pb-9 pt-[150px] shadow-[0_24px_60px_-30px_rgba(15,23,42,0.18)]"
+            className="relative -mt-[56px] overflow-hidden rounded-[28px] border border-black/[0.06] bg-white px-5 pb-6 pt-[96px] shadow-[0_24px_60px_-30px_rgba(15,23,42,0.18)] sm:-mt-[120px] sm:px-9 sm:pb-9 sm:pt-[150px]"
           >
             {/* Faint grid behind the product imagery */}
             <Image
@@ -104,10 +86,10 @@ export function ProductDisplaySection({ content }: ProductDisplaySectionProps) {
               {/* Tonnage */}
               <m.div variants={fadeUp}>
                 <p className="font-display font-semibold leading-none text-optimist-black">
-                  <span className="text-[76px]">{tonValue}</span>{" "}
-                  <span className="text-[32px]">{tonUnit}</span>
+                  <span className="text-[56px] sm:text-[76px]">{tonValue}</span>{" "}
+                  <span className="text-[26px] sm:text-[32px]">{tonUnit}</span>
                 </p>
-                <p className="mt-3 text-[18px] text-black/55">
+                <p className="mt-3 text-[16px] text-black/55 sm:text-[18px]">
                   Cools upto 400 sq. ft.
                 </p>
               </m.div>

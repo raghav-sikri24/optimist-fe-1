@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { m } from "framer-motion";
 import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
+import { SectionHeader } from "@/components/home/SectionHeader";
 
 // Design assets (public/newHomepage). Spaces percent-encoded for valid srcset.
 const ROOM_AC = "/newHomepage/Group%204.webp";
@@ -22,31 +23,19 @@ const CARD = "relative overflow-hidden rounded-[24px] bg-[#F4F5F7]";
 
 export function BenefitsSection() {
   return (
-    <section className="relative bg-white py-[88px]">
+    <section className="relative bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Header */}
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="text-center"
-        >
-          <m.p
-            variants={fadeUp}
-            className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-          >
-            Multiple benefits to multiply your savings
-          </m.p>
-          <m.h2
-            variants={fadeUp}
-            className="mt-3 font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-          >
-            Built for India.
-            <br />
-            Designed for efficiency
-          </m.h2>
-        </m.div>
+        <SectionHeader
+          eyebrow="Multiple benefits to multiply your savings"
+          title={
+            <>
+              Built for India.
+              <br />
+              Designed for efficiency
+            </>
+          }
+        />
 
         {/* Bento grid */}
         <m.div
@@ -157,9 +146,9 @@ export function BenefitsSection() {
                 width={690}
                 height={360}
                 sizes="(min-width: 1024px) 460px, 60vw"
-                className="absolute right-0 top-1/2 w-[58%] -translate-y-1/2 object-contain"
+                className="absolute right-0 top-1/2 w-[46%] -translate-y-1/2 object-contain sm:w-[58%]"
               />
-              <div className="relative flex h-full flex-col p-8">
+              <div className="relative flex h-full flex-col p-6 sm:p-8">
                 <Image
                   src={SNOWFLAKE}
                   alt=""
@@ -168,10 +157,10 @@ export function BenefitsSection() {
                   height={40}
                   className="h-9 w-9"
                 />
-                <h3 className="mt-4 font-display text-[28px] font-semibold leading-tight text-optimist-blue-hero">
+                <h3 className="mt-4 font-display text-[24px] font-semibold leading-tight text-optimist-blue-hero sm:text-[28px]">
                   Turbo+ Cooling
                 </h3>
-                <p className="mt-1 text-[20px] leading-snug text-optimist-black">
+                <p className="mt-1 text-[18px] leading-snug text-optimist-black sm:text-[20px]">
                   2 Ton cooling from
                   <br />a 1.5 Ton AC.
                 </p>
@@ -294,7 +283,10 @@ export function BenefitsSection() {
             </div>
 
             {/* One tap away — app */}
-            <m.div variants={fadeUp} className={`${CARD} min-h-[390px]`}>
+            <m.div
+              variants={fadeUp}
+              className={`${CARD} min-h-[320px] sm:min-h-[390px]`}
+            >
               <Image
                 src={BEDSHEET}
                 alt=""
@@ -309,7 +301,7 @@ export function BenefitsSection() {
                 width={400}
                 height={420}
                 sizes="(min-width: 1024px) 260px, 60vw"
-                className="absolute -bottom-2 right-5 h-auto w-[58%] object-contain"
+                className="absolute -bottom-2 right-3 h-auto w-[72%] object-contain sm:right-5 sm:w-[58%]"
               />
               <div className="absolute inset-x-0 top-0 p-7">
                 <p className="font-display text-[24px] font-semibold leading-[1.2]">

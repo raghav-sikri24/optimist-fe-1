@@ -13,7 +13,7 @@ const TEAM_PHOTO = "/newHomepage/future-team%201.webp";
 
 export function MeetFamilySection() {
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Eyebrow + "Get to know the fam" link */}
         <m.div
@@ -21,14 +21,14 @@ export function MeetFamilySection() {
           whileInView="visible"
           viewport={viewportOnce}
           variants={fadeUp}
-          className="flex items-center justify-between gap-4"
+          className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
         >
-          <p className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero">
+          <p className="text-[16px] font-medium leading-[1.5] text-optimist-blue-hero sm:text-[18px] md:text-[20px] md:leading-[30px]">
             Meet the Optimist family
           </p>
           <Link
             href="/about"
-            className="group flex items-center gap-1.5 text-[20px] leading-[30px] font-[500] text-[#212121] transition-opacity hover:opacity-70"
+            className="group flex items-center gap-1.5 text-[16px] font-[500] leading-[1.5] text-[#212121] transition-opacity hover:opacity-70 sm:text-[18px] md:text-[20px]"
           >
             Get to know the fam
             <ChevronsRight className="h-5 w-5 transition-transform text-[#BABABA] group-hover:translate-x-0.5" />
@@ -45,24 +45,24 @@ export function MeetFamilySection() {
         >
           <m.h2
             variants={fadeUp}
-            className="max-w-[520px] font-display text-[48px] leading-[56px] font-medium text-[#212121]"
+            className="max-w-[520px] font-display text-[clamp(28px,5vw,48px)] font-medium leading-[1.15] text-[#212121]"
           >
             Built by people who were tired of the same old summer.
           </m.h2>
 
           <m.div
             variants={fadeUp}
-            className="flex items-center justify-between gap-6 rounded-[24px] border border-black/[0.07] bg-white p-6 shadow-[0_16px_40px_-28px_rgba(15,23,42,0.25)]"
+            className="flex items-center justify-between gap-4 rounded-[24px] border border-black/[0.07] bg-white p-5 shadow-[0_16px_40px_-28px_rgba(15,23,42,0.25)] sm:gap-6 sm:p-6"
           >
             <Image
               src={MADE_IN_INDIA}
               alt="Proudly made in India"
               width={300}
               height={150}
-              className="h-auto w-[180px] flex-shrink-0 object-contain sm:w-[210px]"
+              className="h-auto w-[140px] flex-shrink-0 object-contain sm:w-[210px]"
             />
             <div className="text-right">
-              <p className="font-display text-[30px] font-semibold leading-none text-optimist-black">
+              <p className="font-display text-[24px] font-semibold leading-none text-optimist-black sm:text-[30px]">
                 7+ Years
               </p>
               <p className="ml-auto mt-2 max-w-[190px] text-[15px] leading-[1.4] text-black/55">

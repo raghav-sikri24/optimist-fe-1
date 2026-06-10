@@ -8,6 +8,7 @@ import {
   staggerParent,
   viewportOnce,
 } from "@/lib/motion-variants";
+import { SectionHeader } from "@/components/home/SectionHeader";
 import type { HomeAppFeaturesContent, HomeFeatureCard } from "@/lib/shopify";
 
 function FeatureCard({ card }: { card: HomeFeatureCard }) {
@@ -61,40 +62,19 @@ export function AppFeaturesSection({ content }: AppFeaturesSectionProps) {
     content;
 
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Centered header */}
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="mx-auto max-w-[680px] text-center"
-        >
-          <m.p
-            variants={fadeUp}
-            className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-          >
-            {subtitle}
-          </m.p>
-          <m.h2
-            variants={fadeUp}
-            className="mt-3 font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-          >
-            {title}
-          </m.h2>
-          {description ? (
-            <m.p
-              variants={fadeUp}
-              className="mx-auto mt-4 max-w-[560px] text-[17px] leading-[1.5] text-black/55"
-            >
-              {description}
-            </m.p>
-          ) : null}
-        </m.div>
+        <SectionHeader
+          eyebrow={subtitle}
+          title={title}
+          description={description || undefined}
+          className="mx-auto max-w-[680px]"
+          descriptionClassName="max-w-[560px]"
+        />
 
         {/* Two-column: 2x3 feature grid (left) + phone mockup (right) */}
-        <div className="mt-14 grid grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_minmax(360px,460px)]">
+        <div className="mt-10 grid grid-cols-1 items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_minmax(360px,460px)]">
           <m.div
             initial="hidden"
             whileInView="visible"
