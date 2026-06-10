@@ -6,6 +6,7 @@ import { m } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
+import { SectionHeader } from "@/components/home/SectionHeader";
 import type { HomeInsideTechContent, HomeFeatureCard } from "@/lib/shopify";
 
 // White heat-exchanger texture that sits faintly behind the section.
@@ -97,7 +98,7 @@ export function InsideTechSection({ content }: InsideTechSectionProps) {
   if (!cards.length) return null;
 
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       {/* Faint heat-exchanger texture behind the cards */}
       <Image
         src={BG_TEXTURE}
@@ -110,29 +111,15 @@ export function InsideTechSection({ content }: InsideTechSectionProps) {
 
       {/* Heading + carousel controls */}
       <div className="relative z-10 mx-auto max-w-[1100px] px-6">
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="flex items-end justify-between gap-6"
-        >
-          <div>
-            <m.p
-              variants={fadeUp}
-              className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-            >
-              {subtitle}
-            </m.p>
-            <m.h2
-              variants={fadeUp}
-              className="mt-3 max-w-[560px] font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-            >
-              {title}
-            </m.h2>
-          </div>
+        <div className="flex items-end justify-between gap-6">
+          <SectionHeader
+            align="left"
+            eyebrow={subtitle}
+            title={title}
+            className="max-w-[560px]"
+          />
 
-          <m.div variants={fadeUp} className="hidden flex-shrink-0 gap-3 sm:flex">
+          <div className="hidden flex-shrink-0 gap-3 sm:flex">
             <button
               type="button"
               onClick={() => emblaApi?.scrollPrev()}
@@ -151,8 +138,8 @@ export function InsideTechSection({ content }: InsideTechSectionProps) {
             >
               <ChevronRight className="h-5 w-5" />
             </button>
-          </m.div>
-        </m.div>
+          </div>
+        </div>
       </div>
 
       {/* Carousel: aligned to content on the left, bleeds off the right edge */}

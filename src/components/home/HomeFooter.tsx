@@ -55,7 +55,7 @@ export function HomeFooter() {
         whileInView="visible"
         viewport={viewportOnce}
         variants={staggerParent(0.08)}
-        className="relative z-10 mx-auto flex max-w-[1400px] flex-col gap-12 px-6 pb-10 pt-[120px] md:flex-row md:justify-between md:gap-10 md:px-12"
+        className="relative z-10 mx-auto flex max-w-[1400px] flex-col gap-12 px-6 pb-10 pt-20 sm:pt-[120px] md:flex-row md:justify-between md:gap-10 md:px-12"
       >
         {/* Left: logo + headline + socials + copyright */}
         <div className="flex flex-col">
@@ -71,7 +71,7 @@ export function HomeFooter() {
 
           <m.h2
             variants={fadeUp}
-            className="mt-10 font-display leading-[64px] text-[64px] font-[500] text-[#212121]"
+            className="mt-10 font-display text-[clamp(34px,8vw,64px)] font-[500] leading-[1.05] text-[#212121]"
           >
             Be the coolest
             <br />
@@ -102,7 +102,7 @@ export function HomeFooter() {
         {/* Right: nav links (top) + policy links (bottom), right-aligned */}
         <m.div
           variants={fadeUp}
-          className="flex flex-col justify-between gap-16 text-right"
+          className="flex flex-col justify-between gap-8 text-left md:gap-16 md:text-right"
         >
           <nav className="flex flex-col gap-3">
             {NAV_LINKS.map((link) => (

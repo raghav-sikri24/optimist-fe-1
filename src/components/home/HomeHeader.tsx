@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { m } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import PincodeModal from "@/components/ui/PincodeModal";
 import { useGetItNow } from "@/components/home/useGetItNow";
 
@@ -39,6 +41,8 @@ export function HomeHeader() {
     closeModal,
   } = useGetItNow();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
       <m.header
@@ -48,10 +52,23 @@ export function HomeHeader() {
         className="fixed inset-x-0 top-0 z-50"
       >
         {/* Floating, centered pill that hovers over the hero */}
-        <div className="mx-auto max-w-[1360px] px-4 pt-4 sm:px-6 sm:pt-5">
-          <nav className="relative flex h-[76px] items-center justify-between rounded-[32px] border border-white/70 bg-white/70 px-6 shadow-[0_18px_50px_-22px_rgba(15,23,42,0.28)] backdrop-blur-xl backdrop-saturate-150 sm:px-8">
-            {/* Left: primary links */}
-            <ul className="flex items-center gap-7">
+        <div className="mx-auto max-w-[1360px] px-3 pt-3 sm:px-6 sm:pt-5">
+          <nav className="relative flex h-[60px] items-center justify-between rounded-[24px] border border-white/70 bg-white/70 px-4 shadow-[0_18px_50px_-22px_rgba(15,23,42,0.28)] backdrop-blur-xl backdrop-saturate-150 sm:h-[68px] sm:rounded-[28px] sm:px-6 md:h-[76px] md:rounded-[32px] md:px-8">
+            {/* Left: hamburger (mobile) + primary links (sm+) */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-optimist-black/85 transition-colors hover:bg-black/5 sm:hidden"
+            >
+              {menuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+            <ul className="hidden items-center gap-7 sm:flex">
               {NAV_LINKS.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -70,14 +87,14 @@ export function HomeHeader() {
               aria-label="Optimist home"
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             >
-              <PalmLogo className="h-[42px] w-auto" />
+              <PalmLogo className="h-[32px] w-auto sm:h-[38px] md:h-[42px]" />
             </Link>
 
             {/* Right: primary CTA */}
             <button
               type="button"
               onClick={handleGetItNow}
-              className="rounded-full px-7 py-3 text-[16px] font-semibold text-white shadow-[0_6px_18px_rgba(52,120,246,0.4)] transition-transform duration-200 hover:-translate-y-0.5"
+              className="rounded-full px-4 py-2 text-[14px] font-semibold text-white shadow-[0_6px_18px_rgba(52,120,246,0.4)] transition-transform duration-200 hover:-translate-y-0.5 sm:px-7 sm:py-3 sm:text-[16px]"
               style={{
                 background: "linear-gradient(180deg, #5B93FF 0%, #2F6FE8 100%)",
               }}
@@ -85,6 +102,33 @@ export function HomeHeader() {
               Get it now
             </button>
           </nav>
+
+          {/* Mobile dropdown menu */}
+          <AnimatePresence>
+            {menuOpen ? (
+              <m.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-2 overflow-hidden rounded-[20px] border border-white/70 bg-white/90 p-2 shadow-[0_18px_50px_-22px_rgba(15,23,42,0.28)] backdrop-blur-xl sm:hidden"
+              >
+                <ul className="flex flex-col">
+                  {NAV_LINKS.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="block rounded-[14px] px-4 py-3 text-[16px] font-medium text-optimist-black/85 transition-colors hover:bg-black/5"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </m.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </m.header>
 

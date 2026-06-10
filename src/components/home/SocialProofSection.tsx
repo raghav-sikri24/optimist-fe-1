@@ -5,6 +5,7 @@ import Image from "next/image";
 import { m, AnimatePresence } from "framer-motion";
 import { Play, Star, X } from "lucide-react";
 import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
+import { SectionHeader } from "@/components/home/SectionHeader";
 import {
   fetchReviewsSummary,
   fetchFeaturedReviews,
@@ -188,16 +189,16 @@ function ReviewCard({ review }: { review: JudgeMeReview }) {
           />
         </div>
       ) : null}
-      <div className="mb-3 flex items-center gap-2">
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#DCFCE7] px-2 py-0.5 text-[13px] font-semibold text-[#15803D]">
+      <div className="mb-3 flex min-w-0 items-center gap-2">
+        <span className="inline-flex flex-shrink-0 items-center gap-1 rounded-full bg-[#DCFCE7] px-2 py-0.5 text-[13px] font-semibold text-[#15803D]">
           {review.rating.toFixed(1)}
         </span>
-        <span className="text-[14px] font-semibold text-optimist-black">
+        <span className="min-w-0 truncate text-[14px] font-semibold text-optimist-black">
           {review.author}
         </span>
       </div>
       {review.title ? (
-        <p className="font-display text-[18px] font-semibold leading-[1.3] text-optimist-black">
+        <p className="font-display text-[15px] font-medium leading-[1.3] text-optimist-black sm:text-[18px] sm:font-semibold">
           {review.title}
         </p>
       ) : null}
@@ -359,32 +360,19 @@ export function SocialProofSection({ content }: SocialProofSectionProps) {
   const { subtitle, title, mainLine, earlyUsers, unitsSold, videos } = content;
 
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Header: title (left) + main line & stats (right) */}
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12"
-        >
-          <div>
-            <m.p
-              variants={fadeUp}
-              className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-            >
-              {subtitle}
-            </m.p>
-            <m.h2
-              variants={fadeUp}
-              className="mt-3 font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-            >
-              {title}
-            </m.h2>
-          </div>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+          <SectionHeader align="left" eyebrow={subtitle} title={title} />
 
-          <div className="lg:pt-2">
+          <m.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            variants={staggerParent(0.1)}
+            className="lg:pt-2"
+          >
             {mainLine ? (
               <m.p
                 variants={fadeUp}
@@ -393,9 +381,9 @@ export function SocialProofSection({ content }: SocialProofSectionProps) {
                 {mainLine}
               </m.p>
             ) : null}
-            <m.div variants={fadeUp} className="mt-6 flex gap-12">
+            <m.div variants={fadeUp} className="mt-6 flex gap-8 sm:gap-12">
               <div>
-                <p className="font-display text-[36px] font-semibold leading-none text-optimist-blue-hero">
+                <p className="font-display text-[28px] font-semibold leading-none text-optimist-blue-hero sm:text-[36px]">
                   {earlyUsers}+
                 </p>
                 <p className="mt-1 text-[15px] text-black/55">
@@ -403,14 +391,14 @@ export function SocialProofSection({ content }: SocialProofSectionProps) {
                 </p>
               </div>
               <div>
-                <p className="font-display text-[36px] font-semibold leading-none text-optimist-blue-hero">
+                <p className="font-display text-[28px] font-semibold leading-none text-optimist-blue-hero sm:text-[36px]">
                   {unitsSold}
                 </p>
                 <p className="mt-1 text-[15px] text-black/55">AC Units sold</p>
               </div>
             </m.div>
-          </div>
-        </m.div>
+          </m.div>
+        </div>
 
         {/* Body: videos + reviews (left), rated card (right). Fixed
             proportions; `min-w-0` lets the video row scroll horizontally

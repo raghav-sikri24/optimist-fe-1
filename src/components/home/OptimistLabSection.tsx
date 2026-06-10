@@ -7,6 +7,7 @@ import { m } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
+import { SectionHeader } from "@/components/home/SectionHeader";
 import { calculateReadTime, type BlogArticle } from "@/lib/shopify";
 
 // Category-pill colour map. Known categories from the design get their exact
@@ -109,38 +110,22 @@ export function OptimistLabSection({ articles }: OptimistLabSectionProps) {
   if (!articles.length) return null;
 
   return (
-    <section className="relative overflow-hidden bg-white py-[88px]">
+    <section className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-[88px]">
       <div className="mx-auto max-w-[1100px] px-6">
         {/* Header */}
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          variants={staggerParent(0.1)}
-          className="mx-auto max-w-[820px] text-center"
-        >
-          <m.p
-            variants={fadeUp}
-            className="text-[20px] leading-[30px] font-medium text-optimist-blue-hero"
-          >
-            From the Optimist Lab
-          </m.p>
-          <m.h2
-            variants={fadeUp}
-            className="mt-4 font-display text-[48px] leading-[56px] font-medium text-[#212121]"
-          >
-            Heat isn&apos;t just uncomfortable.
-            <br />
-            It&apos;s worth understanding.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            className="mx-auto mt-5 max-w-[640px] text-[18px] leading-[1.5] text-black/55"
-          >
-            Thoughts, research and real talk from the people building
-            India&apos;s most intelligent AC.
-          </m.p>
-        </m.div>
+        <SectionHeader
+          eyebrow="From the Optimist Lab"
+          title={
+            <>
+              Heat isn&apos;t just uncomfortable.
+              <br />
+              It&apos;s worth understanding.
+            </>
+          }
+          description="Thoughts, research and real talk from the people building India's most intelligent AC."
+          className="mx-auto max-w-[820px]"
+          descriptionClassName="max-w-[640px]"
+        />
 
         {/* Carousel */}
         <m.div
@@ -148,7 +133,7 @@ export function OptimistLabSection({ articles }: OptimistLabSectionProps) {
           whileInView="visible"
           viewport={viewportOnce}
           variants={staggerParent(0.12)}
-          className="mt-12 overflow-hidden"
+          className="mt-10 overflow-hidden sm:mt-12"
           ref={emblaRef}
         >
           <div className="flex gap-6">
