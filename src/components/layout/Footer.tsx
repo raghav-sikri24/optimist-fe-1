@@ -83,7 +83,7 @@ const policyLinks = [
 
 const socialLinks = [
   {
-    href: "https://www.instagram.com/optimist.ac?igsh=ajZtaG1xN3ZhZ3Jl&utm_source=qr",
+    href: "https://www.instagram.com/ac.optimist/",
     icon: InstagramIcon,
     label: "Instagram",
   },

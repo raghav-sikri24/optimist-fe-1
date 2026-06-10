@@ -26,7 +26,7 @@ const SOCIAL_LINKS = [
     label: "YouTube",
   },
   {
-    href: "https://www.instagram.com/optimist.ac?igsh=ajZtaG1xN3ZhZ3Jl&utm_source=qr",
+    href: "https://www.instagram.com/ac.optimist/",
     icon: Instagram,
     label: "Instagram",
   },
