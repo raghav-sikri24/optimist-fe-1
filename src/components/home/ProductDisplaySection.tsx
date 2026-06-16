@@ -7,6 +7,7 @@ import { GradientButton } from "@/components/home/ui/gradient-button";
 import { SectionTitle } from "@/components/home/ui/section-title";
 import { useGetItNow } from "@/components/home/useGetItNow";
 import PincodeModal from "@/components/ui/PincodeModal";
+import { ASSETS } from "@/lib/assets";
 import { fadeUp, staggerParent, viewportOnce } from "@/lib/motion-variants";
 import { cn } from "@/lib/cn";
 import type { HomeProductDisplayContent } from "@/lib/shopify";
@@ -25,8 +26,9 @@ interface ProductDisplaySectionProps {
 
 // optimist-website "Buy your Optimist" section. Copy comes from the
 // `hp_product_display` metaobject. Per the catalogue we show ONLY the single
-// real 1.4-ton variant (as before): tonnage from `variant.name`, live price/EMI
-// from Shopify, and the shared pincode → buyNow CTA.
+// real 1.4-ton variant (as before): the AC product render sits on top,
+// overlapping the price card; tonnage from `variant.name`, live price/EMI from
+// Shopify, and the shared pincode → buyNow CTA.
 export function ProductDisplaySection({ content }: ProductDisplaySectionProps) {
   const {
     variant,
@@ -53,45 +55,59 @@ export function ProductDisplaySection({ content }: ProductDisplaySectionProps) {
         />
 
         <div className="mt-6 md:mt-10">
-          <m.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            variants={staggerParent(0.12)}
-            className="overflow-hidden rounded-[24px] rounded-b-none border border-[#E9E9E9] bg-white p-6 sm:p-8 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-10"
-          >
-            <m.div variants={fadeUp} className="flex flex-col gap-1">
-              <p className="text-[20px] sm:text-[24px] md:text-[28px] leading-none font-solar font-medium">
-                <span className="text-[48px] sm:text-[64px] md:text-[80px]">
-                  {tonValue}{" "}
-                </span>
-                {tonUnit}
-              </p>
-              <p className="text-[17px] sm:text-[19px] md:text-[21px] leading-[140%] font-light text-[#6A6A6A]">
-                Cools upto 400 sq. ft.
-              </p>
-            </m.div>
+          <div className="relative">
+            {/* AC product render, centred over the top of the price card */}
+            <m.img
+              src={ASSETS.acHeroDesktop}
+              alt="Optimist 1.4 Ton 5 Star Inverter Split AC"
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 mx-auto block w-full max-w-[420px] sm:max-w-[540px] md:max-w-[620px] object-contain px-4"
+            />
 
+            {/* Price card, tucked under the AC */}
             <m.div
-              variants={fadeUp}
-              className="w-full md:w-auto md:text-right"
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={staggerParent(0.12)}
+              className="relative -mt-[40px] sm:-mt-[80px] md:-mt-[100px] overflow-hidden rounded-[24px] rounded-b-none border border-[#E9E9E9] bg-white px-6 sm:px-8 md:px-10 pt-[52px] sm:pt-[100px] md:pt-[124px] pb-6 sm:pb-8 md:pb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10"
             >
-              <p className="text-[22px] sm:text-[25px] md:text-[27px] leading-none font-solar font-medium">
-                From ₹{inr(emiMonthly)}/mo
-              </p>
-              <p className="mt-1 text-sm sm:text-base leading-[140%] font-light text-[#6A6A6A]">
-                with no-cost EMI & instant savings or{" "}
-                <span className="font-medium">₹{inr(price)}</span>
-              </p>
-              <GradientButton
-                onClick={handleGetItNow}
-                disabled={isBuyNowLoading}
-                className="mt-4 md:mt-5 h-12 sm:h-14 md:h-15 w-full md:w-[320px] text-[17px] sm:text-[19px] md:text-[21px]"
+              <m.div variants={fadeUp} className="flex flex-col gap-1">
+                <p className="text-[20px] sm:text-[24px] md:text-[28px] leading-none font-solar font-medium">
+                  <span className="text-[48px] sm:text-[64px] md:text-[80px]">
+                    {tonValue}{" "}
+                  </span>
+                  {tonUnit}
+                </p>
+                <p className="text-[17px] sm:text-[19px] md:text-[21px] leading-[140%] font-light text-[#6A6A6A]">
+                  Cools upto 200 sq. ft.
+                </p>
+              </m.div>
+
+              <m.div
+                variants={fadeUp}
+                className="w-full md:w-auto md:text-right"
               >
-                {isBuyNowLoading ? "Opening checkout…" : "Get it now"}
-              </GradientButton>
+                <p className="text-[22px] sm:text-[25px] md:text-[27px] leading-none font-solar font-medium">
+                  From ₹{inr(emiMonthly)}/mo
+                </p>
+                <p className="mt-1 text-sm sm:text-base leading-[140%] font-light text-[#6A6A6A]">
+                  with no-cost EMI & instant savings or{" "}
+                  <span className="font-medium">₹{inr(price)}</span>
+                </p>
+                <GradientButton
+                  onClick={handleGetItNow}
+                  disabled={isBuyNowLoading}
+                  className="mt-4 md:mt-5 h-12 sm:h-14 md:h-15 w-full md:w-[320px] text-[17px] sm:text-[19px] md:text-[21px]"
+                >
+                  {isBuyNowLoading ? "Opening checkout…" : "Get it now"}
+                </GradientButton>
+              </m.div>
             </m.div>
-          </m.div>
+          </div>
 
           <div
             className={cn(

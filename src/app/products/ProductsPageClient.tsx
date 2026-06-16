@@ -624,9 +624,6 @@ function ProductsPageInner({
 
               {/* Total/Price */}
               <div ref={priceRef} className="flex flex-col gap-1.5">
-                <h3 className="text-sm md:text-base font-medium text-black uppercase tracking-wide">
-                  Total
-                </h3>
                 <div className="flex flex-wrap items-baseline gap-2">
                   <span className="text-2xl md:text-3xl font-semibold text-black">
                     Rs {formatPrice(selectedVariant?.price || 0)}.00
