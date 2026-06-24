@@ -20,7 +20,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/components/ui/Toast";
 import { ASSETS } from "@/lib/assets";
 import { useJudgeMeRating } from "@/lib/judgeme";
-import { useMagicCheckout } from "@/contexts/MagicCheckoutContext";
+import { redirectWithAnalytics } from "@/lib/analytics";
 import PincodeModal from "@/components/ui/PincodeModal";
 
 // Static copy keyed by variant ID — used for headline/tagline/features
@@ -117,7 +117,6 @@ export function ProductPickerSection() {
   const { showToast } = useToast();
   const { combinedProduct, isLoading: isPriceLoading } = useProducts();
   const { buyNow, isLoading: isCartLoading } = useCart();
-  const { startCheckout } = useMagicCheckout();
   const [showPincodeModal, setShowPincodeModal] = useState(false);
   const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
 
@@ -200,17 +199,16 @@ export function ProductPickerSection() {
     if (!activeVariant || !activeVariant.variantId) return;
     setIsBuyNowLoading(true);
     try {
-      const cart = await buyNow(activeVariant.variantId, 1);
-      if (cart) {
-        await startCheckout(cart);
+      const checkoutUrl = await buyNow(activeVariant.variantId, 1);
+      if (checkoutUrl) {
+        redirectWithAnalytics(checkoutUrl);
       } else {
         showToast("Failed to initiate checkout", "error");
+        setIsBuyNowLoading(false);
       }
     } catch {
       showToast("Failed to proceed to checkout", "error");
-    } finally {
       setIsBuyNowLoading(false);
-      setShowPincodeModal(false);
     }
   };
 
